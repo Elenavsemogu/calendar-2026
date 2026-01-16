@@ -1,357 +1,413 @@
-// ------------------------------
-// 0) Мини-база событий (пока в коде)
-// Позже можно вынести в events.json и грузить через fetch()
-// ------------------------------
-const EVENTS = {
-  "mac-yerevan": {
-    id: "mac-yerevan",
-    title: "MAC Yerevan",
-    country: "AM",
-    locationLine: "📍 Armenia, Yerevan • Май 2026",
-    heroImg: "static/MAC_Yerevan.jpeg",
-    attendeesLabel: "3.5k",
-    entryLabel: "Easy",
-    promoLabel: "-15%",
-    typeBadge: "MAJOR EVENT",
-
-    // Для add-to-calendar: когда появятся точные даты — заполни ISO
-    // startISO: "2026-05-12T10:00:00+04:00",
-    // endISO: "2026-05-14T18:00:00+04:00",
-    startISO: null,
-    endISO: null
-  },
-  "sigma-eurasia": {
-    id: "sigma-eurasia",
-    title: "SiGMA Eurasia",
-    country: "AE",
-    locationLine: "📍 UAE, Dubai • 25–27 Фев 2026",
-    heroImg: "static/sigma_dubai.jpg",
-    attendeesLabel: "10k+",
-    entryLabel: "Standard",
-    promoLabel: "—",
-    typeBadge: "MAJOR EVENT",
-    startISO: "2026-02-25T10:00:00+04:00",
-    endISO: "2026-02-27T18:00:00+04:00"
-  }
-};
+// app.js
 
 // ------------------------------
-// 1) Визовые правила (черновик).
-// ВАЖНО: это не “юридически точная база”, а заготовка логики.
-// Позже можно заменить на events.json + отдельную таблицу.
+// Utils
 // ------------------------------
+const qs = (sel, root = document) => root.querySelector(sel);
+const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+function formatK(n) {
+  if (!Number.isFinite(n)) return "";
+  if (n >= 1000) return (Math.round(n / 100) / 10).toString() + "k";
+  return String(n);
+}
+
+// ------------------------------
+// State
+// ------------------------------
+let currentCitizenship = "RU";
+
+// Для кнопки "Добавить в календарь": будем помнить, какое событие открыто в модалке
+let currentEventId = null;
+
+// ------------------------------
+// Visa rules (MVP)
+// ------------------------------
+// Важно: это черновой словарь. Позже заменишь на JSON/таблицу/источник.
+// Статусы: "no" | "yes" | "unknown"
 const VISA_RULES = {
-  // citizenship -> country -> "no" | "yes" | "unknown"
   RU: {
-    AM: "no",
     AE: "no",
-    BR: "unknown",
+    AM: "no",
+    BR: "no",
     ES: "yes",
-    NL: "yes",
+    PT: "yes",
     MT: "yes",
-    TH: "unknown",
+    NL: "yes",
     US: "yes",
-    RU: "no",
-    PT: "yes"
+    PH: "yes",
+    ZA: "yes",
+    GE: "no",
+    HU: "yes",
+    MX: "unknown",
+    TH: "no",
+    RU: "no"
   },
   KZ: {
-    AM: "no",
     AE: "no",
+    AM: "no",
     BR: "unknown",
     ES: "yes",
-    NL: "yes",
+    PT: "yes",
     MT: "yes",
-    TH: "unknown",
+    NL: "yes",
     US: "yes",
-    RU: "unknown",
-    PT: "yes"
+    PH: "unknown",
+    ZA: "yes",
+    GE: "no",
+    HU: "yes",
+    MX: "unknown",
+    TH: "unknown",
+    RU: "no"
   }
 };
 
-let currentCitizenship = "RU";
-let currentEventIdInModal = null;
-
-// ------------------------------
-// Helpers
-// ------------------------------
-function qs(sel) { return document.querySelector(sel); }
-function qsa(sel) { return Array.from(document.querySelectorAll(sel)); }
-
-function getVisaStatus(citizenship, countryCode) {
-  const row = VISA_RULES[citizenship] || {};
-  return row[countryCode] || "unknown";
+function getVisaStatus(citizenship, country) {
+  const c = (citizenship || "").toUpperCase();
+  const cc = (country || "").toUpperCase();
+  return VISA_RULES?.[c]?.[cc] || "unknown";
 }
 
-function formatVisaLabel(status, countryCode) {
-  if (status === "no") return `No Visa 🇦🇪`.replace("🇦🇪", countryFlag(countryCode));
-  if (status === "yes") return `Visa ${countryFlag(countryCode)}`;
-  return `Check ${countryFlag(countryCode)}`;
-}
+function applyVisaTag(el, status, countryCode) {
+  // el — это span с data-visa-tag="XX"
+  el.classList.remove("tag-visa", "tag-no-visa");
+  const flag = countryCode ? ` ${countryCode}` : "";
 
-function countryFlag(code) {
-  // Минимально: можно расширять. Если неизвестно — просто код.
-  const FLAGS = {
-    AE: "🇦🇪",
-    AM: "🇦🇲",
-    BR: "🇧🇷",
-    ES: "🇪🇸",
-    NL: "🇳🇱",
-    MT: "🇲🇹",
-    TH: "🇹🇭",
-    US: "🇺🇸",
-    RU: "🇷🇺",
-    PT: "🇵🇹"
-  };
-  return FLAGS[code] || `(${code})`;
-}
-
-// ------------------------------
-// 2) Модалка
-// ------------------------------
-function openModal(eventId) {
-  const overlay = qs('#modalOverlay');
-  const bg = qs('#modalBg');
-  const panel = qs('#modalPanel');
-
-  const ev = EVENTS[eventId];
-  if (!ev) {
-    console.warn("Event not found:", eventId);
-    return;
+  if (status === "no") {
+    el.classList.add("tag-no-visa");
+    // оставим твой текстовый паттерн "No Visa ..."
+    // если там уже есть эмодзи флага — не трогаем, иначе можно простым текстом
+    if (!el.textContent.toLowerCase().includes("no visa")) el.textContent = `No Visa${flag}`;
+  } else if (status === "yes") {
+    el.classList.add("tag-visa");
+    if (!el.textContent.toLowerCase().includes("visa")) el.textContent = `Visa${flag}`;
+  } else {
+    el.classList.add("tag-visa");
+    el.textContent = "Check visa";
   }
+}
 
-  currentEventIdInModal = eventId;
+function updateAllVisaTags() {
+  qsa("[data-visa-tag]").forEach((tag) => {
+    const cc = tag.getAttribute("data-visa-tag");
+    const status = getVisaStatus(currentCitizenship, cc);
+    applyVisaTag(tag, status, cc);
+  });
+}
 
-  // Заполнение данных (минимально, без перестройки дизайна)
-  qs('#modalHeroImg').src = ev.heroImg;
-  qs('#modalHeroImg').alt = ev.title;
+// ------------------------------
+// Filters
+// ------------------------------
+const TIER_FILTERS = [
+  { key: "any", label: "Все" },
+  { key: "mega", label: "20k+" },
+  { key: "large", label: "8k+" },
+  { key: "mid", label: "<8k" }
+];
 
-  qs('#modalTitle').textContent = ev.title;
-  qs('#modalLocationLine').textContent = ev.locationLine;
+const VISA_FILTERS = [
+  { key: "any", label: "Не важно" },
+  { key: "no", label: "Только без визы" },
+  { key: "yes", label: "Только с визой" },
+  { key: "unknown", label: "Уточнить" }
+];
 
-  qs('#modalStatAttendees').textContent = ev.attendeesLabel;
-  qs('#modalStatEntry').textContent = ev.entryLabel;
-  qs('#modalStatPromo').textContent = ev.promoLabel;
-  qs('#modalBadgeType').textContent = ev.typeBadge;
+let tierFilterIndex = 0; // any
+let visaFilterIndex = 0; // any
 
-  // Visa badge в модалке — зависит от гражданства
-  updateModalVisaBadge(ev.country);
+function updateFilterLabels() {
+  const sizeBtn = qs("#filterSizeBtn");
+  const visaBtn = qs("#filterVisaBtn");
+  if (sizeBtn) sizeBtn.textContent = `Размер: ${TIER_FILTERS[tierFilterIndex].label}`;
+  if (visaBtn) visaBtn.textContent = `Виза: ${VISA_FILTERS[visaFilterIndex].label}`;
+}
 
-  // Показ
-  overlay.classList.remove('hidden');
+function applyFilters() {
+  const tierKey = TIER_FILTERS[tierFilterIndex].key;
+  const visaKey = VISA_FILTERS[visaFilterIndex].key;
+
+  qsa('[data-filterable="1"]').forEach((el) => {
+    const elTier = (el.getAttribute("data-tier") || "").toLowerCase();
+    const elCountry = (el.getAttribute("data-country") || "").toUpperCase();
+
+    let tierOk = true;
+    if (tierKey !== "any") tierOk = (elTier === tierKey);
+
+    let visaOk = true;
+    if (visaKey !== "any") {
+      if (!elCountry) {
+        // если страна не задана — не ломаем, оставляем видимым
+        visaOk = true;
+      } else {
+        const status = getVisaStatus(currentCitizenship, elCountry);
+        visaOk = (status === visaKey);
+      }
+    }
+
+    if (tierOk && visaOk) el.classList.remove("hidden");
+    else el.classList.add("hidden");
+  });
+}
+
+// ------------------------------
+// Modal open/close + tabs
+// ------------------------------
+function openModal() {
+  const overlay = qs("#modalOverlay");
+  const bg = qs("#modalBg");
+  const panel = qs("#modalPanel");
+  if (!overlay || !bg || !panel) return;
+
+  overlay.classList.remove("hidden");
   setTimeout(() => {
-    bg.classList.remove('opacity-0');
-    panel.classList.remove('translate-x-full');
+    bg.classList.remove("opacity-0");
+    panel.classList.remove("translate-x-full");
   }, 10);
 
-  document.body.classList.add('modal-open');
+  document.body.classList.add("modal-open");
 }
 
 function closeModal() {
-  const overlay = qs('#modalOverlay');
-  const bg = qs('#modalBg');
-  const panel = qs('#modalPanel');
+  const overlay = qs("#modalOverlay");
+  const bg = qs("#modalBg");
+  const panel = qs("#modalPanel");
+  if (!overlay || !bg || !panel) return;
 
-  bg.classList.add('opacity-0');
-  panel.classList.add('translate-x-full');
+  bg.classList.add("opacity-0");
+  panel.classList.add("translate-x-full");
 
-  setTimeout(() => { overlay.classList.add('hidden'); }, 300);
-  document.body.classList.remove('modal-open');
+  setTimeout(() => {
+    overlay.classList.add("hidden");
+  }, 300);
 
-  currentEventIdInModal = null;
+  document.body.classList.remove("modal-open");
+  currentEventId = null; // сброс "текущего события"
 }
 
-function updateModalVisaBadge(countryCode) {
-  const status = getVisaStatus(currentCitizenship, countryCode);
-  const badge = qs('#modalBadgeVisa');
-
-  // Стили под статус
-  badge.classList.remove(
-    "bg-green-500/20", "text-green-400", "border-green-500/30",
-    "bg-white/10", "text-gray-300", "border-white/20",
-    "bg-red-500/20", "text-red-300", "border-red-500/30"
-  );
-
-  if (status === "no") {
-    badge.textContent = `Без визы (${currentCitizenship})`;
-    badge.classList.add("bg-green-500/20", "text-green-400", "border-green-500/30");
-  } else if (status === "yes") {
-    badge.textContent = `Нужна виза (${currentCitizenship})`;
-    badge.classList.add("bg-red-500/20", "text-red-300", "border-red-500/30");
-  } else {
-    badge.textContent = `Уточнить визовый режим (${currentCitizenship})`;
-    badge.classList.add("bg-white/10", "text-gray-300", "border-white/20");
-  }
-}
-
-// ------------------------------
-// 3) Tabs (без inline onclick)
-// ------------------------------
-function setActiveTab(tabId, btnEl) {
-  qsa('.tab-content').forEach(el => el.classList.remove('active'));
-  qsa('.tab-btn').forEach(el => el.classList.remove('active'));
+function setActiveTab(tabId) {
+  qsa(".tab-content").forEach((el) => el.classList.remove("active"));
+  qsa(".tab-btn").forEach((el) => el.classList.remove("active"));
 
   const tab = qs(`#${tabId}`);
-  if (tab) tab.classList.add('active');
-  if (btnEl) btnEl.classList.add('active');
+  const btn = qs(`[data-tab-btn="${tabId}"]`);
+
+  if (tab) tab.classList.add("active");
+  if (btn) btn.classList.add("active");
 }
 
 // ------------------------------
-// 4) Обновление визовых бейджей на карточках (по data-visa-tag)
+// Event data (MVP только для тех, кто открывается в модалке)
 // ------------------------------
-function updateAllVisaTags() {
-  qsa('[data-visa-tag]').forEach(el => {
-    const country = el.getAttribute('data-visa-tag');
-    const status = getVisaStatus(currentCitizenship, country);
+// Ты сейчас открываешь модалку только для карточек с data-event-id.
+// Давай держать минимум данных тут. Позже вынесем в events.json.
+const EVENTS = {
+  "sigma-eurasia": {
+    title: "SiGMA Eurasia",
+    country: "AE",
+    city: "Dubai",
+    datesLabel: "25–27 Фев 2026",
+    heroImg: "static/sigma_dubai.jpg",
+    attendeesLabel: "14k+",
+    badgeType: "MAJOR EVENT",
+    // Для ICS нужны ISO-датЫ. Если пока нет — оставь null.
+    startISO: null,
+    endISO: null,
+    description: "Affiliate / Marketing focus"
+  },
+  "mac-yerevan": {
+    title: "MAC Yerevan",
+    country: "AM",
+    city: "Yerevan",
+    datesLabel: "Май 2026",
+    heroImg: "static/MAC_Yerevan.jpeg",
+    attendeesLabel: "3.5k+",
+    badgeType: "MAJOR EVENT",
+    startISO: null,
+    endISO: null,
+    description: "CIS community"
+  }
+};
 
-    // Текст
-    el.textContent = formatVisaLabel(status, country);
+function populateModal(eventId) {
+  const ev = EVENTS[eventId];
+  if (!ev) return;
 
-    // Классы (сохраняем твою систему tag-visa / tag-no-visa)
-    el.classList.remove('tag-visa', 'tag-no-visa');
-    if (status === "no") el.classList.add('tag-no-visa');
-    else if (status === "yes") el.classList.add('tag-visa');
-    else {
-      // unknown: визуально нейтрально, но заметно
-      el.classList.add('tag-visa');
+  currentEventId = eventId;
+
+  const hero = qs("#modalHeroImg");
+  const title = qs("#modalTitle");
+  const loc = qs("#modalLocationLine");
+  const statAtt = qs("#modalStatAttendees");
+  const badgeType = qs("#modalBadgeType");
+  const badgeVisa = qs("#modalBadgeVisa");
+
+  if (hero) hero.src = ev.heroImg || "";
+  if (title) title.textContent = ev.title || "";
+  if (loc) loc.textContent = `📍 ${ev.country}, ${ev.city} • ${ev.datesLabel}`;
+  if (statAtt) statAtt.textContent = ev.attendeesLabel || "";
+
+  if (badgeType) badgeType.textContent = ev.badgeType || "EVENT";
+
+  if (badgeVisa) {
+    const status = getVisaStatus(currentCitizenship, ev.country);
+    if (status === "no") {
+      badgeVisa.textContent = "Без визы";
+      badgeVisa.className = "bg-green-500/20 text-green-400 text-[10px] font-bold px-3 py-1 rounded-full border border-green-500/30";
+    } else if (status === "yes") {
+      badgeVisa.textContent = "Нужна виза";
+      badgeVisa.className = "bg-red-500/20 text-red-300 text-[10px] font-bold px-3 py-1 rounded-full border border-red-500/30";
+    } else {
+      badgeVisa.textContent = "Уточнить визу";
+      badgeVisa.className = "bg-yellow-500/20 text-yellow-300 text-[10px] font-bold px-3 py-1 rounded-full border border-yellow-500/30";
     }
-  });
-
-  // Если модалка открыта — обновим и там
-  if (currentEventIdInModal && EVENTS[currentEventIdInModal]) {
-    updateModalVisaBadge(EVENTS[currentEventIdInModal].country);
   }
+
+  // таб по умолчанию
+  setActiveTab("guide");
 }
 
 // ------------------------------
-// 5) Add to calendar (ICS)
+// ICS generation (минимальная версия)
 // ------------------------------
-function downloadICSForCurrentEvent() {
-  if (!currentEventIdInModal) {
-    alert("Открой карточку события (модалку), и затем нажми «Добавить в календарь».");
-    return;
-  }
-
-  const ev = EVENTS[currentEventIdInModal];
-  if (!ev || !ev.startISO || !ev.endISO) {
-    alert("Для этого события пока нет точных дат (TBD). Когда появятся даты — добавление в календарь заработает.");
-    return;
-  }
-
-  const ics = buildICS({
-    title: ev.title,
-    startISO: ev.startISO,
-    endISO: ev.endISO,
-    location: ev.locationLine.replace(/^📍\s*/, ''),
-    description: `Secretroom Calendar 2026 — ${ev.title}`
-  });
-
-  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${ev.id}.ics`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-
-function toICSDate(isoString) {
-  // Приводим к UTC "YYYYMMDDTHHMMSSZ"
-  const d = new Date(isoString);
-  const pad = (n) => String(n).padStart(2, "0");
-  return (
-    d.getUTCFullYear() +
-    pad(d.getUTCMonth() + 1) +
-    pad(d.getUTCDate()) +
-    "T" +
-    pad(d.getUTCHours()) +
-    pad(d.getUTCMinutes()) +
-    pad(d.getUTCSeconds()) +
-    "Z"
-  );
-}
-
-function buildICS({ title, startISO, endISO, location, description }) {
-  const dtStart = toICSDate(startISO);
-  const dtEnd = toICSDate(endISO);
-  const dtStamp = toICSDate(new Date().toISOString());
-  const uid = `${Math.random().toString(36).slice(2)}@secretroom-calendar`;
-
-  // Минимальный валидный ICS
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Secretroom//iGaming Calendar 2026//RU",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
-    "BEGIN:VEVENT",
-    `UID:${uid}`,
-    `DTSTAMP:${dtStamp}`,
-    `DTSTART:${dtStart}`,
-    `DTEND:${dtEnd}`,
-    `SUMMARY:${escapeICSText(title)}`,
-    `LOCATION:${escapeICSText(location || "")}`,
-    `DESCRIPTION:${escapeICSText(description || "")}`,
-    "END:VEVENT",
-    "END:VCALENDAR",
-    ""
-  ].join("\r\n");
-}
-
-function escapeICSText(s) {
-  return String(s)
+function escapeICS(text) {
+  return String(text || "")
     .replace(/\\/g, "\\\\")
     .replace(/\n/g, "\\n")
     .replace(/,/g, "\\,")
     .replace(/;/g, "\\;");
 }
 
+function toICSDateTime(iso) {
+  // ожидаем "2026-02-25T09:00:00Z" или без Z
+  // конвертируем в формат YYYYMMDDTHHMMSSZ
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+
+  const pad = (n) => String(n).padStart(2, "0");
+  const YYYY = d.getUTCFullYear();
+  const MM = pad(d.getUTCMonth() + 1);
+  const DD = pad(d.getUTCDate());
+  const hh = pad(d.getUTCHours());
+  const mm = pad(d.getUTCMinutes());
+  const ss = pad(d.getUTCSeconds());
+  return `${YYYY}${MM}${DD}T${hh}${mm}${ss}Z`;
+}
+
+function downloadICSForCurrentEvent() {
+  if (!currentEventId || !EVENTS[currentEventId]) {
+    alert("Открой событие, и добавляй его в календарь из модалки.");
+    return;
+  }
+
+  const ev = EVENTS[currentEventId];
+
+  if (!ev.startISO || !ev.endISO) {
+    alert("Пока нет точных дат/времени (TBD). Как только появятся — добавим .ics.");
+    return;
+  }
+
+  const dtStart = toICSDateTime(ev.startISO);
+  const dtEnd = toICSDateTime(ev.endISO);
+
+  if (!dtStart || !dtEnd) {
+    alert("Ошибка в датах события. Проверь startISO/endISO.");
+    return;
+  }
+
+  const uid = `${currentEventId}@secretroom-calendar`;
+  const now = toICSDateTime(new Date().toISOString());
+
+  const ics =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Secretroom//iGaming Calendar//RU
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:${uid}
+DTSTAMP:${now}
+DTSTART:${dtStart}
+DTEND:${dtEnd}
+SUMMARY:${escapeICS(ev.title)}
+LOCATION:${escapeICS(`${ev.city}, ${ev.country}`)}
+DESCRIPTION:${escapeICS(ev.description || "")}
+END:VEVENT
+END:VCALENDAR`;
+
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${currentEventId}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
 // ------------------------------
-// 6) Инициализация
+// Init
 // ------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // Клик по карточкам, у которых есть data-event-id
-  qsa('[data-event-id]').forEach(card => {
-    card.addEventListener('click', () => {
-      const id = card.getAttribute('data-event-id');
-      openModal(id);
-    });
-  });
-
-  // Закрытие модалки
-  qs('#modalBg')?.addEventListener('click', closeModal);
-  qs('#modalCloseBtn')?.addEventListener('click', closeModal);
-
-  // Esc закрывает модалку
-  document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") {
-      const overlay = qs('#modalOverlay');
-      if (overlay && !overlay.classList.contains('hidden')) closeModal();
-    }
-  });
-
-  // Табы
-  qsa('[data-tab-btn]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tabId = btn.getAttribute('data-tab-btn');
-      setActiveTab(tabId, btn);
-    });
-  });
-
-  // Гражданство
-  const citizenshipSelect = qs('#citizenshipSelect');
+  // Citizenship
+  const citizenshipSelect = qs("#citizenshipSelect");
   if (citizenshipSelect) {
     currentCitizenship = citizenshipSelect.value || "RU";
-    citizenshipSelect.addEventListener('change', () => {
-      currentCitizenship = citizenshipSelect.value;
+    citizenshipSelect.addEventListener("change", () => {
+      currentCitizenship = citizenshipSelect.value || "RU";
       updateAllVisaTags();
+      applyFilters();
+      // если модалка открыта — обновим бейдж в ней
+      if (currentEventId) populateModal(currentEventId);
     });
   }
 
-  // Add to calendar
-  qs('#addToCalendarBtn')?.addEventListener('click', downloadICSForCurrentEvent);
-
-  // Первичный пересчёт визовых бейджей на странице
+  // Visa tags initial
   updateAllVisaTags();
+
+  // Filters
+  qs("#filterSizeBtn")?.addEventListener("click", () => {
+    tierFilterIndex = (tierFilterIndex + 1) % TIER_FILTERS.length;
+    updateFilterLabels();
+    applyFilters();
+  });
+
+  qs("#filterVisaBtn")?.addEventListener("click", () => {
+    visaFilterIndex = (visaFilterIndex + 1) % VISA_FILTERS.length;
+    updateFilterLabels();
+    applyFilters();
+  });
+
+  updateFilterLabels();
+  applyFilters();
+
+  // Modal open: bind all clickable event cards
+  qsa(".event-card[data-event-id]").forEach((card) => {
+    card.addEventListener("click", () => {
+      const id = card.getAttribute("data-event-id");
+      if (!id) return;
+      populateModal(id);
+      openModal();
+    });
+  });
+
+  // Modal close
+  qs("#modalCloseBtn")?.addEventListener("click", closeModal);
+  qs("#modalBg")?.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // Tabs
+  qsa("[data-tab-btn]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-tab-btn");
+      if (tab) setActiveTab(tab);
+    });
+  });
+
+  // Add to calendar button (header)
+  qs("#addToCalendarBtn")?.addEventListener("click", downloadICSForCurrentEvent);
 });
