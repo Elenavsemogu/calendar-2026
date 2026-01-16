@@ -22,8 +22,6 @@
             border: '#2A2E37',
             accent: '#7C3AED',
             accent2: '#F97316',
-
-            /* чтобы не ломались классы, которые у тебя уже есть в HTML */
             darkbg: '#0F1115',
             darksurface: '#16181D',
           }
@@ -71,7 +69,6 @@
 
   <div class="flex flex-wrap gap-3 items-center mt-6">
     <div class="bg-[#16181D] p-1 rounded-xl border border-[#2A2E37] flex items-center gap-1">
-      <!-- заготовки: пока кнопки просто “визуальные”, логика будет в app.js -->
       <button id="filterSizeBtn" class="px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#2A2E37] transition" type="button">Размер: Все</button>
       <div class="w-px h-4 bg-[#2A2E37]"></div>
       <button id="filterVisaBtn" class="px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#2A2E37] transition" type="button">Виза: Не важно</button>
@@ -89,80 +86,176 @@
 <main class="max-w-[1600px] mx-auto px-6">
   <div class="calendar-grid">
 
+    <!-- 01 JAN -->
     <div class="cell">
       <div class="month-num">01</div>
       <div class="month-name">Январь</div>
 
-      <div class="mb-4 pl-3 border-l-2 border-red-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer">
-        <div class="text-sm font-bold text-white">Affiliate Summit West</div>
-        <div class="text-[11px] text-gray-400 mt-1">Las Vegas • 15–17 Jan</div>
+      <!-- ICE Barcelona (Mega 50k+) -->
+      <div class="major-card purple"
+           data-filterable="1"
+           data-tier="mega"
+           data-attendees="50019"
+           data-country="ES">
+        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop" class="event-img" alt="ICE Barcelona">
+        <div class="flex justify-between items-start mb-2">
+          <span class="tag bg-white/10 backdrop-blur">TBD Jan</span>
+          <span class="tag tag-visa" data-visa-tag="ES">Visa 🇪🇸</span>
+        </div>
+        <h3 class="font-bold text-lg mb-1">ICE</h3>
+        <p class="text-xs text-purple-200 mb-3">Spain, Barcelona</p>
+        <div class="flex items-center gap-2">
+          <span class="tag bg-white text-purple-900">50k+</span>
+          <span class="tag border border-white/30">Land-based + Online</span>
+        </div>
+      </div>
+
+      <!-- iGB Affiliate Barcelona (Large 9.1k+) -->
+      <div class="pl-3 border-l-2 border-orange-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="large"
+           data-attendees="9082"
+           data-country="ES">
+        <div class="text-sm font-bold text-white">iGB Affiliate</div>
+        <div class="text-[11px] text-gray-400 mt-1">Barcelona • TBD Jan</div>
         <div class="flex gap-2 mt-2">
-          <span class="text-[10px] text-red-400 font-bold border border-red-900/50 px-1.5 rounded">Виза 🇺🇸</span>
-          <span class="text-[10px] text-gray-400 font-bold bg-[#2A2E37] px-1.5 rounded">6k+</span>
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">9.1k+</span>
+          <span class="text-[10px] text-orange-300 font-bold border border-orange-900/50 px-1.5 rounded">B2B</span>
         </div>
       </div>
     </div>
 
+    <!-- 02 FEB -->
     <div class="cell">
       <div class="month-num">02</div>
       <div class="month-name">Февраль</div>
 
-      <!-- ВАЖНО: добавили data-event-id и data-country -->
+      <!-- Affiliate World Dubai (Mega 21k+) -->
+      <div class="major-card orange"
+           data-filterable="1"
+           data-tier="mega"
+           data-attendees="21000"
+           data-country="AE">
+        <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop" class="event-img" alt="Affiliate World Dubai">
+        <div class="flex justify-between items-start mb-2">
+          <span class="tag bg-white/10 backdrop-blur">TBD Feb</span>
+          <span class="tag tag-no-visa" data-visa-tag="AE">No Visa 🇦🇪</span>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Affiliate World</h3>
+        <p class="text-xs text-orange-200 mb-3">UAE, Dubai</p>
+        <div class="flex items-center gap-2">
+          <span class="tag bg-white text-orange-900">21k+</span>
+          <span class="tag border border-white/30">Affiliate (wide)</span>
+        </div>
+      </div>
+
+      <!-- SiGMA Eurasia Dubai (Large 14k+) - clickable modal if you keep data-event-id -->
       <div class="major-card purple event-card"
+           data-filterable="1"
            data-event-id="sigma-eurasia"
            data-country="AE"
-           data-size="major">
+           data-tier="large"
+           data-attendees="14000">
         <img src="static/sigma_dubai.jpg" class="event-img" alt="SiGMA Eurasia">
 
         <div class="flex justify-between items-start mb-2">
           <span class="tag bg-white/10 backdrop-blur">25–27 Фев</span>
-          <!-- Этот бейдж будет обновляться под гражданство -->
           <span class="tag tag-no-visa" data-visa-tag="AE">No Visa 🇦🇪</span>
         </div>
         <h3 class="font-bold text-lg mb-1">SiGMA Eurasia</h3>
         <p class="text-xs text-purple-200 mb-3">UAE, Dubai</p>
         <div class="flex items-center gap-2">
-          <span class="tag bg-white text-purple-900">10k+</span>
-          <span class="tag border border-white/30">Crypto</span>
+          <span class="tag bg-white text-purple-900">14k+</span>
+          <span class="tag border border-white/30">Affiliate / Marketing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 MAR -->
+    <div class="cell">
+      <div class="month-num">03</div>
+      <div class="month-name">Март</div>
+
+      <!-- SiGMA Africa Cape Town (Mid 2.5k+) -->
+      <div class="pl-3 border-l-2 border-green-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="mid"
+           data-attendees="2500"
+           data-country="ZA">
+        <div class="text-sm font-bold text-white">SiGMA Africa</div>
+        <div class="text-[11px] text-gray-400 mt-1">Cape Town • TBD Mar</div>
+        <div class="flex gap-2 mt-2">
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">2.5k+</span>
+          <span class="text-[10px] text-green-300 font-bold border border-green-900/50 px-1.5 rounded">Regional</span>
         </div>
       </div>
 
-      <div class="pl-3 border-l-2 border-gray-600 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer">
-        <div class="text-sm font-bold">iGB Affiliate London</div>
-        <div class="text-[11px] text-gray-400">04–07 Фев</div>
+      <!-- NEXT Summit Valletta (Mid 5k+) -->
+      <div class="pl-3 border-l-2 border-yellow-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="mid"
+           data-attendees="5000"
+           data-country="MT">
+        <div class="text-sm font-bold text-white">NEXT Summit: Valletta</div>
+        <div class="text-[11px] text-gray-400 mt-1">Malta • TBD Mar</div>
+        <div class="flex gap-2 mt-2">
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">5k+</span>
+          <span class="text-[10px] text-yellow-300 font-bold border border-yellow-900/50 px-1.5 rounded">C-level</span>
+        </div>
       </div>
     </div>
 
-    <div class="cell">
-      <div class="month-num">03</div>
-      <div class="month-name text-gray-500">Март</div>
-      <div class="flex-grow flex items-center justify-center text-sm text-gray-600 italic">Тихий месяц</div>
-    </div>
-
+    <!-- 04 APR -->
     <div class="cell">
       <div class="month-num">04</div>
       <div class="month-name">Апрель</div>
 
-      <div class="major-event p-3 rounded-xl border border-[#2A2E37] bg-[#1C1F26] hover:border-green-500 transition cursor-pointer">
-        <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?q=80&w=400&auto=format&fit=crop" class="event-img h-20 mb-2" alt="BiS SiGMA Americas">
+      <!-- SiGMA Americas Brazil (Large 10k+) -->
+      <div class="major-card purple"
+           data-filterable="1"
+           data-tier="large"
+           data-attendees="10000"
+           data-country="BR">
+        <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?q=80&w=800&auto=format&fit=crop" class="event-img" alt="SiGMA Americas">
         <div class="flex justify-between mb-1">
-          <span class="text-[10px] text-gray-400">23–25 Апр</span>
+          <span class="tag bg-white/10">23–25 Апр</span>
           <span class="tag tag-no-visa" data-visa-tag="BR">No Visa 🇧🇷</span>
         </div>
-        <div class="font-bold text-white">BiS SiGMA Americas</div>
-        <div class="text-[11px] text-gray-400">Brazil, Sao Paulo</div>
+        <div class="font-bold text-white">SiGMA Americas</div>
+        <div class="text-[11px] text-gray-300">Brazil, Sao Paulo</div>
+        <div class="flex items-center gap-2 mt-3">
+          <span class="tag bg-white text-purple-900">10k+</span>
+          <span class="tag border border-white/30">LATAM</span>
+        </div>
       </div>
     </div>
 
-    <!-- УБРАЛИ inline background-color и сделали класс cell--highlight, чтобы дальше править нормально -->
+    <!-- 05 MAY -->
     <div class="cell cell--highlight">
       <div class="month-num month-num--accent">05</div>
       <div class="month-name month-name--accent">Май</div>
 
+      <!-- SBC Summit North America (Mid 5k+) -->
+      <div class="pl-3 border-l-2 border-red-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="mid"
+           data-attendees="5000"
+           data-country="US">
+        <div class="text-sm font-bold text-white">SBC Summit North America</div>
+        <div class="text-[11px] text-gray-300 mt-1">US/Canada • TBD May</div>
+        <div class="flex gap-2 mt-2">
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">5k+</span>
+          <span class="text-[10px] text-red-300 font-bold border border-red-900/50 px-1.5 rounded">NA market</span>
+        </div>
+      </div>
+
+      <!-- MAC Yerevan (kept as clickable major if you want) -->
       <div class="major-card blue event-card"
+           data-filterable="1"
            data-event-id="mac-yerevan"
            data-country="AM"
-           data-size="major">
+           data-tier="mid"
+           data-attendees="3500">
         <img src="static/MAC_Yerevan.jpeg" class="event-img" alt="MAC Yerevan">
 
         <div class="flex justify-between items-start mb-2">
@@ -172,52 +265,84 @@
         <h3 class="font-bold text-xl mb-1">MAC Yerevan</h3>
         <p class="text-xs text-blue-200 mb-3">Armenia, Yerevan</p>
         <div class="flex items-center gap-2 mb-3">
-          <span class="tag bg-white text-blue-900">3500+</span>
-          <span class="tag border border-white/30">ТОП СНГ</span>
+          <span class="tag bg-white text-blue-900">3.5k+</span>
+          <span class="tag border border-white/30">CIS</span>
         </div>
-        <div class="text-[10px] font-bold text-center border-t border-white/10 pt-2 text-blue-200">Подробнее & Промо -&gt;</div>
+        <div class="text-[10px] font-bold text-center border-t border-white/10 pt-2 text-blue-200">Подробнее & Промо -></div>
       </div>
     </div>
 
+    <!-- 06 JUN -->
     <div class="cell">
       <div class="month-num">06</div>
       <div class="month-name">Июнь</div>
-      <div class="space-y-3">
-        <div class="pl-3 border-l-2 border-yellow-500 p-1">
-          <div class="text-sm font-bold">iGaming Germany</div>
-          <div class="text-[11px] text-gray-400">🇩🇪 Munich • 10–11 Jun</div>
+
+      <!-- SiGMA Asia Manila (Large 17k+) -->
+      <div class="major-card purple"
+           data-filterable="1"
+           data-tier="large"
+           data-attendees="17000"
+           data-country="PH">
+        <img src="https://images.unsplash.com/photo-1526481280695-3c687fd5432c?q=80&w=800&auto=format&fit=crop" class="event-img" alt="SiGMA Asia">
+        <div class="flex justify-between items-start mb-2">
+          <span class="tag bg-white/10">TBD Jun</span>
+          <span class="tag tag-visa" data-visa-tag="PH">Visa (PH)</span>
         </div>
-        <div class="pl-3 border-l-2 border-red-500 p-1">
-          <div class="text-sm font-bold">Zurich iGaming</div>
-          <div class="text-[11px] text-gray-400">🇨🇭 Zurich • TBD</div>
+        <h3 class="font-bold text-lg mb-1">SiGMA Asia</h3>
+        <p class="text-xs text-purple-200 mb-3">Philippines, Manila</p>
+        <div class="flex items-center gap-2">
+          <span class="tag bg-white text-purple-900">17k+</span>
+          <span class="tag border border-white/30">Asia</span>
+        </div>
+      </div>
+
+      <!-- SBC Summit Tbilisi (Mid 2k+) -->
+      <div class="pl-3 border-l-2 border-gray-600 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="mid"
+           data-attendees="2000"
+           data-country="GE">
+        <div class="text-sm font-bold text-white">SBC Summit Tbilisi</div>
+        <div class="text-[11px] text-gray-400 mt-1">Georgia, Tbilisi • TBD Jun</div>
+        <div class="flex gap-2 mt-2">
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">2k+</span>
+          <span class="text-[10px] text-gray-300 font-bold border border-white/10 px-1.5 rounded">Regional</span>
         </div>
       </div>
     </div>
 
+    <!-- 07 JUL -->
     <div class="cell">
       <div class="month-num">07</div>
       <div class="month-name">Июль</div>
-      <div class="major-card orange mb-2">
-        <div class="flex justify-between mb-1">
-          <span class="tag bg-black/20">TBD Jul</span>
-          <span class="tag tag-visa" data-visa-tag="ES">Visa 🇪🇸</span>
-        </div>
-        <div class="font-bold">AW Europe</div>
-        <div class="text-[10px] opacity-80">Barcelona • 6k+</div>
-      </div>
-      <div class="major-card orange">
-        <div class="flex justify-between mb-1">
-          <span class="tag bg-black/20">15–18 Jul</span>
+
+      <!-- iGB L!VE (Large 9.8k+) -->
+      <div class="major-card orange"
+           data-filterable="1"
+           data-tier="large"
+           data-attendees="9788"
+           data-country="NL">
+        <img src="https://images.unsplash.com/photo-1520975958225-4b4172f16a76?q=80&w=800&auto=format&fit=crop" class="event-img" alt="iGB L!VE">
+        <div class="flex justify-between items-start mb-2">
+          <span class="tag bg-white/10">TBD Jul</span>
           <span class="tag tag-visa" data-visa-tag="NL">Visa 🇳🇱</span>
         </div>
-        <div class="font-bold">iGB Live!</div>
-        <div class="text-[10px] opacity-80">Amsterdam • 5k+</div>
+        <h3 class="font-bold text-lg mb-1">iGB L!VE</h3>
+        <p class="text-xs text-orange-200 mb-3">Amsterdam / London</p>
+        <div class="flex items-center gap-2">
+          <span class="tag bg-white text-orange-900">9.8k+</span>
+          <span class="tag border border-white/30">B2B</span>
+        </div>
       </div>
+
+      <!-- (Optional) keep your previous small iGB Live block if you want; this replaces it with consistent tier/tag -->
     </div>
 
+    <!-- 08 AUG -->
     <div class="cell">
       <div class="month-num">08</div>
       <div class="month-name">Август</div>
+
       <div class="major-card purple">
         <img src="static/SPB_CPA_Life.jpeg" class="event-img h-16" alt="SPB CPA Life">
         <div class="flex justify-between mb-1">
@@ -229,18 +354,65 @@
       </div>
     </div>
 
+    <!-- 09 SEP -->
     <div class="cell">
       <div class="month-num">09</div>
       <div class="month-name">Сентябрь</div>
-      <div class="pl-3 border-l-2 border-green-500 p-1">
-        <div class="text-sm font-bold">SBC Summit</div>
-        <div class="text-[11px] text-gray-400">🇵🇹 Lisbon • TBD Sep</div>
+
+      <!-- SBC Summit Lisbon (Mega 30k+) -->
+      <div class="major-card purple"
+           data-filterable="1"
+           data-tier="mega"
+           data-attendees="30000"
+           data-country="PT">
+        <img src="https://images.unsplash.com/photo-1509927083800-11337a1525a4?q=80&w=800&auto=format&fit=crop" class="event-img" alt="SBC Summit Lisbon">
+        <div class="flex justify-between items-start mb-2">
+          <span class="tag bg-white/10">TBD Sep</span>
+          <span class="tag tag-visa" data-visa-tag="PT">Visa 🇵🇹</span>
+        </div>
+        <h3 class="font-bold text-lg mb-1">SBC Summit</h3>
+        <p class="text-xs text-purple-200 mb-3">Portugal, Lisbon</p>
+        <div class="flex items-center gap-2">
+          <span class="tag bg-white text-purple-900">30k+</span>
+          <span class="tag border border-white/30">Leaders</span>
+        </div>
+      </div>
+
+      <!-- Affiliate World Europe Budapest (Mid 7.5k+) -->
+      <div class="pl-3 border-l-2 border-orange-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="mid"
+           data-attendees="7500"
+           data-country="HU">
+        <div class="text-sm font-bold text-white">Affiliate World Europe</div>
+        <div class="text-[11px] text-gray-400 mt-1">Budapest • TBD Sep</div>
+        <div class="flex gap-2 mt-2">
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">7.5k+</span>
+          <span class="text-[10px] text-orange-300 font-bold border border-orange-900/50 px-1.5 rounded">Affiliate (wide)</span>
+        </div>
       </div>
     </div>
 
+    <!-- 10 OCT -->
     <div class="cell">
       <div class="month-num">10</div>
       <div class="month-name">Октябрь</div>
+
+      <!-- SBC Summit Latinoamérica (Mid 4k+) -->
+      <div class="pl-3 border-l-2 border-green-500 hover:bg-[#2A2E37] p-2 rounded-r transition cursor-pointer"
+           data-filterable="1"
+           data-tier="mid"
+           data-attendees="4000"
+           data-country="MX">
+        <div class="text-sm font-bold text-white">SBC Summit Latinoamérica</div>
+        <div class="text-[11px] text-gray-400 mt-1">LATAM • TBD Oct</div>
+        <div class="flex gap-2 mt-2">
+          <span class="text-[10px] text-gray-200 font-bold bg-[#2A2E37] px-1.5 rounded">4k+</span>
+          <span class="text-[10px] text-green-300 font-bold border border-green-900/50 px-1.5 rounded">Regional</span>
+        </div>
+      </div>
+
+      <!-- WAS Bangkok (kept from your file) -->
       <div class="major-card orange">
         <img src="static/WAS_Bangkok.png" class="event-img" alt="WAS Bangkok">
         <div class="flex justify-between mb-1">
@@ -252,20 +424,34 @@
       </div>
     </div>
 
+    <!-- 11 NOV -->
     <div class="cell">
       <div class="month-num">11</div>
       <div class="month-name">Ноябрь</div>
-      <div class="major-card purple">
+
+      <!-- SiGMA Europe (Mega 27k+) -->
+      <div class="major-card purple"
+           data-filterable="1"
+           data-tier="mega"
+           data-attendees="27000"
+           data-country="MT">
         <img src="static/SiGMA_Malta.jpeg" class="event-img" alt="SiGMA Europe">
         <div class="flex justify-between mb-1">
           <span class="tag bg-white/10">TBD Nov</span>
           <span class="tag tag-visa" data-visa-tag="MT">Visa 🇲🇹</span>
         </div>
         <div class="font-bold">SiGMA Europe</div>
-        <div class="text-[10px] opacity-80">Malta • 15k+</div>
+        <div class="text-[10px] opacity-80">Malta Week</div>
+        <div class="flex items-center gap-2 mt-3">
+          <span class="tag bg-white text-purple-900">27k+</span>
+          <span class="tag border border-white/30">Affiliate</span>
+        </div>
       </div>
+
+      <!-- (Optional) you can keep the smaller old SiGMA Europe block; this one already normalizes tier/tag -->
     </div>
 
+    <!-- 12 DEC -->
     <div class="cell">
       <div class="month-num">12</div>
       <div class="month-name text-gray-500">Декабрь</div>
@@ -275,10 +461,9 @@
   </div>
 </main>
 
-<!-- MODAL -->
+<!-- MODAL (unchanged from your earlier split, keep as-is in your repo) -->
 <div id="modalOverlay" class="fixed inset-0 z-50 hidden">
   <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="modalBg"></div>
-
   <div class="absolute inset-y-0 right-0 w-full md:w-[600px] bg-[#16181D] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-[#2A2E37]" id="modalPanel">
     <div class="h-64 relative shrink-0">
       <img id="modalHeroImg" src="static/MAC_Yerevan.jpeg" class="w-full h-full object-cover opacity-70" alt="">
