@@ -1,0 +1,115 @@
+body { background-color: #0F1115; color: white; }
+
+/* Сетка */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  border: 1px solid #2A2E37;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: #2A2E37;
+  gap: 1px;
+}
+@media (min-width: 768px) { .calendar-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .calendar-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1280px) { .calendar-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.cell {
+  background-color: #16181D;
+  padding: 24px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background-color 0.2s;
+}
+.cell:hover { background-color: #1C1F26; }
+
+/* Акцентная клетка (вместо inline style) */
+.cell--highlight { background-color: #1F1929; }
+.month-num--accent { color: #7C3AED; }
+.month-name--accent { color: #A78BFA; }
+
+/* Типографика месяца */
+.month-num { font-size: 14px; color: #6B7280; margin-bottom: 4px; }
+.month-name { font-size: 18px; font-weight: 700; color: white; margin-bottom: 20px; }
+
+/* Major card */
+.major-card {
+  background: linear-gradient(135deg, #4C1D95 0%, #2E1065 100%);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.major-card:hover { transform: translateY(-2px); }
+.major-card.purple { background: linear-gradient(135deg, #5B21B6 0%, #312E81 100%); }
+.major-card.blue { background: linear-gradient(135deg, #1E40AF 0%, #172554 100%); }
+.major-card.orange { background: linear-gradient(135deg, #9A3412 0%, #431407 100%); }
+
+/* Картинка */
+.event-img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+/* Теги */
+.tag { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+.tag-visa { background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.2); }
+.tag-no-visa { background: rgba(34, 197, 94, 0.2); color: #4ADE80; border: 1px solid rgba(34, 197, 94, 0.3); }
+
+/* Модалка */
+.modal-open { overflow: hidden; }
+.tab-btn { padding-bottom: 10px; color: #9CA3AF; border-bottom: 2px solid transparent; }
+.tab-btn.active { color: white; border-color: #F97316; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Те самые uni-tag классы, которых не было — добавили, чтобы дизайн не ломался */
+.uni-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.uni-tag-gray {
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.uni-tag-accent {
+  background: rgba(124, 58, 237, 0.25);
+  color: #E9D5FF;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+}
+
+.uni-tag-light-transparent {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.90);
+}
+
+.uni-tag-red {
+  background: rgba(239, 68, 68, 0.18);
+  color: #FCA5A5;
+  border: 1px solid rgba(239, 68, 68, 0.30);
+}
+
+.uni-tag-outline {
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.18);
+}
