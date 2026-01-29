@@ -184,16 +184,8 @@ function updateAllVisaTags() {
     // Попробовать использовать новую визовую матрицу
     const visaInfo = getVisaInfo(currentCitizenship, cc);
     if (visaInfo) {
-      // Сохранить data-visa-tag атрибут
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = getVisaTagHTML(visaInfo);
-      const newTag = tempDiv.firstChild;
-
-      // Добавить data-visa-tag обратно
-      newTag.setAttribute('data-visa-tag', cc);
-
-      // Заменить элемент
-      tag.parentNode.replaceChild(newTag, tag);
+      // Использовать новый формат
+      tag.outerHTML = getVisaTagHTML(visaInfo);
     } else {
       // Fallback на старую логику
       const status = getVisaStatus(currentCitizenship, cc);
@@ -332,66 +324,48 @@ const EVENTS = {
       {
         name: "Plateau Canary Wharf",
         vibe: "посидеть",
-        avgCheck: "$100–300",
+        avgCheck: "£100–300",
         description: "Французский ресторан в Canary Wharf, подходит для делового ужина и спокойного нетворкинга.",
         img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
       },
       {
         name: "Boisdale Canary Wharf",
         vibe: "громко",
-        avgCheck: "$100–300",
+        avgCheck: "£100–300",
         description: "Шотландский ресторан с живым джазом и баром, популярен для вечерних встреч после конфы.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
+        img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=200&auto=format&fit=crop"
       },
       {
         name: "Electric Shuffle Canary Wharf",
         vibe: "потанцевать",
-        avgCheck: "$50–100",
+        avgCheck: "£50–100",
         description: "Бар с активной атмосферой, коктейли и shuffleboard, хорошо подходит для неформального общения.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
+        img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?q=80&w=200&auto=format&fit=crop"
       },
       {
         name: "The Oiler Bar",
         vibe: "посидеть",
-        avgCheck: "$50–100",
+        avgCheck: "£50–100",
         description: "Коктейль-бар рядом с ExCeL, удобен для коротких встреч после конференционного дня.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
+        img: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=200&auto=format&fit=crop"
       },
       {
         name: "The Gun Docklands",
         vibe: "тихо",
-        avgCheck: "$100–300",
+        avgCheck: "£100–300",
         description: "Исторический паб на берегу Темзы, спокойная атмосфера для разговоров и ужина.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
+        img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=200&auto=format&fit=crop"
       }
     ],
     brands: [
       "CoolAffs", "EcoPayz", "Mate Affiliates", "Melbet", "1Bet", "22Bet Partners",
-      "2rbo Affiliates", "50-Partners", "ABC World Media", "Ace Revenue", "Adtucon", "AffFellow",
-      "Affigates", "AffiliatePark", "Affilka", "Affiverse", "AffRepublic", "Agency Aurora",
-      "AGIMEG", "Alamy & Podium", "Alea", "Alpha Affiliates", "Altenar", "Amusnet",
-      "Asia Casino news", "Astro Affiliate", "Atlaslive", "Aviatrix", "Bazoom Group", "BC.Game"
+      "2rbo Affiliates", "50-Partners", "ABC World Media", "Ace Revenue", "Adtucon",
+      "AffFellow", "Affigates", "AffiliatePark", "Affilka", "Affiverse", "AffRepublic",
+      "Agency Aurora", "AGIMEG", "Alamy & Podium", "Alea", "Alpha Affiliates", "Altenar",
+      "Amusnet", "Asia Casino news", "Astro Affiliate", "Atlaslive", "Aviatrix",
+      "Bazoom Group", "BC.Game"
     ],
-    sideEvents: [
-      {
-        title: "iGB Affiliate Awards",
-        location: "ExCeL London",
-        badge: "🎉 AWARDS",
-        date: "2026-07-01"
-      },
-      {
-        title: "Opening Night Party",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-07-01"
-      },
-      {
-        title: "Affiliate Networking Drinks",
-        location: "The Gun Docklands",
-        badge: "🎉 MEETUP",
-        date: "2026-07-01"
-      }
-    ]
+    sideEvents: []
   },
   "mac_yerevan_2026": {
     title: "MAC Yerevan",
@@ -408,51 +382,9 @@ const EVENTS = {
       temp: "22-28",
       description: "Тёплая поздняя весна, солнечно"
     },
-    restaurants: [
-      {
-        name: "Dolmama",
-        vibe: "посидеть",
-        avgCheck: "$40–80",
-        description: "Традиционная армянская кухня. Уютная атмосфера, отличный сервис.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "The Club",
-        vibe: "громко",
-        avgCheck: "$60–120",
-        description: "Современный ресторан с живой музыкой. Популярен среди экспатов.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Sherep",
-        vibe: "посидеть",
-        avgCheck: "$50–100",
-        description: "Авторская армянская кухня. Стильный интерьер.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Pandok Yerevan",
-        vibe: "громко",
-        avgCheck: "$30–60",
-        description: "Аутентичная армянская кухня, большие порции. Живая музыка по вечерам.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
-    brands: ["Pin-Up Partners", "1xBet Partners", "Lucky Partners", "Mostbet Partners"],
-    sideEvents: [
-      {
-        title: "CIS Affiliates Meetup",
-        location: "Meridian Expo",
-        badge: "🎉 MEETUP",
-        date: "2026-05-25"
-      },
-      {
-        title: "Closing Party",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-05-27"
-      }
-    ]
+    restaurants: [],
+    brands: [],
+    sideEvents: []
   },
   "sbc_rio_2026": {
     title: "SBC Summit Rio",
@@ -469,60 +401,9 @@ const EVENTS = {
       temp: "28-32",
       description: "Жарко и влажно, сезон дождей заканчивается"
     },
-    restaurants: [
-      {
-        name: "Shiso",
-        vibe: "тихо",
-        avgCheck: "$80–200",
-        description: "Японский ресторан высокого класса. Суши и сашими. Идеален для деловых ужинов.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Zaza Bistro",
-        vibe: "посидеть",
-        avgCheck: "$60–150",
-        description: "Популярный bistro с органическими блюдами. 20 мин на такси от Riocentro.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Giuseppe Grill",
-        vibe: "громко",
-        avgCheck: "$100–250",
-        description: "Премиальный стейкхаус. Отличное место для групповых ужинов.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Braseiro da Gávea",
-        vibe: "громко",
-        avgCheck: "$40–80",
-        description: "Легендарное место для мяса на гриле. Местная атмосфера, холодное пиво.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Confeitaria Colombo",
-        vibe: "посидеть",
-        avgCheck: "$30–70",
-        description: "Историческое кафе 1894 года. Красивый интерьер, десерты. В центре.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
-    brands: [
-      "Betsson Group", "Betway", "Pragmatic Play", "Evolution Gaming", "Stake", "Sportradar"
-    ],
-    sideEvents: [
-      {
-        title: "SBC Awards Latin America",
-        location: "Riocentro",
-        badge: "🎉 AWARDS",
-        date: "2026-03-04"
-      },
-      {
-        title: "Beach Party",
-        location: "Copacabana",
-        badge: "🎉 PARTY",
-        date: "2026-03-04"
-      }
-    ]
+    restaurants: [],
+    brands: [],
+    sideEvents: []
   },
   "sbc_americas_2026": {
     title: "SBC Summit Americas",
@@ -539,29 +420,7 @@ const EVENTS = {
       temp: "28-33",
       description: "Жарко и влажно, начало сезона ураганов"
     },
-    restaurants: [
-      {
-        name: "Steak 954",
-        vibe: "тихо",
-        avgCheck: "$100–250",
-        description: "Премиальный стейкхаус в W Hotel. Вид на океан. Идеален для деловых ужинов.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Timpano Italian Chophouse",
-        vibe: "посидеть",
-        avgCheck: "$70–150",
-        description: "Итальянский ресторан с приватными комнатами. Хорош для групп.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Shooters Waterfront",
-        vibe: "громко",
-        avgCheck: "$50–100",
-        description: "Ресторан на воде. Расслабленная атмосфера, живая музыка по выходным.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
     sideEvents: []
   },
@@ -580,51 +439,9 @@ const EVENTS = {
       temp: "20-25",
       description: "Тёплая осень, солнечно"
     },
-    restaurants: [
-      {
-        name: "Monte Mar Lisboa",
-        vibe: "посидеть",
-        avgCheck: "$80–180",
-        description: "Премиальные морепродукты с видом на Тежу. Идеально для деловых ужинов до 100 человек.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "JNcQUOI Avenida",
-        vibe: "громко",
-        avgCheck: "$100–250",
-        description: "Элитный ресторан португальской кухни. Стильный интерьер, популярен у бизнес-публики.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Zambeze Restaurante",
-        vibe: "потанцевать",
-        avgCheck: "$60–140",
-        description: "Панорамный вид на Лиссабон. Терраса 300м². Вместимость до 200 человек.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Doca Peixe",
-        vibe: "посидеть",
-        avgCheck: "$50–120",
-        description: "Лучший рыбный ресторан. Свежая рыба на выбор. Вид на марину.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "SBC Awards",
-        location: "MEO Arena",
-        badge: "🎉 AWARDS",
-        date: "2026-09-30"
-      },
-      {
-        title: "Sunset Networking",
-        location: "LX Factory",
-        badge: "🎉 MEETUP",
-        date: "2026-09-29"
-      }
-    ]
+    sideEvents: []
   },
   "affiliate_world_dubai_2026": {
     title: "Affiliate World Dubai",
@@ -641,58 +458,9 @@ const EVENTS = {
       temp: "24-28",
       description: "Приятно тепло, низкая влажность"
     },
-    restaurants: [
-      {
-        name: "Zuma Dubai",
-        vibe: "громко",
-        avgCheck: "$150–350",
-        description: "Японский ресторан мирового класса. Популярное место для нетворкинга в iGaming.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "La Petite Maison",
-        vibe: "посидеть",
-        avgCheck: "$120–280",
-        description: "Французская кухня высокого класса. Элегантная атмосфера.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Nobu Dubai",
-        vibe: "тихо",
-        avgCheck: "$150–400",
-        description: "Легендарный японо-перуанский ресторан. Премиум сегмент.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Coya Dubai",
-        vibe: "потанцевать",
-        avgCheck: "$100–250",
-        description: "Перуанская кухня, живая музыка. Отличная атмосфера для afterparty.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Tresind Studio",
-        vibe: "тихо",
-        avgCheck: "$200–400",
-        description: "Michelin-starred индийская кухня. Дегустационное меню.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
-    brands: ["Clickbank", "MaxBounty", "PropellerAds", "Adsterra", "Voluum"],
-    sideEvents: [
-      {
-        title: "Opening Party",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-03-04"
-      },
-      {
-        title: "Yacht Networking",
-        location: "Dubai Marina",
-        badge: "🎉 MEETUP",
-        date: "2026-03-05"
-      }
-    ]
+    restaurants: [],
+    brands: [],
+    sideEvents: []
   },
   "conversion_warsaw_2026": {
     title: "Conversion Conf Warsaw",
@@ -709,38 +477,9 @@ const EVENTS = {
       temp: "8-14",
       description: "Прохладная весна, переменная облачность"
     },
-    restaurants: [
-      {
-        name: "Belvedere",
-        vibe: "тихо",
-        avgCheck: "$80–180",
-        description: "Ресторан в оранжерее парка Łazienki. Изысканная польская кухня.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Warszawa Wschodnia",
-        vibe: "громко",
-        avgCheck: "$50–120",
-        description: "Модный ресторан в Praga. Современная польская кухня, хипстерская атмосфера.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Stary Dom",
-        vibe: "посидеть",
-        avgCheck: "$40–90",
-        description: "Традиционная польская кухня. Уютная атмосфера, хорошие цены.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "Pre-Party",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-03-31"
-      }
-    ]
+    sideEvents: []
   },
   "conversion_cyprus_2026": {
     title: "Conversion Conf Cyprus",
@@ -757,38 +496,9 @@ const EVENTS = {
       temp: "28-32",
       description: "Жаркое средиземноморское лето"
     },
-    restaurants: [
-      {
-        name: "Pier One",
-        vibe: "потанцевать",
-        avgCheck: "$60–140",
-        description: "Ресторан на пляже. Морепродукты, закаты, расслабленная атмосфера.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Meze Taverna",
-        vibe: "громко",
-        avgCheck: "$40–80",
-        description: "Традиционная кипрская кухня. Мезе на 20+ блюд. Аутентичный опыт.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Epsilon Resto Bar",
-        vibe: "посидеть",
-        avgCheck: "$50–120",
-        description: "Современный европейский ресторан. Стильный интерьер, хороший сервис.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "Beach Party",
-        location: "Limassol Beach",
-        badge: "🎉 PARTY",
-        date: "2026-07-23"
-      }
-    ]
+    sideEvents: []
   },
   "broconf_sochi_2026": {
     title: "Broconf",
@@ -805,51 +515,9 @@ const EVENTS = {
       temp: "16-22",
       description: "Тёплая весна, возможны дожди"
     },
-    restaurants: [
-      {
-        name: "Хмели & Сунели",
-        vibe: "громко",
-        avgCheck: "$40–100",
-        description: "Грузинский ресторан. Хинкали и шашлык на высоте.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Sanremo",
-        vibe: "посидеть",
-        avgCheck: "$80–200",
-        description: "Итальянская кухня, вид на море. Романтичная атмосфера.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "White Rabbit Sochi",
-        vibe: "тихо",
-        avgCheck: "$100–250",
-        description: "Филиал московского ресторана. Авторская русская кухня.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Krasnaya Polyana",
-        vibe: "громко",
-        avgCheck: "$50–120",
-        description: "Ресторан в горах. Идеален для групповых мероприятий.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "Broconf Party",
-        location: "Red Arena",
-        badge: "🎉 PARTY",
-        date: "2026-04-25"
-      },
-      {
-        title: "Горный нетворкинг",
-        location: "Красная Поляна",
-        badge: "🎉 MEETUP",
-        date: "2026-04-26"
-      }
-    ]
+    sideEvents: []
   },
   "ggate_tbilisi_2026": {
     title: "G Gate",
@@ -866,51 +534,9 @@ const EVENTS = {
       temp: "26-32",
       description: "Жаркое лето, сухо"
     },
-    restaurants: [
-      {
-        name: "Funicular Complex",
-        vibe: "потанцевать",
-        avgCheck: "$50–120",
-        description: "Ресторан с панорамным видом на город. Грузинская и европейская кухня.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Barbarestan",
-        vibe: "тихо",
-        avgCheck: "$60–140",
-        description: "Ресторан с историческими рецептами XIX века. Уникальный опыт.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Café Stamba",
-        vibe: "посидеть",
-        avgCheck: "$40–90",
-        description: "Модное место в отеле Stamba. Международная кухня, стильная публика.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Keto and Kote",
-        vibe: "громко",
-        avgCheck: "$30–70",
-        description: "Традиционный грузинский ресторан. Хинкали, хачапури, вино.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
-    brands: ["Gambling.pro", "Traffic Cardinals", "Conversion"],
-    sideEvents: [
-      {
-        title: "Wine Tasting & Networking",
-        location: "TBA",
-        badge: "🎉 DINNER",
-        date: "2026-06-26"
-      },
-      {
-        title: "Closing Party",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-06-27"
-      }
-    ]
+    restaurants: [],
+    brands: [],
+    sideEvents: []
   },
   "affpapa_madrid_2026": {
     title: "AffPapa Conference Madrid",
@@ -927,44 +553,9 @@ const EVENTS = {
       temp: "20-26",
       description: "Тёплая поздняя весна, солнечно"
     },
-    restaurants: [
-      {
-        name: "Sobrino de Botín",
-        vibe: "посидеть",
-        avgCheck: "$60–140",
-        description: "Старейший ресторан мира (с 1725). Традиционная кастильская кухня.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Streetxo",
-        vibe: "громко",
-        avgCheck: "$50–100",
-        description: "Азиатский стритфуд от шефа DiverXO. Шумно, модно, вкусно.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Lateral",
-        vibe: "посидеть",
-        avgCheck: "$40–90",
-        description: "Сеть ресторанов с террасами. Современная испанская кухня. Несколько локаций.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "Tapas & Networking",
-        location: "TBA",
-        badge: "🎉 DINNER",
-        date: "2026-05-18"
-      },
-      {
-        title: "Rooftop Party",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-05-19"
-      }
-    ]
+    sideEvents: []
   },
   "affpapa_cancun_2026": {
     title: "AffPapa Conference Cancun",
@@ -981,44 +572,9 @@ const EVENTS = {
       temp: "26-30",
       description: "Тепло, конец сезона дождей"
     },
-    restaurants: [
-      {
-        name: "Harry's Prime Steakhouse",
-        vibe: "тихо",
-        avgCheck: "$100–250",
-        description: "Премиальный стейкхаус. Элегантная атмосфера, лучшее мясо в городе.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Puerto Madero",
-        vibe: "посидеть",
-        avgCheck: "$70–160",
-        description: "Морепродукты и стейки с видом на лагуну. Романтичная атмосфера.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Lorenzillo's",
-        vibe: "громко",
-        avgCheck: "$60–140",
-        description: "Легендарный ресторан морепродуктов. Свежий лобстер. В зоне отелей.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "Welcome Party",
-        location: "Hotel Zone",
-        badge: "🎉 PARTY",
-        date: "2026-11-23"
-      },
-      {
-        title: "Beach Club Day",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-11-24"
-      }
-    ]
+    sideEvents: []
   },
   "g2e_las_vegas_2026": {
     title: "Global Gaming Expo",
@@ -1035,51 +591,9 @@ const EVENTS = {
       temp: "22-32",
       description: "Жарко днём, прохладно ночью, сухо"
     },
-    restaurants: [
-      {
-        name: "TAO Asian Bistro",
-        vibe: "громко",
-        avgCheck: "$80–200",
-        description: "Легендарный азиатский ресторан в Venetian. Hotspot для нетворкинга в iGaming.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "CUT by Wolfgang Puck",
-        vibe: "тихо",
-        avgCheck: "$120–300",
-        description: "Стейкхаус от знаменитого шефа. Премиум класс. В Palazzo.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Carnevino",
-        vibe: "посидеть",
-        avgCheck: "$100–250",
-        description: "Итальянский стейкхаус в Palazzo. Отличное мясо и вино. Приватные комнаты.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      },
-      {
-        name: "Buddakan",
-        vibe: "потанцевать",
-        avgCheck: "$70–150",
-        description: "Азиатский фьюжн в Venetian. Впечатляющий интерьер, хорош для групп.",
-        img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop"
-      }
-    ],
+    restaurants: [],
     brands: [],
-    sideEvents: [
-      {
-        title: "G2E Networking Reception",
-        location: "The Venetian",
-        badge: "🎉 MEETUP",
-        date: "2026-09-29"
-      },
-      {
-        title: "Casino Night",
-        location: "TBA",
-        badge: "🎉 PARTY",
-        date: "2026-09-30"
-      }
-    ]
+    sideEvents: []
   }
 };
 
@@ -1194,10 +708,10 @@ function populateRestaurantsTab(restaurants) {
   }
 
   const vibeMap = {
-    'тихо': { label: '🤫 Тихо', class: 'vibe-tag-quiet' },
-    'посидеть': { label: '☕ Посидеть', class: 'vibe-tag-sit' },
-    'громко': { label: '🎵 Громко', class: 'vibe-tag-loud' },
-    'потанцевать': { label: '💃 Потанцевать', class: 'vibe-tag-dance' }
+    'тихо': '🤫 Тихо',
+    'посидеть': '☕ Посидеть',
+    'громко': '🎵 Громко',
+    'потанцевать': '💃 Потанцевать'
   };
 
   let html = `
@@ -1208,16 +722,16 @@ function populateRestaurantsTab(restaurants) {
   `;
 
   restaurants.forEach(r => {
-    const vibeInfo = vibeMap[r.vibe] || { label: r.vibe, class: 'vibe-tag-sit' };
+    const vibeLabel = vibeMap[r.vibe] || r.vibe;
     html += `
-      <div class="restaurant-card relative flex gap-4 p-4 rounded-xl border border-[#2A2E37] bg-[#0F1115] mb-3 cursor-pointer">
-        <img src="${r.img || 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop'}" class="w-20 h-20 rounded-xl object-cover flex-shrink-0 shadow-lg" alt="${r.name}" loading="lazy" decoding="async">
-        <div class="flex-1 flex flex-col min-w-0">
-          <div class="font-bold text-white text-[16px] mb-1.5">${r.name}</div>
-          ${vibeInfo.label ? `<span class="vibe-tag ${vibeInfo.class} mb-2">${vibeInfo.label}</span>` : ''}
-          <div class="restaurant-description text-xs text-gray-400 leading-relaxed mt-auto">${r.description || ''}</div>
+      <div class="relative flex gap-4 p-3 rounded-xl border border-[#2A2E37] bg-[#0F1115] mb-3">
+        <img src="${r.img || 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop'}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" alt="${r.name}" loading="lazy" decoding="async">
+        <div class="flex-1 flex flex-col">
+          <div class="font-bold text-white text-[15px] mb-1">${r.name}</div>
+          ${vibeLabel ? `<span class="vibe-tag mb-2">${vibeLabel}</span>` : ''}
+          <div class="text-xs text-gray-400 leading-relaxed mt-auto">${r.description || ''}</div>
         </div>
-        ${r.avgCheck ? `<div class="absolute bottom-4 right-4"><span class="restaurant-check-pill">${r.avgCheck}</span></div>` : ''}
+        ${r.avgCheck ? `<div class="absolute bottom-3 right-3"><span class="restaurant-check-pill">${r.avgCheck}</span></div>` : ''}
       </div>
     `;
   });
@@ -1241,17 +755,14 @@ function populateSideEventsTab(sideEvents) {
   let html = '';
   sideEvents.forEach(e => {
     html += `
-      <div class="side-event-card bg-gradient-to-br from-gray-900 to-black dark:from-darkbg dark:to-darksurface text-white p-6 rounded-2xl relative overflow-hidden shadow-lg group mb-4">
+      <div class="bg-gradient-to-br from-gray-900 to-black dark:from-darkbg dark:to-darksurface text-white p-5 rounded-2xl relative overflow-hidden shadow-lg group mb-4">
         <div class="relative z-10 flex justify-between items-start">
           <div>
-            <div class="flex gap-2 mb-3">
+            <div class="flex gap-2 mb-2">
               <span class="uni-tag uni-tag-accent">${e.badge || '🎉 EVENT'}</span>
             </div>
-            <h3 class="text-2xl font-extrabold mb-2">${e.title}</h3>
-            <p class="text-sm text-gray-300 flex items-center gap-1">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              ${e.location || ''}
-            </p>
+            <h3 class="text-2xl font-extrabold mb-1">${e.title}</h3>
+            <p class="text-sm text-gray-300 mb-4 flex items-center gap-1">${e.location || ''}</p>
           </div>
         </div>
       </div>
@@ -1274,17 +785,17 @@ function populateBrandsTab(brands) {
     return;
   }
 
-  // Category mapping with ruLabel, ruHint, and CSS classes
+  // Category mapping with ruLabel and ruHint
   const categoryConfig = {
-    'payments': { label: 'Платежи', hint: 'Платежные решения и финтех', type: 'payments' },
-    'affiliate network': { label: 'Партнёрка', hint: 'Сеть и офферы для аффилиатов', type: 'affiliate' },
-    'affiliate program': { label: 'Партнёрка', hint: 'Официальная программа бренда', type: 'affiliate' },
-    'operator': { label: 'Оператор', hint: 'Казино/букмекер', type: 'operator' },
-    'platform provider': { label: 'Провайдер', hint: 'B2B платформа/провайдер', type: 'operator' },
-    'adtech': { label: 'Технологии', hint: 'Трекеры, антифрод, рекламные инструменты', type: 'adtech' },
-    'media': { label: 'Медиа', hint: 'СМИ/комьюнити/паблишер', type: 'media' },
-    'marketing agency': { label: 'Технологии', hint: 'Маркетинг и рост', type: 'adtech' },
-    'affiliate software': { label: 'Технологии', hint: 'Платформы/инструменты для аффов', type: 'adtech' }
+    'payments': { label: 'Платежи', hint: 'Платежные решения и финтех' },
+    'affiliate network': { label: 'Партнёрка', hint: 'Сеть и офферы для аффилиатов' },
+    'affiliate program': { label: 'Партн. программа', hint: 'Официальная программа бренда' },
+    'operator': { label: 'Оператор', hint: 'Казино/букмекер' },
+    'platform provider': { label: 'Платформа', hint: 'B2B платформа/провайдер' },
+    'adtech': { label: 'AdTech', hint: 'Трекеры, антифрод, рекламные инструменты' },
+    'media': { label: 'Медиа', hint: 'СМИ/комьюнити/паблишер' },
+    'marketing agency': { label: 'Агентство', hint: 'Маркетинг и рост' },
+    'affiliate software': { label: 'Софт', hint: 'Платформы/инструменты для аффов' }
   };
 
   // Smart category detection by brand name
@@ -1296,21 +807,20 @@ function populateBrandsTab(brands) {
     if (name.includes('bet') || name.includes('casino') || name.includes('gaming')) return categoryConfig['operator'];
     if (name.includes('media') || name.includes('news')) return categoryConfig['media'];
     if (name.includes('revenue') || name.includes('aff')) return categoryConfig['affiliate network'];
-    return { label: 'iGaming', hint: 'iGaming решения', type: 'default' };
+    return { label: 'iGaming', hint: 'iGaming решения' };
   }
 
   function renderBrandCard(brand) {
     const initials = brand.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
     const cat = detectCategory(brand);
-    const categoryType = cat.type || 'default';
 
     return `
       <div class="brand-card aspect-square rounded-xl bg-[#0F1115] border border-[#2A2E37] flex flex-col items-center justify-center p-3 text-center hover:border-accent/50 transition relative cursor-pointer group">
-        <div class="brand-initials brand-initials-${categoryType} w-12 h-12 rounded-full flex items-center justify-center font-bold mb-2 text-sm">
+        <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold mb-2 text-sm group-hover:bg-accent/30 transition">
           ${initials}
         </div>
         <div class="text-[14px] font-semibold text-white leading-tight mb-2 px-1">${brand}</div>
-        <span class="brand-category-pill brand-category-${categoryType}">${cat.label}</span>
+        <span class="brand-category-pill">${cat.label}</span>
         <div class="brand-tooltip">${brand} — ${cat.hint}</div>
       </div>
     `;

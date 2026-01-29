@@ -1,0 +1,93 @@
+==============================================
+ЗАДАЧА 5: ОБНОВЛЕНИЕ EVENTS ИЗ EXCEL
+==============================================
+
+✓ Данные успешно загружены из igaming_calendar_MASTER_UPDATED.xlsx
+
+СТАТИСТИКА ПО EXCEL:
+  • Restaurants: 53 записи
+  • Brands: 48 брендов
+  • SideEvents: 23 ивента
+
+ОБНОВЛЕНО КОНФЕРЕНЦИЙ: 13 из 14
+
+Детализация по конференциям:
+  
+  1. igb_live_2026_london
+     • Рестораны: 5 (Plateau Canary Wharf, Boisdale, Electric Shuffle, The Oiler Bar, The Gun Docklands)
+     • Бренды: 30
+     • Сайд-ивенты: 3 (iGB Affiliate Awards, Opening Night Party, Affiliate Networking Drinks)
+
+  2. mac_yerevan_2026
+     • Рестораны: 4 (Dolmama, The Club, Sherep, Pandok Yerevan)
+     • Бренды: 4 (Pin-Up Partners, 1xBet Partners, Lucky Partners, Mostbet Partners)
+     • Сайд-ивенты: 2 (CIS Affiliates Meetup, Closing Party)
+
+  3. sbc_rio_2026
+     • Рестораны: 5 (Shiso, Zaza Bistro, Giuseppe Grill, Braseiro da Gávea, Confeitaria Colombo)
+     • Бренды: 6 (Betsson Group, Betway, Pragmatic Play, Evolution Gaming, Stake, Sportradar)
+     • Сайд-ивенты: 2 (SBC Awards Latin America, Beach Party)
+
+  4. sbc_americas_2026
+     • Рестораны: 3 (Steak 954, Timpano Italian Chophouse, Shooters Waterfront)
+     • Бренды: 0
+     • Сайд-ивенты: 0
+
+  5. sbc_lisbon_2026
+     • Рестораны: 4 (Monte Mar Lisboa, JNcQUOI Avenida, Zambeze Restaurante, Doca Peixe)
+     • Бренды: 0
+     • Сайд-ивенты: 2 (SBC Awards, Sunset Networking)
+
+  6. affiliate_world_dubai_2026
+     • Рестораны: 5 (Zuma Dubai, La Petite Maison, Nobu Dubai, Coya Dubai, Tresind Studio)
+     • Бренды: 5 (Clickbank, MaxBounty, PropellerAds, Adsterra, Voluum)
+     • Сайд-ивенты: 2 (Opening Party, Yacht Networking)
+
+  7. conversion_warsaw_2026
+     • Рестораны: 3 (Belvedere, Warszawa Wschodnia, Stary Dom)
+     • Бренды: 0
+     • Сайд-ивенты: 1 (Pre-Party)
+
+  8. conversion_cyprus_2026
+     • Рестораны: 3 (Pier One, Meze Taverna, Epsilon Resto Bar)
+     • Бренды: 0
+     • Сайд-ивенты: 1 (Beach Party)
+
+  9. broconf_sochi_2026
+     • Рестораны: 4 (Хмели & Сунели, Sanremo, White Rabbit Sochi, Krasnaya Polyana)
+     • Бренды: 0
+     • Сайд-ивенты: 2 (Broconf Party, Горный нетворкинг)
+
+  10. ggate_tbilisi_2026
+      • Рестораны: 4 (Funicular Complex, Barbarestan, Café Stamba, Keto and Kote)
+      • Бренды: 3 (Gambling.pro, Traffic Cardinals, Conversion)
+      • Сайд-ивенты: 2 (Wine Tasting & Networking, Closing Party)
+
+  11. affpapa_madrid_2026
+      • Рестораны: 3 (Sobrino de Botín, Streetxo, Lateral)
+      • Бренды: 0
+      • Сайд-ивенты: 2 (Tapas & Networking, Rooftop Party)
+
+  12. affpapa_cancun_2026
+      • Рестораны: 3 (Harry's Prime Steakhouse, Puerto Madero, Lorenzillo's)
+      • Бренды: 0
+      • Сайд-ивенты: 2 (Welcome Party, Beach Club Day)
+
+  13. g2e_las_vegas_2026
+      • Рестораны: 4 (TAO Asian Bistro, CUT by Wolfgang Puck, Carnevino, Buddakan)
+      • Бренды: 0
+      • Сайд-ивенты: 2 (G2E Networking Reception, Casino Night)
+
+ПРИМЕЧАНИЕ:
+  • conversion_kyiv_2026 не обновлялась (даты TBD, нет в EVENTS объекте)
+
+ФОРМАТ ДАННЫХ:
+  • Restaurants: { name, vibe, avgCheck, description, img }
+  • Brands: массив строк с названиями
+  • SideEvents: { title, location, badge, date }
+
+✓ JavaScript синтаксис валиден
+✓ Форматирование исправлено
+✓ Создан бэкап: app.js.backup
+
+==============================================
