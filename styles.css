@@ -174,7 +174,7 @@ body { background-color: #0F1115; color: white; }
 @media (min-width: 1024px) {
   .controls-panel {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 20px;
   }
@@ -182,15 +182,18 @@ body { background-color: #0F1115; color: white; }
 
 .controls-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 12px;
-  align-items: flex-end;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
   .controls-row {
+    flex-direction: row;
+    align-items: center;
     flex: 1 1 auto;
     min-width: 0;
+    width: auto;
   }
 }
 
@@ -200,8 +203,8 @@ body { background-color: #0F1115; color: white; }
 }
 
 .citizenship-select-box {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1F2937;
+  border: 1px solid #374151;
   border-radius: 12px;
   height: 44px;
   display: flex;
@@ -236,28 +239,30 @@ body { background-color: #0F1115; color: white; }
   display: flex;
   align-items: center;
   gap: 1px;
-  background-color: #16181D;
+  background-color: #1F2937;
   padding: 4px;
   border-radius: 12px;
-  border: 1px solid #2A2E37;
+  border: 1px solid #374151;
   flex: 0 1 auto;
   min-width: 280px;
   max-width: 320px;
+  height: 44px;
 }
 
 .filter-btn {
   flex: 1;
-  height: 44px;
-  padding: 0 20px;
+  height: 36px;
+  padding: 0 16px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: bold;
   color: white;
   background: transparent;
-  border: 1px solid transparent;
+  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: background-color 0.2s;
   cursor: pointer;
   border: none;
@@ -292,13 +297,15 @@ body { background-color: #0F1115; color: white; }
 
 .add-calendar-btn {
   width: 100%;
-  min-height: 40px;
-  padding: 8px 16px;
-  border-radius: 10px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
   background: linear-gradient(to right, #7C3AED, #F97316);
   color: white;
   font-size: 14px;
   font-weight: bold;
+  border: none;
+  cursor: pointer;
   transition: opacity 0.2s, transform 0.1s;
   display: flex;
   align-items: center;
@@ -567,7 +574,7 @@ body { background-color: #0F1115; color: white; }
 /* Modal Redesign Styles */
 .modal-hero {
   position: relative;
-  height: 160px; /* Уменьшено с ~300px до 160px */
+  height: 200px;
   flex-shrink: 0;
   background-size: cover;
   background-position: center;
@@ -628,12 +635,12 @@ body { background-color: #0F1115; color: white; }
 }
 
 .modal-info-section {
-  padding: 12px 20px 8px;
+  padding: 12px 16px;
   animation: fadeIn 0.3s ease-out 0.1s both;
 }
 
 .modal-title {
-  font-size: 22px;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 4px;
   color: white;
@@ -641,18 +648,18 @@ body { background-color: #0F1115; color: white; }
 
 .modal-location,
 .modal-dates {
-  font-size: 13px;
+  font-size: 0.875rem;
   color: #9CA3AF;
   margin-bottom: 2px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .modal-description {
-  font-size: 13px;
+  font-size: 0.875rem;
   color: #D1D5DB;
-  margin-top: 6px;
+  margin-top: 8px;
   line-height: 1.4;
 }
 
@@ -669,7 +676,7 @@ body { background-color: #0F1115; color: white; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  padding: 10px 20px 12px;
+  padding: 8px 20px 10px;
   animation: fadeIn 0.3s ease-out 0.2s both;
 }
 
@@ -748,25 +755,117 @@ body { background-color: #0F1115; color: white; }
 }
 
 .btn-calendar {
-  background: linear-gradient(135deg, #7C3AED, #F97316);
-  border: none;
-  color: white;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
-}
-
-.btn-calendar:hover {
-  opacity: 0.9;
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-}
-
-.btn-promo {
   background: #16181D;
   border: 1px solid #2A2E37;
   color: white;
 }
 
-.btn-promo:hover {
+.btn-calendar:hover {
   background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-promo {
+  background: linear-gradient(135deg, #F97316, #EC4899);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+}
+
+.btn-promo:hover {
+  opacity: 0.9;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+}
+
+/* Promo Toast */
+.promo-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  background: linear-gradient(135deg, #1F2937, #111827);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 400px;
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+.promo-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.promo-toast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.promo-toast-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+.promo-toast-close {
+  background: transparent;
+  border: none;
+  color: #9CA3AF;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-toast-close:hover {
+  color: white;
+}
+
+.promo-code-display {
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.promo-code-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #F97316;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+.promo-copy-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #F97316, #EC4899);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.promo-copy-btn:hover {
+  opacity: 0.9;
+}
+
+.promo-copy-btn.copied {
+  background: #22C55E;
 }
 
 /* Brands Grid */
