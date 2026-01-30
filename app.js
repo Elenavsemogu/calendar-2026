@@ -1129,20 +1129,16 @@ function initCalendarExport() {
   // Main button: smart behavior (mobile = modal list, desktop = ICS file)
   addBtn?.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log('Main calendar button clicked');
 
     const visibleCards = getVisibleEvents();
-    console.log('Visible cards:', visibleCards.length);
 
     if (visibleCards.length === 0) return;
 
     // Check if mobile device
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    console.log('Is mobile:', isMobile);
 
     if (isMobile) {
       // Mobile: show modal with event list
-      console.log('Showing multi-event modal');
       showMultiEventModal(visibleCards);
     } else {
       // Desktop: download ICS file
@@ -1241,18 +1237,10 @@ function copyPromoCode() {
 
 // Multi-Event Modal Functions (for mobile)
 function showMultiEventModal(visibleCards) {
-  console.log('showMultiEventModal called with', visibleCards.length, 'cards');
-
   const modal = qs("#multiEventModal");
   const eventList = qs("#multiEventList");
 
-  console.log('Modal element:', modal);
-  console.log('Event list element:', eventList);
-
-  if (!modal || !eventList) {
-    console.error('Modal or event list not found!');
-    return;
-  }
+  if (!modal || !eventList) return;
 
   // Clear previous content
   eventList.innerHTML = '';
@@ -1296,7 +1284,6 @@ function showMultiEventModal(visibleCards) {
   });
 
   // Show modal
-  console.log('Adding show class to modal');
   modal.classList.add('show');
 }
 
@@ -1457,14 +1444,28 @@ END:VCALENDAR`;
 
 
 function downloadICSFile(icsContent, basename) {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = /Android/i.test(navigator.userAgent);
 
-  if (isMobile) {
-    // Mobile: Direct navigation to data URL opens native calendar
-    window.location.href = dataUrl;
+  if (isIOS) {
+    // iOS: Use Blob to show ICS preview with "Add to Calendar" button
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Open in new window - Safari will show preview with "Add to Calendar"
+    const newWindow = window.open(blobUrl, '_blank');
+
+    // Clean up after 2 seconds
+    setTimeout(() => {
+      URL.revokeObjectURL(blobUrl);
+    }, 2000);
+  } else if (isAndroid) {
+    // Android: Direct data URL
+    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+    window.open(dataUrl, '_blank');
   } else {
     // Desktop: Download ICS file
+    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
     const link = document.createElement('a');
     link.href = dataUrl;
     link.download = `${basename || 'event'}.ics`;
