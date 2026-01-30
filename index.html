@@ -516,14 +516,25 @@
     <!-- Кнопки -->
     <div class="modal-footer">
       <button id="modalAddToCalendarBtn" class="btn-calendar">
-        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-        </svg>
         Добавить в календарь
       </button>
-      <button id="modalPromoBtn" class="btn-promo">🎟️ Получить промокод</button>
+      <button id="modalPromoBtn" class="btn-promo">Получить промокод</button>
     </div>
   </div>
+</div>
+
+<!-- Promo Toast -->
+<div id="promoToast" class="promo-toast">
+  <div class="promo-toast-header">
+    <span class="promo-toast-title">🎉 Ваш промокод</span>
+    <button class="promo-toast-close" onclick="hidePromoToast()">×</button>
+  </div>
+  <div class="promo-code-display">
+    <div class="promo-code-value" id="promoCodeValue">—</div>
+  </div>
+  <button class="promo-copy-btn" id="promoCopyBtn" onclick="copyPromoCode()">
+    📋 Скопировать
+  </button>
 </div>
 
 <!-- ACCESS MODAL (Lead Capture) -->
