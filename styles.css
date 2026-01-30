@@ -50,6 +50,7 @@ body { background-color: #0F1115; color: white; }
 .major-card.purple { background: linear-gradient(135deg, #5B21B6 0%, #312E81 100%); }
 .major-card.blue { background: linear-gradient(135deg, #1E40AF 0%, #172554 100%); }
 .major-card.orange { background: linear-gradient(135deg, #9A3412 0%, #431407 100%); }
+.major-card.green { background: linear-gradient(135deg, #15803D 0%, #14532D 100%); }
 
 /* Картинка */
 .event-img {
