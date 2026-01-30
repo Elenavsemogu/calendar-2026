@@ -1126,42 +1126,47 @@ function initCalendarExport() {
   const addBtn = qs("#addToCalendarBtn");
   const modalAddBtn = qs("#modalAddToCalendarBtn");
 
-  // Main button: add all visible events
+  // Main button: smart behavior
   addBtn?.addEventListener("click", () => {
     const visibleCards = getVisibleEvents();
-    if (visibleCards.length === 0) {
-      alert("Нет видимых событий для добавления в календарь");
-      return;
-    }
-
     const conferences = visibleCards.map(card => extractConferenceData(card));
     const icsData = generateMultiEventICS(conferences);
-
     if (icsData) {
       downloadICSFile(icsData, "secretroom-calendar-2026");
     }
   });
 
-  // Modal button: add current event
+  // Modal button: add current event with device auto-detection
   modalAddBtn?.addEventListener("click", () => {
     if (!currentEventId) return;
 
     const ev = EVENTS[currentEventId];
     if (!ev) return;
 
-    const conf = {
-      title: ev.title,
-      location: `${ev.city}, ${ev.country}`,
-      country: ev.country,
-      startDate: ev.startISO ? ev.startISO.split('T')[0] : null,
-      endDate: ev.endISO ? ev.endISO.split('T')[0] : null,
-      isTBD: false,
-      description: ev.description || ""
-    };
+    const links = generateCalendarLinks(ev);
 
-    const icsData = generateMultiEventICS([conf]);
-    if (icsData) {
-      downloadICSFile(icsData, `${currentEventId}`);
+    // Device detection
+    const userAgent = navigator.userAgent;
+    const isAndroid = /Android/i.test(userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
+    if (isIOS) {
+      // iOS: Use Apple Calendar via ICS download
+      const icsContent = buildICS(ev);
+      const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = `${ev.title.replace(/\s+/g, '_')}.ics`;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else if (isAndroid) {
+      // Android: Open Google Calendar
+      window.open(links.google, '_blank');
+    } else {
+      // Desktop: Default to Google Calendar (most popular)
+      window.open(links.google, '_blank');
     }
   });
 
@@ -1375,6 +1380,207 @@ function downloadICSFile(icsContent, basename) {
     // Android/Desktop: открываем в новом окне
     window.open(dataUrl, '_blank');
   }
+}
+
+// ------------------------------
+// Calendar Integration Functions
+// ------------------------------
+
+/**
+ * Генерирует ICS контент для одного события
+ */
+function buildICS(event) {
+  const conf = {
+    title: event.title,
+    location: `${event.city}, ${event.countryName || event.country}`,
+    country: event.country,
+    startDate: event.startISO ? event.startISO.split('T')[0] : null,
+    endDate: event.endISO ? event.endISO.split('T')[0] : null,
+    isTBD: false,
+    description: event.description || ""
+  };
+
+  return generateMultiEventICS([conf]);
+}
+
+/**
+ * Генерирует ссылки для добавления события в разные календари
+ */
+function generateCalendarLinks(event) {
+  const title = event.title;
+  const location = `${event.city}, ${event.countryName}`;
+  const description = event.description || '';
+  const startDate = event.startISO;
+  const endDate = event.endISO;
+
+  // Форматирование дат для разных сервисов
+  const formatDateForGoogle = (isoDate) => {
+    return isoDate.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+
+  const formatDateForYahoo = (isoDate) => {
+    return isoDate.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+
+  const formatDateForOutlook = (isoDate) => {
+    return isoDate;
+  };
+
+  // Google Calendar
+  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formatDateForGoogle(startDate)}/${formatDateForGoogle(endDate)}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(location)}`;
+
+  // Outlook/Office 365
+  const outlookUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(title)}&startdt=${formatDateForOutlook(startDate)}&enddt=${formatDateForOutlook(endDate)}&location=${encodeURIComponent(location)}&body=${encodeURIComponent(description)}&path=/calendar/action/compose&rru=addevent`;
+
+  // Yahoo Calendar
+  const yahooUrl = `https://calendar.yahoo.com/?v=60&view=d&type=20&title=${encodeURIComponent(title)}&st=${formatDateForYahoo(startDate)}&et=${formatDateForYahoo(endDate)}&desc=${encodeURIComponent(description)}&in_loc=${encodeURIComponent(location)}`;
+
+  // Office 365
+  const office365Url = `https://outlook.office.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(title)}&startdt=${formatDateForOutlook(startDate)}&enddt=${formatDateForOutlook(endDate)}&location=${encodeURIComponent(location)}&body=${encodeURIComponent(description)}&path=/calendar/action/compose&rru=addevent`;
+
+  return {
+    google: googleUrl,
+    outlook: outlookUrl,
+    yahoo: yahooUrl,
+    office365: office365Url
+  };
+}
+
+/**
+ * Показывает модальное окно выбора календаря
+ */
+function showCalendarPicker(event) {
+  const links = generateCalendarLinks(event);
+  const icsContent = buildICS(event);
+
+  // Создаем модальное окно
+  const modal = document.createElement('div');
+  modal.id = 'calendarPickerModal';
+  modal.className = 'calendar-picker-modal';
+  modal.innerHTML = `
+    <div class="calendar-picker-overlay"></div>
+    <div class="calendar-picker-content">
+      <div class="calendar-picker-header">
+        <h3>Добавить в календарь</h3>
+        <button class="calendar-picker-close">&times;</button>
+      </div>
+      <div class="calendar-picker-body">
+        <button class="calendar-option" data-type="google">
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Google Calendar</span>
+        </button>
+
+        <button class="calendar-option" data-type="outlook">
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Outlook Calendar</span>
+        </button>
+
+        <button class="calendar-option" data-type="office365">
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Office 365 Calendar</span>
+        </button>
+
+        <button class="calendar-option" data-type="yahoo">
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Yahoo Calendar</span>
+        </button>
+
+        <button class="calendar-option" data-type="apple">
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Apple Calendar (iCal)</span>
+        </button>
+
+        <button class="calendar-option" data-type="ics">
+          <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Скачать ICS файл</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Анимация появления
+  setTimeout(() => modal.classList.add('show'), 10);
+
+  // Обработчики закрытия
+  const closeBtn = modal.querySelector('.calendar-picker-close');
+  const overlay = modal.querySelector('.calendar-picker-overlay');
+
+  const closeModal = () => {
+    modal.classList.remove('show');
+    setTimeout(() => modal.remove(), 300);
+  };
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+
+  // Обработчики выбора календаря
+  modal.querySelectorAll('.calendar-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.type;
+
+      switch(type) {
+        case 'google':
+          window.open(links.google, '_blank');
+          break;
+        case 'outlook':
+          window.open(links.outlook, '_blank');
+          break;
+        case 'office365':
+          window.open(links.office365, '_blank');
+          break;
+        case 'yahoo':
+          window.open(links.yahoo, '_blank');
+          break;
+        case 'apple':
+          // Apple Calendar через data URL
+          const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          if (isIOS) {
+            window.location.href = dataUrl;
+          } else {
+            window.open(dataUrl, '_blank');
+          }
+          break;
+        case 'ics':
+          // Скачать ICS файл
+          downloadICSFile(icsContent, event.title.replace(/\s+/g, '_'));
+          break;
+      }
+
+      closeModal();
+    });
+  });
 }
 
 // ------------------------------
