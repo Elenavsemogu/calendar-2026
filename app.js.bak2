@@ -413,7 +413,7 @@ const EVENTS = {
   "affiliate_world_dubai_2026": {
     title: "Affiliate World Dubai", description: "Глобальная конференция аффилиатов и маркетологов",
     city: "Dubai", country: "AE", countryName: "ОАЭ",
-    dates: "4-5 марта 2026", attendees: "6,000", promo: null,
+    dates: "4-5 марта 2026", attendees: "5,000+", promo: null,
     weather: { temp: "24-28°C", description: "Приятно тепло, низкая влажность" },
     heroImage: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
     startISO: "2026-03-04T09:00:00Z", endISO: "2026-03-05T18:00:00Z",
@@ -445,7 +445,7 @@ const EVENTS = {
   "mac_yerevan_2026": {
     title: "MAC Yerevan", description: "СНГ конференция по партнёрскому маркетингу",
     city: "Yerevan", country: "AM", countryName: "Армения",
-    dates: "25-27 мая 2026", attendees: "3,000", promo: null,
+    dates: "25-27 мая 2026", attendees: "2,500+", promo: null,
     weather: { temp: "22-28°C", description: "Тёплая весна, солнечно" },
     heroImage: "https://images.unsplash.com/photo-1603921326210-6edd2d60ca68?w=800&q=80",
     startISO: "2026-05-25T09:00:00Z", endISO: "2026-05-27T18:00:00Z",
@@ -477,7 +477,7 @@ const EVENTS = {
   "ggate_tbilisi_2026": {
     title: "G Gate Tbilisi", description: "Восточноевропейский iGaming форум",
     city: "Tbilisi", country: "GE", countryName: "Грузия",
-    dates: "25-27 июня 2026", attendees: "2,500", promo: null,
+    dates: "25-27 июня 2026", attendees: "2,000+", promo: null,
     weather: { temp: "26-32°C", description: "Жаркое лето, сухо" },
     heroImage: "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80",
     startISO: "2026-06-26T09:00:00Z", endISO: "2026-06-27T18:00:00Z",
@@ -509,7 +509,7 @@ const EVENTS = {
   "broconf_sochi_2026": {
     title: "Broconf", description: "Главная конференция по арбитражу трафика в СНГ",
     city: "Sochi", country: "RU", countryName: "Россия",
-    dates: "25-26 апреля 2026", attendees: "4,500", promo: "-15%",
+    dates: "25-26 апреля 2026", attendees: "4,000+", promo: "-15%",
     weather: { temp: "16-22°C", description: "Тёплая весна, возможны дожди" },
     heroImage: "https://images.unsplash.com/photo-1578763363228-6e8428de69b2?w=800&q=80",
     startISO: "2026-04-25T09:00:00Z", endISO: "2026-04-26T18:00:00Z",
@@ -541,7 +541,7 @@ const EVENTS = {
   "g2e_las_vegas_2026": {
     title: "G2E Las Vegas", description: "Крупнейшая выставка казино индустрии",
     city: "Las Vegas", country: "US", countryName: "США",
-    dates: "29 сент - 1 окт 2026", attendees: "27,000", promo: null,
+    dates: "29 сент - 1 окт 2026", attendees: "25,000+", promo: null,
     weather: { temp: "22-32°C", description: "Жарко днём, прохладно ночью" },
     heroImage: "https://images.unsplash.com/photo-1581351721010-8cf859cb14a4?w=800&q=80",
     startISO: "2026-09-29T09:00:00Z", endISO: "2026-10-01T18:00:00Z",
@@ -573,7 +573,7 @@ const EVENTS = {
   "sbc_americas_2026": {
     title: "SBC Summit Americas", description: "Американский беттинг саммит",
     city: "Fort Lauderdale", country: "US", countryName: "США",
-    dates: "12-14 мая 2026", attendees: "6,000", promo: "-10%",
+    dates: "12-14 мая 2026", attendees: "5,000+", promo: "-10%",
     weather: { temp: "28-33°C", description: "Жарко и влажно" },
     heroImage: "https://images.unsplash.com/photo-1535498730771-e735b998cd64?w=800&q=80",
     startISO: "2026-05-12T09:00:00Z", endISO: "2026-05-14T18:00:00Z",
@@ -602,7 +602,7 @@ const EVENTS = {
   "conversion_warsaw_2026": {
     title: "Conversion Conf", description: "Конференция по лидогенерации и affiliate маркетингу",
     city: "Warsaw", country: "PL", countryName: "Польша",
-    dates: "31 марта - 1 апреля 2026", attendees: "2,500", promo: null,
+    dates: "31 марта - 1 апреля 2026", attendees: "2,000+", promo: null,
     weather: { temp: "8-14°C", description: "Прохладная весна" },
     heroImage: "https://images.unsplash.com/photo-1519197924294-4ba991a11128?w=800&q=80",
     startISO: "2026-03-31T09:00:00Z", endISO: "2026-04-01T18:00:00Z",
@@ -633,7 +633,7 @@ const EVENTS = {
   "conversion_cyprus_2026": {
     title: "Conversion Conf", description: "Летняя конференция аффилиатов на Кипре",
     city: "Limassol", country: "CY", countryName: "Кипр",
-    dates: "22-24 июля 2026", attendees: "2,000", promo: null,
+    dates: "22-24 июля 2026", attendees: "1,500+", promo: null,
     weather: { temp: "28-32°C", description: "Жаркое средиземноморское лето" },
     heroImage: "https://images.unsplash.com/photo-1581889470536-467bdbe30cd0?w=800&q=80",
     startISO: "2026-07-22T09:00:00Z", endISO: "2026-07-24T18:00:00Z",
@@ -662,7 +662,7 @@ const EVENTS = {
   "affpapa_madrid_2026": {
     title: "AffPapa iGaming Club", description: "Клубная встреча iGaming аффилиатов",
     city: "Madrid", country: "ES", countryName: "Испания",
-    dates: "18-20 мая 2026", attendees: "600", promo: null,
+    dates: "18-20 мая 2026", attendees: "500+", promo: null,
     weather: { temp: "20-26°C", description: "Тёплая весна, солнечно" },
     heroImage: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80",
     startISO: "2026-05-18T09:00:00Z", endISO: "2026-05-20T18:00:00Z",
@@ -692,7 +692,7 @@ const EVENTS = {
   "affpapa_cancun_2026": {
     title: "AffPapa iGaming Club", description: "Клубная встреча аффилиатов в Мексике",
     city: "Cancun", country: "MX", countryName: "Мексика",
-    dates: "23-25 ноября 2026", attendees: "600", promo: null,
+    dates: "23-25 ноября 2026", attendees: "500+", promo: null,
     weather: { temp: "26-30°C", description: "Тепло, конец сезона дождей" },
     heroImage: "https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=800&q=80",
     startISO: "2026-11-23T09:00:00Z", endISO: "2026-11-25T18:00:00Z",
@@ -722,7 +722,7 @@ const EVENTS = {
   "conversion_kyiv_2026": {
     title: "Conversion Conf", description: "Украинская affiliate конференция",
     city: "Kyiv", country: "UA", countryName: "Украина",
-    dates: "TBA 2026", attendees: "2,000", promo: null,
+    dates: "TBA 2026", attendees: "1,500+", promo: null,
     weather: { temp: "—", description: "Даты уточняются" },
     heroImage: "https://images.unsplash.com/photo-1561542320-9a18cd340469?w=800&q=80",
     startISO: "2026-06-01T09:00:00Z", endISO: "2026-06-02T18:00:00Z",

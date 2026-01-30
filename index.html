@@ -484,134 +484,44 @@
   </div>
 </main>
 
-<!-- MODAL (unchanged from your earlier split, keep as-is in your repo) -->
+<!-- MODAL -->
 <div id="modalOverlay" class="fixed inset-0 z-50 hidden">
   <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="modalBg"></div>
   <div class="absolute inset-y-0 right-0 w-full md:w-[600px] bg-[#16181D] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-[#2A2E37]" id="modalPanel">
-    <div class="h-64 relative shrink-0">
-      <img id="modalHeroImg" src="static/MAC_Yerevan.jpeg" class="w-full h-full object-cover opacity-70" alt="" loading="lazy" decoding="async">
-      <div class="absolute inset-0 bg-gradient-to-t from-[#16181D] to-transparent"></div>
 
-      <button id="modalCloseBtn" class="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition" type="button">✖</button>
+    <!-- Hero с погодой -->
+    <div id="modalHero"></div>
 
-      <div class="absolute bottom-6 left-6 right-6">
-        <div class="flex gap-2 mb-3" id="modalBadges">
-          <span class="bg-[#1E40AF] text-white text-[10px] font-bold px-3 py-1 rounded-full border border-blue-400/30" id="modalBadgeType">MAJOR EVENT</span>
-          <span class="bg-green-500/20 text-green-400 text-[10px] font-bold px-3 py-1 rounded-full border border-green-500/30" id="modalBadgeVisa">Без визы RF</span>
-        </div>
+    <!-- Инфо: название, место, даты, описание -->
+    <div id="modalInfo" class="modal-info-section"></div>
 
-        <h2 class="text-4xl font-extrabold text-white mb-1" id="modalTitle">MAC Yerevan</h2>
-        <p class="text-gray-300 font-medium" id="modalLocationLine">📍 Armenia, Yerevan • Май 2026</p>
-      </div>
-    </div>
+    <!-- Три карточки: участники, виза, промо -->
+    <div id="modalStats" class="modal-stats-grid"></div>
 
-    <div class="flex-1 overflow-y-auto p-8">
-      <div class="grid grid-cols-2 gap-4 mb-8">
-        <div class="bg-[#0F1115] p-4 rounded-xl text-center border border-[#2A2E37]">
-          <div class="text-2xl font-bold" id="modalStatAttendees">3.5k</div>
-          <div class="text-[10px] text-gray-500 uppercase font-bold">Участников</div>
-        </div>
-        <div class="bg-[#0F1115] p-4 rounded-xl text-center border border-accent/50">
-          <div class="text-2xl font-bold text-accent" id="modalStatPromo">-15%</div>
-          <div class="text-[10px] text-gray-500 uppercase font-bold">ПРОМО</div>
-        </div>
-      </div>
-
-      <!-- Weather Container -->
-      <div id="modalWeatherContainer" class="mb-6"></div>
-
-      <div class="flex gap-6 border-b border-[#2A2E37] mb-6">
+    <!-- Табы -->
+    <div class="flex-1 overflow-y-auto">
+      <div class="modal-tabs">
         <button data-tab-btn="guide" class="tab-btn active" type="button">Гид</button>
         <button data-tab-btn="events" class="tab-btn" type="button">Сайд-ивенты</button>
         <button data-tab-btn="brands" class="tab-btn" type="button">Бренды</button>
       </div>
 
-      <div id="guide" class="tab-content active space-y-4">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          🍽 Топ-3 Тихих Ресторанов
-          <span class="uni-tag uni-tag-gray">🤝 Для встреч</span>
-        </h3>
-
-        <div class="flex gap-4 p-3 rounded-xl border border-[#2A2E37] bg-[#0F1115]">
-          <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded-lg object-cover" alt="" loading="lazy" decoding="async">
-          <div>
-            <div class="font-bold text-white">Dolmama</div>
-            <div class="text-xs text-gray-500">Армянская кухня • Тихо • $$$</div>
-          </div>
-        </div>
-
-        <div class="flex gap-4 p-3 rounded-xl border border-[#2A2E37] bg-[#0F1115]">
-          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded-lg object-cover" alt="" loading="lazy" decoding="async">
-          <div>
-            <div class="font-bold text-white">Lavash</div>
-            <div class="text-xs text-gray-500">Центр • Стильно • $$</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="events" class="tab-content space-y-4">
-        <div class="bg-gradient-to-br from-gray-900 to-black dark:from-darkbg dark:to-darksurface text-white p-5 rounded-2xl relative overflow-hidden shadow-lg group">
-          <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1570752321219-41822a21a761?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 group-hover:scale-105 transition duration-700"></div>
-
-          <div class="relative z-10 flex justify-between items-start">
-            <div>
-              <div class="flex gap-2 mb-2">
-                <span class="uni-tag uni-tag-accent">🎉 OFFICIAL AFTERPARTY</span>
-                <span class="uni-tag uni-tag-light-transparent border border-white/30">🕒 22:00 - Late</span>
-              </div>
-              <h3 class="text-2xl font-extrabold mb-1">MAC Main Party</h3>
-              <p class="text-sm text-gray-300 mb-4 flex items-center gap-1">📍 Клуб "JelliFish" • Вход по бейджу</p>
-            </div>
-            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-dark font-bold text-xs shadow-lg">MAC</div>
-          </div>
-
-          <div class="relative z-10 flex flex-wrap gap-2">
-            <span class="uni-tag uni-tag-light-transparent">🔥 Шоу-программа</span>
-            <span class="uni-tag uni-tag-light-transparent">🍸 Free Bar</span>
-            <span class="uni-tag uni-tag-light-transparent">🎧 Топ DJ</span>
-          </div>
-        </div>
-
-        <div class="bg-white dark:bg-darksurface border border-gray-200 dark:border-white/10 p-5 rounded-2xl relative shadow-sm group hover:border-accent/50 transition">
-          <div class="flex justify-between items-start">
-            <div>
-              <div class="flex gap-2 mb-2">
-                <span class="uni-tag uni-tag-gray">🍽 Private Dinner</span>
-                <span class="uni-tag uni-tag-red">🔒 Invite Only</span>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Crypto Investors Meetup</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-1">📍 Ресторан "Seven Visions" • 🕒 19:00</p>
-            </div>
-            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-lg">VC</div>
-          </div>
-
-          <div class="flex flex-wrap gap-2">
-            <span class="uni-tag uni-tag-outline">🕴️ Owners &amp; C-Level</span>
-            <span class="uni-tag uni-tag-outline">🤫 Тихий нетворкинг</span>
-          </div>
-        </div>
-      </div>
-
-      <div id="brands" class="tab-content">
-        <div class="grid grid-cols-4 gap-3">
-          <div class="aspect-square rounded-xl bg-[#0F1115] border border-[#2A2E37] flex items-center justify-center text-xs text-gray-400">1win</div>
-          <div class="aspect-square rounded-xl bg-[#0F1115] border border-[#2A2E37] flex items-center justify-center text-xs text-gray-400">PinUp</div>
-          <div class="aspect-square rounded-xl bg-[#0F1115] border border-[#2A2E37] flex items-center justify-center text-xs text-gray-400">Keitaro</div>
-          <div class="aspect-square rounded-xl bg-[#0F1115] border border-[#2A2E37] flex items-center justify-center text-xs text-gray-400">+100</div>
-        </div>
+      <div class="px-8">
+        <div id="guide" class="tab-content active space-y-4 pb-8"></div>
+        <div id="events" class="tab-content space-y-4 pb-8"></div>
+        <div id="brands" class="tab-content pb-8"></div>
       </div>
     </div>
 
-    <div class="p-6 border-t border-[#2A2E37] bg-[#16181D] space-y-3">
-      <button id="modalAddToCalendarBtn" class="w-full py-4 rounded-xl bg-gradient-to-r from-accent to-blue-600 text-white font-bold hover:opacity-90 transition flex items-center justify-center gap-2" type="button">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Кнопки -->
+    <div class="modal-footer">
+      <button id="modalAddToCalendarBtn" class="btn-calendar">
+        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
         Добавить в календарь
       </button>
-      <button id="modalPromoBtn" class="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold hover:bg-white/10 transition" type="button">
-        Получить промокод
-      </button>
+      <button id="modalPromoBtn" class="btn-promo">🎟️ Получить промокод</button>
     </div>
   </div>
 </div>
