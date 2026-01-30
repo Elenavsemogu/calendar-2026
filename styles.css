@@ -1165,6 +1165,64 @@ body { background-color: #0F1115; color: white; }
 }
 
 /* =====================================================
-   UNIVERSAL TOAST NOTIFICATIONS
+   MULTI-EVENT CALENDAR MODAL (MOBILE)
    ===================================================== */
+
+.multi-event-item {
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+.multi-event-item:hover {
+  border-color: #F97316;
+  background: #252B37;
+}
+
+.multi-event-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 6px;
+}
+
+.multi-event-dates {
+  font-size: 13px;
+  color: #9CA3AF;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.multi-event-add-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #F97316, #EC4899);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+}
+
+.multi-event-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+}
+
+.multi-event-add-btn:active {
+  transform: translateY(0);
+}
+
+.multi-event-add-btn.added {
+  background: #10B981;
+  pointer-events: none;
+}
 
