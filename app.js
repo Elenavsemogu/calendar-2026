@@ -1127,16 +1127,22 @@ function initCalendarExport() {
   const modalAddBtn = qs("#modalAddToCalendarBtn");
 
   // Main button: smart behavior (mobile = modal list, desktop = ICS file)
-  addBtn?.addEventListener("click", () => {
+  addBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log('Main calendar button clicked');
+
     const visibleCards = getVisibleEvents();
+    console.log('Visible cards:', visibleCards.length);
 
     if (visibleCards.length === 0) return;
 
     // Check if mobile device
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    console.log('Is mobile:', isMobile);
 
     if (isMobile) {
       // Mobile: show modal with event list
+      console.log('Showing multi-event modal');
       showMultiEventModal(visibleCards);
     } else {
       // Desktop: download ICS file
@@ -1235,10 +1241,18 @@ function copyPromoCode() {
 
 // Multi-Event Modal Functions (for mobile)
 function showMultiEventModal(visibleCards) {
+  console.log('showMultiEventModal called with', visibleCards.length, 'cards');
+
   const modal = qs("#multiEventModal");
   const eventList = qs("#multiEventList");
 
-  if (!modal || !eventList) return;
+  console.log('Modal element:', modal);
+  console.log('Event list element:', eventList);
+
+  if (!modal || !eventList) {
+    console.error('Modal or event list not found!');
+    return;
+  }
 
   // Clear previous content
   eventList.innerHTML = '';
@@ -1282,15 +1296,14 @@ function showMultiEventModal(visibleCards) {
   });
 
   // Show modal
-  modal.style.display = 'flex';
-  setTimeout(() => modal.classList.add('show'), 10);
+  console.log('Adding show class to modal');
+  modal.classList.add('show');
 }
 
 function hideMultiEventModal() {
   const modal = qs("#multiEventModal");
   if (modal) {
     modal.classList.remove('show');
-    setTimeout(() => modal.style.display = 'none', 300);
   }
 }
 
@@ -1444,27 +1457,23 @@ END:VCALENDAR`;
 
 
 function downloadICSFile(icsContent, basename) {
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
 
-  // Create a temporary link element
-  const link = document.createElement('a');
-  link.href = dataUrl;
-  link.download = `${basename || 'event'}.ics`;
-
-  if (isIOS) {
-    // iOS: Use target blank to trigger calendar app
-    link.target = '_blank';
+  if (isMobile) {
+    // Mobile: Direct navigation to data URL opens native calendar
+    window.location.href = dataUrl;
+  } else {
+    // Desktop: Download ICS file
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `${basename || 'event'}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+    }, 100);
   }
-
-  // Append to body, click, and remove
-  document.body.appendChild(link);
-  link.click();
-
-  // Clean up after a short delay
-  setTimeout(() => {
-    document.body.removeChild(link);
-  }, 100);
 }
 
 // ------------------------------
