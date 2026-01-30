@@ -1148,17 +1148,25 @@ function initCalendarExport() {
     }
   });
 
-  // Modal button: add current event - opens Google Calendar for all devices
+  // Modal button: add current event - smart device detection
   modalAddBtn?.addEventListener("click", () => {
     if (!currentEventId) return;
 
     const ev = EVENTS[currentEventId];
     if (!ev) return;
 
-    const links = generateCalendarLinks(ev);
+    // Check if mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // Open Google Calendar for all devices (works great on iOS, Android, Desktop)
-    window.open(links.google, '_blank');
+    if (isMobile) {
+      // Mobile: Use ICS file to open native calendar app
+      const icsContent = buildICS(ev);
+      downloadICSFile(icsContent, ev.title.replace(/\s+/g, '_'));
+    } else {
+      // Desktop: Open Google Calendar in browser
+      const links = generateCalendarLinks(ev);
+      window.open(links.google, '_blank');
+    }
   });
 
   // Modal promo button
@@ -1257,8 +1265,9 @@ function showMultiEventModal(visibleCards) {
     addButton.className = 'multi-event-add-btn';
     addButton.textContent = 'Добавить в календарь';
     addButton.addEventListener('click', () => {
-      const links = generateCalendarLinks(event);
-      window.open(links.google, '_blank');
+      // Use ICS file to open native calendar app
+      const icsContent = buildICS(event);
+      downloadICSFile(icsContent, event.title.replace(/\s+/g, '_'));
 
       // Visual feedback
       addButton.textContent = '✓ Добавлено';
@@ -1435,17 +1444,27 @@ END:VCALENDAR`;
 
 
 function downloadICSFile(icsContent, basename) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  // Create a temporary link element
+  const link = document.createElement('a');
+  link.href = dataUrl;
+  link.download = `${basename || 'event'}.ics`;
 
   if (isIOS) {
-    // iOS: открываем data URL напрямую — система покажет диалог "Добавить в Календарь"
-    window.location.href = dataUrl;
-  } else {
-    // Android/Desktop: открываем в новом окне
-    window.open(dataUrl, '_blank');
+    // iOS: Use target blank to trigger calendar app
+    link.target = '_blank';
   }
+
+  // Append to body, click, and remove
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up after a short delay
+  setTimeout(() => {
+    document.body.removeChild(link);
+  }, 100);
 }
 
 // ------------------------------
