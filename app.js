@@ -1126,17 +1126,29 @@ function initCalendarExport() {
   const addBtn = qs("#addToCalendarBtn");
   const modalAddBtn = qs("#modalAddToCalendarBtn");
 
-  // Main button: smart behavior
+  // Main button: smart behavior (mobile = modal list, desktop = ICS file)
   addBtn?.addEventListener("click", () => {
     const visibleCards = getVisibleEvents();
-    const conferences = visibleCards.map(card => extractConferenceData(card));
-    const icsData = generateMultiEventICS(conferences);
-    if (icsData) {
-      downloadICSFile(icsData, "secretroom-calendar-2026");
+
+    if (visibleCards.length === 0) return;
+
+    // Check if mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Mobile: show modal with event list
+      showMultiEventModal(visibleCards);
+    } else {
+      // Desktop: download ICS file
+      const conferences = visibleCards.map(card => extractConferenceData(card));
+      const icsData = generateMultiEventICS(conferences);
+      if (icsData) {
+        downloadICSFile(icsData, "secretroom-calendar-2026");
+      }
     }
   });
 
-  // Modal button: add current event with device auto-detection
+  // Modal button: add current event - opens Google Calendar for all devices
   modalAddBtn?.addEventListener("click", () => {
     if (!currentEventId) return;
 
@@ -1145,29 +1157,8 @@ function initCalendarExport() {
 
     const links = generateCalendarLinks(ev);
 
-    // Device detection
-    const userAgent = navigator.userAgent;
-    const isAndroid = /Android/i.test(userAgent);
-    const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-
-    if (isIOS) {
-      // iOS: Use Apple Calendar via ICS download
-      const icsContent = buildICS(ev);
-      const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = `${ev.title.replace(/\s+/g, '_')}.ics`;
-      a.target = '_blank';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else if (isAndroid) {
-      // Android: Open Google Calendar
-      window.open(links.google, '_blank');
-    } else {
-      // Desktop: Default to Google Calendar (most popular)
-      window.open(links.google, '_blank');
-    }
+    // Open Google Calendar for all devices (works great on iOS, Android, Desktop)
+    window.open(links.google, '_blank');
   });
 
   // Modal promo button
@@ -1233,6 +1224,81 @@ function copyPromoCode() {
     console.error('Failed to copy:', err);
   });
 }
+
+// Multi-Event Modal Functions (for mobile)
+function showMultiEventModal(visibleCards) {
+  const modal = qs("#multiEventModal");
+  const eventList = qs("#multiEventList");
+
+  if (!modal || !eventList) return;
+
+  // Clear previous content
+  eventList.innerHTML = '';
+
+  // Create event items
+  visibleCards.forEach(card => {
+    const eventId = card.dataset.eventId;
+    const event = EVENTS[eventId];
+
+    if (!event) return;
+
+    const eventItem = document.createElement('div');
+    eventItem.className = 'multi-event-item';
+
+    const title = document.createElement('div');
+    title.className = 'multi-event-title';
+    title.textContent = event.title;
+
+    const dates = document.createElement('div');
+    dates.className = 'multi-event-dates';
+    dates.innerHTML = `📅 ${event.dates}`;
+
+    const addButton = document.createElement('button');
+    addButton.className = 'multi-event-add-btn';
+    addButton.textContent = 'Добавить в календарь';
+    addButton.addEventListener('click', () => {
+      const links = generateCalendarLinks(event);
+      window.open(links.google, '_blank');
+
+      // Visual feedback
+      addButton.textContent = '✓ Добавлено';
+      addButton.classList.add('added');
+    });
+
+    eventItem.appendChild(title);
+    eventItem.appendChild(dates);
+    eventItem.appendChild(addButton);
+
+    eventList.appendChild(eventItem);
+  });
+
+  // Show modal
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('show'), 10);
+}
+
+function hideMultiEventModal() {
+  const modal = qs("#multiEventModal");
+  if (modal) {
+    modal.classList.remove('show');
+    setTimeout(() => modal.style.display = 'none', 300);
+  }
+}
+
+// Init multi-event modal close button
+document.addEventListener('DOMContentLoaded', () => {
+  const closeBtn = qs("#closeMultiEventModal");
+  const modal = qs("#multiEventModal");
+
+  closeBtn?.addEventListener("click", hideMultiEventModal);
+
+  // Close on overlay click
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      hideMultiEventModal();
+    }
+  });
+});
 
 function extractConferenceData(card) {
   const data = {
