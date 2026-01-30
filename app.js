@@ -1364,31 +1364,16 @@ END:VCALENDAR`;
 
 
 function downloadICSFile(icsContent, basename) {
-  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+  const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
 
-  // Для iOS используем data URL, для остальных - blob URL
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   if (isIOS) {
-    // iOS лучше работает с data URL
-    const dataUrl = `data:text/calendar;charset=utf-8,${encodeURIComponent(icsContent)}`;
-    const a = document.createElement("a");
-    a.href = dataUrl;
-    a.download = `${basename}.ics`;
-    a.target = "_blank";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    // iOS: открываем data URL напрямую — система покажет диалог "Добавить в Календарь"
+    window.location.href = dataUrl;
   } else {
-    // Для остальных платформ используем blob URL
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${basename}.ics`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Android/Desktop: открываем в новом окне
+    window.open(dataUrl, '_blank');
   }
 }
 
