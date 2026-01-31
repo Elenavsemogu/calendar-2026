@@ -664,7 +664,7 @@ const EVENTS = {
     city: "Madrid", country: "ES", countryName: "Испания",
     dates: "18-20 мая 2026", attendees: "600", promo: null,
     weather: { temp: "20-26°C", description: "Тёплая весна, солнечно" },
-    heroImage: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80",
+    heroImage: "images/heroes/affpapa_madrid.jpg",
     startISO: "2026-05-18T09:00:00Z", endISO: "2026-05-20T18:00:00Z",
     restaurants: [
       { name: "Sobrino de Botín", vibe: "посидеть", avgCheck: "$60-140", description: "Старейший ресторан мира (с 1725)", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -694,7 +694,7 @@ const EVENTS = {
     city: "Cancun", country: "MX", countryName: "Мексика",
     dates: "23-25 ноября 2026", attendees: "600", promo: null,
     weather: { temp: "26-30°C", description: "Тепло, конец сезона дождей" },
-    heroImage: "https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=800&q=80",
+    heroImage: "images/heroes/affpapa_cancun.jpg",
     startISO: "2026-11-23T09:00:00Z", endISO: "2026-11-25T18:00:00Z",
     restaurants: [
       { name: "Harry's Prime Steakhouse", vibe: "тихо", avgCheck: "$100-250", description: "Премиальный стейкхаус", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
@@ -724,7 +724,7 @@ const EVENTS = {
     city: "Kyiv", country: "UA", countryName: "Украина",
     dates: "TBA 2026", attendees: "2,000", promo: null,
     weather: { temp: "—", description: "Даты уточняются" },
-    heroImage: "https://images.unsplash.com/photo-1561542320-9a18cd340469?w=800&q=80",
+    heroImage: "images/heroes/conversion_kyiv.jpg",
     startISO: "2026-06-01T09:00:00Z", endISO: "2026-06-02T18:00:00Z",
     restaurants: [
       { name: "Kanapa", vibe: "посидеть", avgCheck: "$40-100", description: "Современная украинская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
