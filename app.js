@@ -447,7 +447,7 @@ const EVENTS = {
     city: "Yerevan", country: "AM", countryName: "Армения",
     dates: "25-27 мая 2026", attendees: "3,000", promo: null,
     weather: { temp: "22-28°C", description: "Тёплая весна, солнечно" },
-    heroImage: "images/heroes/conversion_warsaw.jpg",
+    heroImage: "images/heroes/mac_yerevan.jpg",
     startISO: "2026-05-25T09:00:00Z", endISO: "2026-05-27T18:00:00Z",
     restaurants: [
       { name: "Dolmama", vibe: "посидеть", avgCheck: "$40-80", description: "Традиционная армянская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -511,7 +511,7 @@ const EVENTS = {
     city: "Sochi", country: "RU", countryName: "Россия",
     dates: "25-26 апреля 2026", attendees: "4,500", promo: "-15%",
     weather: { temp: "16-22°C", description: "Тёплая весна, возможны дожди" },
-    heroImage: "images/heroes/affpapa_madrid.jpg",
+    heroImage: "images/heroes/broconf_sochi.jpg",
     startISO: "2026-04-25T09:00:00Z", endISO: "2026-04-26T18:00:00Z",
     restaurants: [
       { name: "Хмели & Сунели", vibe: "громко", avgCheck: "$40-100", description: "Грузинский ресторан", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
@@ -543,7 +543,7 @@ const EVENTS = {
     city: "Las Vegas", country: "US", countryName: "США",
     dates: "29 сент - 1 окт 2026", attendees: "27,000", promo: null,
     weather: { temp: "22-32°C", description: "Жарко днём, прохладно ночью" },
-    heroImage: "images/heroes/mac_yerevan.jpg",
+    heroImage: "images/heroes/g2e_vegas.jpg",
     startISO: "2026-09-29T09:00:00Z", endISO: "2026-10-01T18:00:00Z",
     restaurants: [
       { name: "TAO Asian Bistro", vibe: "громко", avgCheck: "$80-200", description: "Легендарный азиатский в Venetian", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
@@ -604,7 +604,7 @@ const EVENTS = {
     city: "Warsaw", country: "PL", countryName: "Польша",
     dates: "31 марта - 1 апреля 2026", attendees: "2,500", promo: null,
     weather: { temp: "8-14°C", description: "Прохладная весна" },
-    heroImage: "images/heroes/conversion_cyprus.jpg",
+    heroImage: "images/heroes/conversion_warsaw.jpg",
     startISO: "2026-03-31T09:00:00Z", endISO: "2026-04-01T18:00:00Z",
     restaurants: [
       { name: "Belvedere", vibe: "тихо", avgCheck: "$80-180", description: "В оранжерее парка Łazienki", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
@@ -635,7 +635,7 @@ const EVENTS = {
     city: "Limassol", country: "CY", countryName: "Кипр",
     dates: "22-24 июля 2026", attendees: "2,000", promo: null,
     weather: { temp: "28-32°C", description: "Жаркое средиземноморское лето" },
-    heroImage: "images/heroes/sigma_sao_paulo.jpg",
+    heroImage: "images/heroes/conversion_cyprus.jpg",
     startISO: "2026-07-22T09:00:00Z", endISO: "2026-07-24T18:00:00Z",
     restaurants: [
       { name: "Pier One", vibe: "потанцевать", avgCheck: "$60-140", description: "На пляже, закаты", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
@@ -753,7 +753,7 @@ const EVENTS = {
     city: "Bangkok", country: "TH", countryName: "Таиланд",
     dates: "9-10 декабря", attendees: "7,000", promo: null,
     weather: { temp: "22-32°C", description: "Прохладный сезон, комфортно" },
-    heroImage: "images/heroes/sigma_bangkok.jpg",
+    heroImage: "images/heroes/aw_bangkok.jpg",
     startISO: "2026-12-09T00:00:00", endISO: "2026-12-10",
     restaurants: [
       { name: "Nahm", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
@@ -790,7 +790,7 @@ const EVENTS = {
     city: "Barcelona", country: "ES", countryName: "Испания",
     dates: "9-10 июля", attendees: "5,000", promo: null,
     weather: { temp: "24-30°C", description: "Жаркое лето, солнечно" },
-    heroImage: "images/heroes/igb_barcelona.jpg",
+    heroImage: "images/heroes/aw_barcelona.jpg",
     startISO: "2026-07-09T00:00:00", endISO: "2026-07-10",
     restaurants: [
       { name: "Tickets", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
@@ -827,7 +827,7 @@ const EVENTS = {
     city: "Dubai", country: "UAE", countryName: "ОАЭ",
     dates: "9-11 февраля", attendees: "14,500", promo: null,
     weather: { temp: "22-28°C", description: "Приятная зима, идеальная погода" },
-    heroImage: "images/heroes/aw_dubai.jpg",
+    heroImage: "images/heroes/aibc_dubai.jpg",
     startISO: "2026-02-09T00:00:00", endISO: "2026-02-11",
     restaurants: [
       { name: "Zuma Dubai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
@@ -864,7 +864,7 @@ const EVENTS = {
     city: "São Paulo", country: "BR", countryName: "Бразилия",
     dates: "6-9 апреля", attendees: "8,000", promo: null,
     weather: { temp: "20-26°C", description: "Осень, комфортная погода" },
-    heroImage: "images/heroes/sbc_rio.jpg",
+    heroImage: "images/heroes/sigma_sao_paulo.jpg",
     startISO: "2026-04-06T00:00:00", endISO: "2026-04-09",
     restaurants: [
       { name: "D.O.M.", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
