@@ -1150,25 +1150,15 @@ function initCalendarExport() {
     }
   });
 
-  // Modal button: add current event - smart device detection
+  // Modal button: add current event - direct calendar opening
   modalAddBtn?.addEventListener("click", () => {
     if (!currentEventId) return;
 
     const ev = EVENTS[currentEventId];
     if (!ev) return;
 
-    // Check if mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      // Mobile: Use ICS file to open native calendar app
-      const icsContent = buildICS(ev);
-      downloadICSFile(icsContent, ev.title.replace(/\s+/g, '_'));
-    } else {
-      // Desktop: Open Google Calendar in browser
-      const links = generateCalendarLinks(ev);
-      window.open(links.google, '_blank');
-    }
+    // Используем новую функцию - сразу открывает нативный календарь
+    addToCalendar(ev);
   });
 
   // Modal promo button
@@ -1267,9 +1257,8 @@ function showMultiEventModal(visibleCards) {
     addButton.className = 'multi-event-add-btn';
     addButton.textContent = 'Добавить в календарь';
     addButton.addEventListener('click', () => {
-      // Use ICS file to open native calendar app
-      const icsContent = buildICS(event);
-      downloadICSFile(icsContent, event.title.replace(/\s+/g, '_'));
+      // Сразу открываем нативный календарь
+      addToCalendar(event);
 
       // Visual feedback
       addButton.textContent = '✓ Добавлено';
@@ -1443,38 +1432,87 @@ END:VCALENDAR`;
 }
 
 
-function downloadICSFile(icsContent, basename) {
+// Генерация ICS для iOS (упрощенная)
+function generateICSForIOS(event) {
+  const formatDate = (isoString) => {
+    if (!isoString) return '';
+    return isoString.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+
+  const title = event.title || '';
+  const location = `${event.city}, ${event.countryName || event.country}`;
+  const description = event.description || event.title;
+
+  return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Secretroom//Calendar//RU
+BEGIN:VEVENT
+UID:${event.title.replace(/\s+/g, '-')}-${Date.now()}@secretroom
+DTSTAMP:${formatDate(new Date().toISOString())}
+DTSTART:${formatDate(event.startISO)}
+DTEND:${formatDate(event.endISO)}
+SUMMARY:${title}
+LOCATION:${location}
+DESCRIPTION:${description}
+END:VEVENT
+END:VCALENDAR`;
+}
+
+// Основная функция добавления в календарь
+function addToCalendar(event) {
+  // Формируем данные
+  const title = encodeURIComponent(event.title);
+  const location = encodeURIComponent(`${event.city}, ${event.countryName || event.country}`);
+  const description = encodeURIComponent(event.description || '');
+
+  // Форматируем даты для Google Calendar (YYYYMMDDTHHmmssZ)
+  const startDate = event.startISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const endDate = event.endISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+  // Google Calendar URL (работает везде как fallback)
+  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
+
+  // Определяем платформу
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   if (isIOS) {
-    // iOS: Use Blob to show ICS preview with "Add to Calendar" button
+    // iOS: генерируем ICS и открываем через Blob
+    // Safari автоматически предложит добавить в Calendar
+    const icsContent = generateICSForIOS(event);
+
+    // Через Blob (лучше работает в новых iOS)
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const blobUrl = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
 
-    // Open in new window - Safari will show preview with "Add to Calendar"
-    const newWindow = window.open(blobUrl, '_blank');
+    // Открываем в том же окне — iOS подхватит и покажет диалог добавления
+    window.location.href = url;
 
-    // Clean up after 2 seconds
-    setTimeout(() => {
-      URL.revokeObjectURL(blobUrl);
-    }, 2000);
+    // Очистка через 1 секунду
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
   } else if (isAndroid) {
-    // Android: Direct data URL
-    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-    window.open(dataUrl, '_blank');
+    // Android: Google Calendar URL работает лучше всего
+    // Android сам предложит открыть в приложении Google Calendar
+    window.location.href = googleUrl;
+
   } else {
-    // Desktop: Download ICS file
-    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `${basename || 'event'}.ics`;
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(() => {
-      document.body.removeChild(link);
-    }, 100);
+    // Desktop: открываем Google Calendar в новой вкладке
+    window.open(googleUrl, '_blank');
   }
+}
+
+// Функция для скачивания ICS файла (только для множественных событий на десктопе)
+function downloadICSFile(icsContent, basename) {
+  const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+  const link = document.createElement('a');
+  link.href = dataUrl;
+  link.download = `${basename || 'event'}.ics`;
+  document.body.appendChild(link);
+  link.click();
+  setTimeout(() => {
+    document.body.removeChild(link);
+  }, 100);
 }
 
 // ------------------------------
