@@ -85,7 +85,10 @@ const VISA_MATRIX = {
     'ES': { required: 'да', type: 'Шенген', notes: 'Шенгенская виза' },
     'MX': { required: 'эл.разреш.', type: 'SAE', notes: 'Электронное разрешение' },
   },
+
+
 };
+
 
 // Маппинг conf_id -> country_code (для визовой логики)
 const CONF_COUNTRIES = {
@@ -541,10 +544,10 @@ const EVENTS = {
   "g2e_las_vegas_2026": {
     title: "G2E Las Vegas", description: "Крупнейшая выставка казино индустрии",
     city: "Las Vegas", country: "US", countryName: "США",
-    dates: "29 сент - 1 окт 2026", attendees: "27,000", promo: null,
+    dates: "28 сент - 1 окт 2026", attendees: "27,000", promo: null,
     weather: { temp: "22-32°C", description: "Жарко днём, прохладно ночью" },
     heroImage: "images/heroes/g2e_vegas.jpg",
-    startISO: "2026-09-29T09:00:00Z", endISO: "2026-10-01T18:00:00Z",
+    startISO: "2026-09-28T09:00:00Z", endISO: "2026-10-01T18:00:00Z",
     restaurants: [
       { name: "TAO Asian Bistro", vibe: "громко", avgCheck: "$80-200", description: "Легендарный азиатский в Venetian", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
       { name: "CUT by Wolfgang Puck", vibe: "тихо", avgCheck: "$120-300", description: "Премиум стейкхаус", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
@@ -573,10 +576,10 @@ const EVENTS = {
   "sbc_americas_2026": {
     title: "SBC Summit Americas", description: "Американский беттинг саммит",
     city: "Fort Lauderdale", country: "US", countryName: "США",
-    dates: "12-14 мая 2026", attendees: "6,000", promo: "-10%",
+    dates: "9-11 июня 2026", attendees: "6,000", promo: "-10%",
     weather: { temp: "28-33°C", description: "Жарко и влажно" },
     heroImage: "images/heroes/sbc_americas.jpg",
-    startISO: "2026-05-12T09:00:00Z", endISO: "2026-05-14T18:00:00Z",
+    startISO: "2026-06-09T09:00:00Z", endISO: "2026-06-11T18:00:00Z",
     restaurants: [
       { name: "Steak 954", vibe: "тихо", avgCheck: "$100-250", description: "Премиум стейкхаус в W Hotel, вид на океан", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
       { name: "Timpano", vibe: "посидеть", avgCheck: "$70-150", description: "Итальянский с приватными комнатами", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -785,44 +788,7 @@ const EVENTS = {
     ]
   },
 
-  "affiliate_world_europe_2026": {
-    title: "Affiliate World Europe", description: "Топовая affiliate конференция в Европе",
-    city: "Barcelona", country: "ES", countryName: "Испания",
-    dates: "9-10 июля", attendees: "5,000", promo: null,
-    weather: { temp: "24-30°C", description: "Жаркое лето, солнечно" },
-    heroImage: "images/heroes/aw_barcelona.jpg",
-    startISO: "2026-07-09T00:00:00", endISO: "2026-07-10",
-    restaurants: [
-      { name: "Tickets", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Can Culleretes", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Cervecería Catalana", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Botafumeiro", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "ABaC", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-    ],
-    brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=7C3AED&color=fff" },
-      { name: "Kambi", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Ka&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Catena Media", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ca&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-    ],
-    sideEvents: [
-      { title: "AW Europe Welcome Party", date: "8 июля", location: "Barcelona Beach", type: "party" },
-      { title: "Affiliate Meetup", date: "9 июля", location: "Fira Montjuïc", type: "networking" },
-    ]
-  },
-
-  "aibc_eurasia_dubai_2026": {
+"aibc_eurasia_dubai_2026": {
     title: "AIBC Eurasia", description: "Blockchain и AI конференция на Ближнем Востоке",
     city: "Dubai", country: "UAE", countryName: "ОАЭ",
     dates: "9-11 февраля", attendees: "14,500", promo: null,
@@ -899,10 +865,10 @@ const EVENTS = {
   "igb_affiliate_barcelona_2026": {
     title: "iGB Affiliate Barcelona", description: "Крупнейшая affiliate конференция в Европе",
     city: "Barcelona", country: "ES", countryName: "Испания",
-    dates: "20-21 января", attendees: "8,000", promo: null,
+    dates: "19-20 января", attendees: "8,000", promo: null,
     weather: { temp: "8-14°C", description: "Мягкая зима, возможны дожди" },
     heroImage: "images/heroes/igb_barcelona.jpg",
-    startISO: "2026-01-20T00:00:00", endISO: "2026-01-21",
+    startISO: "2026-01-19T00:00:00", endISO: "2026-01-20",
     restaurants: [
       { name: "Cal Pep", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
       { name: "Quimet & Quimet", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
@@ -1010,10 +976,10 @@ const EVENTS = {
   "sigma_euromed_malta_2026": {
     title: "SiGMA Euro-Med", description: "Крупное SiGMA событие на Мальте",
     city: "Ta' Qali", country: "MT", countryName: "Мальта",
-    dates: "1-3 марта", attendees: "12,000", promo: null,
-    weather: { temp: "14-18°C", description: "Мягкая весна, солнечно" },
+    dates: "3-5 мая", attendees: "12,000", promo: null,
+    weather: { temp: "18-22°C", description: "Тёплая весна, солнечно" },
     heroImage: "images/heroes/sigma_malta.jpg",
-    startISO: "2026-03-01T00:00:00", endISO: "2026-03-03",
+    startISO: "2026-05-03T00:00:00", endISO: "2026-05-05",
     restaurants: [
       { name: "Noni", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
       { name: "Under Grain", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
@@ -1152,6 +1118,160 @@ const EVENTS = {
     sideEvents: [
       { title: "SiGMA World Awards", date: "4 ноября", location: "Fiera Roma", type: "awards" },
       { title: "Rome Networking Dinner", date: "3 ноября", location: "Centro Storico", type: "dinner" },
+    ]
+  },
+
+  "affiliate_world_americas_2026": {
+    title: "Affiliate World Americas", description: "Конференция Affiliate World Americas",
+    city: "Cancun", country: "MX", countryName: "Мексика",
+    dates: "7-8 сентября", attendees: "5,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-09-07", endISO: "2026-09-08",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
+    ]
+  },
+
+  "affiliate_world_europe_2026": {
+    title: "Affiliate World Europe", description: "Конференция Affiliate World Europe",
+    city: "Budapest", country: "HU", countryName: "Венгрия",
+    dates: "9-10 июля", attendees: "7,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-07-09", endISO: "2026-07-10",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
+    ]
+  },
+
+  "sbc_summit_malta_2026": {
+    title: "SBC Summit Malta", description: "Конференция SBC Summit Malta",
+    city: "St. Julian's", country: "MT", countryName: "Мальта",
+    dates: "28-30 апреля", attendees: "6,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-04-28", endISO: "2026-04-30",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
+    ]
+  },
+
+  "sbc_summit_canada_2026": {
+    title: "SBC Summit Canada", description: "Конференция SBC Summit Canada",
+    city: "Toronto", country: "CA", countryName: "Канада",
+    dates: "19-21 мая", attendees: "3,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-05-19", endISO: "2026-05-21",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
+    ]
+  },
+
+  "aibc_world_rome_2026": {
+    title: "AIBC World", description: "Конференция AIBC World",
+    city: "Rome", country: "IT", countryName: "Италия",
+    dates: "2-5 ноября", attendees: "30,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-11-02", endISO: "2026-11-05",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
+    ]
+  },
+
+  "aibc_asia_manila_2026": {
+    title: "AIBC Asia", description: "Конференция AIBC Asia",
+    city: "Manila", country: "PH", countryName: "Филиппины",
+    dates: "1-3 июня", attendees: "5,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-06-01", endISO: "2026-06-03",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
+    ]
+  },
+
+  "g2e_asia_macau_2026": {
+    title: "G2E Asia", description: "Конференция G2E Asia",
+    city: "Macau", country: "MO", countryName: "Макао",
+    dates: "12-14 мая", attendees: "16,000", promo: null,
+    weather: { temp: "20-28°C", description: "Комфортная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-05-12", endISO: "2026-05-14",
+    restaurants: [
+      { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Restaurant 2", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
     ]
   },
 
