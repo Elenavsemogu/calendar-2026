@@ -15,7 +15,7 @@ function formatK(n) {
 // ------------------------------
 // State
 // ------------------------------
-let currentCitizenship = "RU";
+let currentCitizenship = "";
 
 // Для кнопки "Добавить в календарь": будем помнить, какое событие открыто в модалке
 let currentEventId = null;
@@ -106,6 +106,10 @@ const CONF_COUNTRIES = {
   'affpapa_madrid_2026': 'ES',
   'affpapa_cancun_2026': 'MX',
   'g2e_las_vegas_2026': 'US',
+  'sbwa_dakar_2026': 'SN',
+  'gm_events_brazil_2026': 'BR',
+  'spice_sea_2026': 'TH',
+  'conversion_forum_kyiv_2026': 'UA',
 };
 
 // Старая функция для обратной совместимости (deprecated)
@@ -331,7 +335,7 @@ const EVENTS = {
       { name: "Hawksmoor", vibe: "тихо", avgCheck: "$120-250", description: "Премиум стейкхаус", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" }
     ],
     brands: [
-      { name: "CoolAffs", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=CA&background=7C3AED&color=fff" },
+      { name: "CoolAffs", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=CA&background=F5DA0F&color=fff" },
       { name: "EcoPayz", category: "Платежи", logo: "https://logo.clearbit.com/ecopayz.com" },
       { name: "Betsson Group", category: "Оператор", logo: "https://logo.clearbit.com/betsson.com" },
       { name: "Evolution Gaming", category: "Провайдер", logo: "https://logo.clearbit.com/evolution.com" },
@@ -463,12 +467,12 @@ const EVENTS = {
       { name: "Pin-Up Partners", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=PU&background=EF4444&color=fff" },
       { name: "1xBet Partners", category: "Партнёрка", logo: "https://logo.clearbit.com/1xbet.com" },
       { name: "Lucky Partners", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=LP&background=22C55E&color=fff" },
-      { name: "Mostbet Partners", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=MB&background=F97316&color=fff" },
-      { name: "Gambling.pro", category: "Медиа", logo: "https://ui-avatars.com/api/?name=GP&background=7C3AED&color=fff" },
+      { name: "Mostbet Partners", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=MB&background=C8E712&color=fff" },
+      { name: "Gambling.pro", category: "Медиа", logo: "https://ui-avatars.com/api/?name=GP&background=F5DA0F&color=fff" },
       { name: "CPA Life", category: "Медиа", logo: "https://ui-avatars.com/api/?name=CL&background=3B82F6&color=fff" },
       { name: "Leadgid", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=LG&background=10B981&color=fff" },
-      { name: "Affstar", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=AS&background=F97316&color=fff" },
-      { name: "MetaCPA", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=MC&background=8B5CF6&color=fff" },
+      { name: "Affstar", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=AS&background=C8E712&color=fff" },
+      { name: "MetaCPA", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=MC&background=F5DA0F&color=fff" },
       { name: "Mobidea", category: "Партнёрка", logo: "https://logo.clearbit.com/mobidea.com" }
     ],
     sideEvents: [
@@ -492,7 +496,7 @@ const EVENTS = {
       { name: "Shavi Lomi", vibe: "громко", avgCheck: "$40-90", description: "Инстаграмное место, авторская кухня", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
     ],
     brands: [
-      { name: "Gambling.pro", category: "Медиа", logo: "https://ui-avatars.com/api/?name=GP&background=7C3AED&color=fff" },
+      { name: "Gambling.pro", category: "Медиа", logo: "https://ui-avatars.com/api/?name=GP&background=F5DA0F&color=fff" },
       { name: "Traffic Cardinals", category: "Медиа", logo: "https://ui-avatars.com/api/?name=TC&background=EF4444&color=fff" },
       { name: "Conversion", category: "Медиа", logo: "https://logo.clearbit.com/conversion.im" },
       { name: "SoftSwiss", category: "Технологии", logo: "https://logo.clearbit.com/softswiss.com" },
@@ -524,7 +528,7 @@ const EVENTS = {
       { name: "Barashka", vibe: "громко", avgCheck: "$50-120", description: "Кавказская кухня, вид на море", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
     ],
     brands: [
-      { name: "Партнёркин", category: "Медиа", logo: "https://ui-avatars.com/api/?name=PK&background=7C3AED&color=fff" },
+      { name: "Партнёркин", category: "Медиа", logo: "https://ui-avatars.com/api/?name=PK&background=F5DA0F&color=fff" },
       { name: "Conversion", category: "Медиа", logo: "https://logo.clearbit.com/conversion.im" },
       { name: "Кинза", category: "Медиа", logo: "https://ui-avatars.com/api/?name=K&background=22C55E&color=fff" },
       { name: "Трафик Кардинал", category: "Медиа", logo: "https://ui-avatars.com/api/?name=TC&background=EF4444&color=fff" },
@@ -533,7 +537,7 @@ const EVENTS = {
       { name: "Alfaleads", category: "Партнёрка", logo: "https://logo.clearbit.com/alfaleads.net" },
       { name: "Dr.Cash", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=DC&background=10B981&color=fff" },
       { name: "Everad", category: "Партнёрка", logo: "https://logo.clearbit.com/everad.com" },
-      { name: "MetaCPA", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=MC&background=8B5CF6&color=fff" }
+      { name: "MetaCPA", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=MC&background=F5DA0F&color=fff" }
     ],
     sideEvents: [
       { title: "Broconf Party", date: "25 апреля", location: "Red Arena", type: "party" },
@@ -626,7 +630,7 @@ const EVENTS = {
       { name: "Mobidea", category: "Партнёрка", logo: "https://logo.clearbit.com/mobidea.com" },
       { name: "Clickadu", category: "Технологии", logo: "https://logo.clearbit.com/clickadu.com" },
       { name: "TrafficStars", category: "Технологии", logo: "https://logo.clearbit.com/trafficstars.com" },
-      { name: "JEWIN", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=JW&background=F97316&color=fff" }
+      { name: "JEWIN", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=JW&background=C8E712&color=fff" }
     ],
     sideEvents: [
       { title: "Pre-Party", date: "31 марта", location: "TBA", type: "party" }
@@ -742,7 +746,7 @@ const EVENTS = {
       { name: "Clickdealer", category: "Партнёрка", logo: "https://logo.clearbit.com/clickdealer.com" },
       { name: "AdCombo", category: "Партнёрка", logo: "https://logo.clearbit.com/adcombo.com" },
       { name: "Yellana", category: "Партнёрка", logo: "https://logo.clearbit.com/yellana.com" },
-      { name: "JEWIN", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=JW&background=F97316&color=fff" },
+      { name: "JEWIN", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=JW&background=C8E712&color=fff" },
       { name: "CPAMafia", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=CM&background=111827&color=fff" },
       { name: "Golden Goose", category: "Партнёрка", logo: "https://logo.clearbit.com/goldengoose.com" }
     ],
@@ -766,21 +770,21 @@ const EVENTS = {
       { name: "Jay Fai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=7C3AED&color=fff" },
-      { name: "Kambi", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Ka&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Catena Media", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ca&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=F5DA0F&color=fff" },
+      { name: "Kambi", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Ka&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Catena Media", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ca&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "AW Asia Closing Party", date: "10 декабря", location: "Bangkok", type: "party" },
@@ -803,21 +807,21 @@ const EVENTS = {
       { name: "Coya Dubai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "AIBC Awards Ceremony", date: "10 февраля", location: "InterContinental Dubai", type: "awards" },
@@ -840,21 +844,21 @@ const EVENTS = {
       { name: "Skye", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
     ],
     brands: [
-      { name: "Betano", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Superbet", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Su&background=7C3AED&color=fff" },
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "Microgaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Mi&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "Trustly", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Tr&background=7C3AED&color=fff" },
+      { name: "Betano", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Superbet", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Su&background=F5DA0F&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "Microgaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Mi&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "Trustly", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Tr&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA South America Awards", date: "8 апреля", location: "Transamerica Expo", type: "awards" },
@@ -877,21 +881,21 @@ const EVENTS = {
       { name: "La Mar Salada", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=7C3AED&color=fff" },
-      { name: "Kambi", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Ka&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Catena Media", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ca&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=F5DA0F&color=fff" },
+      { name: "Kambi", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Ka&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Catena Media", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ca&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "iGB Affiliate Awards", date: "20 января", location: "Fira Gran Via", type: "awards" },
@@ -914,21 +918,21 @@ const EVENTS = {
       { name: "Belthazar", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA Africa Awards", date: "4 марта", location: "GrandWest Casino", type: "awards" },
@@ -951,21 +955,21 @@ const EVENTS = {
       { name: "Wolfgang's Steakhouse", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA Asia Awards", date: "2 июня", location: "SMX Convention Center", type: "awards" },
@@ -988,21 +992,21 @@ const EVENTS = {
       { name: "Caviar & Bull", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA Euro-Med Awards", date: "2 марта", location: "MFCC", type: "awards" },
@@ -1025,21 +1029,21 @@ const EVENTS = {
       { name: "Lardo", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
     ],
     brands: [
-      { name: "Betano", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Superbet", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Su&background=7C3AED&color=fff" },
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "Microgaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Mi&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "Trustly", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Tr&background=7C3AED&color=fff" },
+      { name: "Betano", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Superbet", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Su&background=F5DA0F&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "Microgaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Mi&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "SBTech", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SB&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "Trustly", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Tr&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA North America Awards", date: "2 сентября", location: "Mexico City", type: "awards" },
@@ -1062,21 +1066,21 @@ const EVENTS = {
       { name: "Sirocco", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA South Asia Awards", date: "1 декабря", location: "Bangkok", type: "awards" },
@@ -1099,21 +1103,21 @@ const EVENTS = {
       { name: "Il Pagliaccio", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=7C3AED&color=fff" },
-      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=7C3AED&color=fff" },
-      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=7C3AED&color=fff" },
-      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
-      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=7C3AED&color=fff" },
-      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=7C3AED&color=fff" },
-      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=7C3AED&color=fff" },
-      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=7C3AED&color=fff" },
-      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=7C3AED&color=fff" },
-      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=7C3AED&color=fff" },
-      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=7C3AED&color=fff" },
-      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=7C3AED&color=fff" },
+      { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Bet365", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Flutter Entertainment", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Fl&background=F5DA0F&color=fff" },
+      { name: "Evolution Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ev&background=F5DA0F&color=fff" },
+      { name: "Pragmatic Play", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Pr&background=F5DA0F&color=fff" },
+      { name: "NetEnt", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
+      { name: "SOFTSWISS", category: "Технологии", logo: "https://ui-avatars.com/api/?name=SO&background=F5DA0F&color=fff" },
+      { name: "Sportradar", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Sp&background=F5DA0F&color=fff" },
+      { name: "BetConstruct", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "AskGamblers", category: "Медиа", logo: "https://ui-avatars.com/api/?name=As&background=F5DA0F&color=fff" },
+      { name: "Gambling.com", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Ga&background=F5DA0F&color=fff" },
+      { name: "Better Collective", category: "Медиа", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
+      { name: "Paysafe", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Pa&background=F5DA0F&color=fff" },
+      { name: "Skrill", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Sk&background=F5DA0F&color=fff" },
+      { name: "Neteller", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Ne&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "SiGMA World Awards", date: "4 ноября", location: "Fiera Roma", type: "awards" },
@@ -1134,9 +1138,9 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
@@ -1156,9 +1160,9 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
@@ -1178,9 +1182,9 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
@@ -1200,9 +1204,9 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
@@ -1222,9 +1226,9 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
@@ -1244,9 +1248,9 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
@@ -1266,13 +1270,112 @@ const EVENTS = {
       { name: "Restaurant 3", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
     ],
     brands: [
-      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=7C3AED&color=fff" },
-      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=7C3AED&color=fff" },
-      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=7C3AED&color=fff" },
+      { name: "Brand 1", category: "Оператор", logo: "https://ui-avatars.com/api/?name=B1&background=F5DA0F&color=fff" },
+      { name: "Brand 2", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=B2&background=F5DA0F&color=fff" },
+      { name: "Brand 3", category: "Технологии", logo: "https://ui-avatars.com/api/?name=B3&background=F5DA0F&color=fff" },
     ],
     sideEvents: [
       { title: "Opening Party", date: "TBA", location: "TBA", type: "party" },
     ]
+  },
+
+  "sbwa_dakar_2026": {
+    title: "SBWA+", description: "Sports Betting West Africa+ — ведущий саммит по спортивным ставкам и гейминг-индустрии Западной Африки",
+    city: "Dakar", country: "SN", countryName: "Сенегал",
+    dates: "14–16 октября 2026", attendees: "1,000", promo: null,
+    weather: { temp: "27-32°C", description: "Тёплая и сухая погода, конец сезона дождей" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-10-14T09:00:00Z", endISO: "2026-10-16T18:00:00Z",
+    restaurants: [
+      { name: "La Calebasse", vibe: "тихо", avgCheck: "$30-60", description: "Сенегальская кухня с видом на океан", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Le Lagon 1", vibe: "посидеть", avgCheck: "$40-80", description: "Ресторан на воде, морепродукты", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Noflaye Beach", vibe: "громко", avgCheck: "$30-60", description: "Пляжный ресторан для нетворкинга", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Qtech Games", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Qt&background=F5DA0F&color=fff" },
+      { name: "DST Gaming", category: "Технологии", logo: "https://ui-avatars.com/api/?name=DS&background=F5DA0F&color=fff" },
+      { name: "pawaPay", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=pP&background=F5DA0F&color=fff" },
+      { name: "LexisNexis Risk Solutions", category: "Технологии", logo: "https://ui-avatars.com/api/?name=LN&background=F5DA0F&color=fff" },
+      { name: "Siru Mobile", category: "Платёжка", logo: "https://ui-avatars.com/api/?name=Si&background=F5DA0F&color=fff" },
+      { name: "ComplyGuard", category: "Технологии", logo: "https://ui-avatars.com/api/?name=CG&background=F5DA0F&color=fff" },
+    ],
+    sideEvents: [
+      { title: "SBWA+ Eventus Awards", date: "15 октября", location: "Dakar", type: "awards" },
+      { title: "Welcome Reception", date: "14 октября", location: "Dakar", type: "party" },
+    ]
+  },
+
+  "gm_events_brazil_2026": {
+    title: "G&M Events Brazil", description: "Встреча лидеров гейминг-индустрии Бразилии — операторов, провайдеров и ассоциаций",
+    city: "São Paulo", country: "BR", countryName: "Бразилия",
+    dates: "13 августа 2026", attendees: "200+", promo: null,
+    weather: { temp: "16-24°C", description: "Зима в Бразилии, сухая и прохладная погода" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-08-13T08:00:00Z", endISO: "2026-08-13T20:00:00Z",
+    restaurants: [
+      { name: "Figueira Rubaiyat", vibe: "посидеть", avgCheck: "$60-120", description: "Знаменитый стейкхаус под деревом", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Maní", vibe: "тихо", avgCheck: "$50-100", description: "Современная бразильская кухня", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Bar do Luiz Fernandes", vibe: "громко", avgCheck: "$20-50", description: "Ботеко для нетворкинга", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Oracle", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Or&background=F5DA0F&color=fff" },
+      { name: "Google", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Go&background=F5DA0F&color=fff" },
+      { name: "Bragg Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Br&background=F5DA0F&color=fff" },
+      { name: "Optimove", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Op&background=F5DA0F&color=fff" },
+    ],
+    sideEvents: [
+      { title: "Networking Dinner & Asado", date: "13 августа", location: "Cubo Itaú, Vila Olímpia", type: "dinner" },
+    ]
+  },
+
+  "spice_sea_2026": {
+    title: "SPiCE Southeast Asia", description: "Ежегодный саммит гейминг-индустрии Юго-Восточной Азии от Eventus International",
+    city: "Bangkok", country: "TH", countryName: "Таиланд",
+    dates: "12–14 августа 2026", attendees: "1,500", promo: null,
+    weather: { temp: "26-33°C", description: "Жарко и влажно, сезон дождей" },
+    heroImage: "images/heroes/placeholder.jpg",
+    startISO: "2026-08-12T09:00:00Z", endISO: "2026-08-14T18:00:00Z",
+    restaurants: [
+      { name: "Gaggan Anand", vibe: "тихо", avgCheck: "$80-150", description: "Прогрессивная индийская кухня, мировой топ", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Namsaah Bottling Trust", vibe: "посидеть", avgCheck: "$30-60", description: "Коктейль-бар с тайской кухней", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Tep Bar", vibe: "громко", avgCheck: "$20-40", description: "Живая музыка и тайские настойки", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Sirocco at Lebua", vibe: "посидеть", avgCheck: "$80-150", description: "Ресторан на крыше с видом на город", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Booming Games", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=BG&background=F5DA0F&color=fff" },
+      { name: "Gaming Analytics", category: "Технологии", logo: "https://ui-avatars.com/api/?name=GA&background=F5DA0F&color=fff" },
+      { name: "Trackier", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Tr&background=F5DA0F&color=fff" },
+      { name: "Czar Gaming", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=CZ&background=F5DA0F&color=fff" },
+      { name: "1710 Gaming", category: "Технологии", logo: "https://ui-avatars.com/api/?name=17&background=F5DA0F&color=fff" },
+    ],
+    sideEvents: [
+      { title: "SPiCE Breaker Welcome Reception", date: "12 августа", location: "The Landmark Bangkok", type: "party" },
+      { title: "Networking Drinks", date: "13 августа", location: "The Landmark Bangkok", type: "party" },
+    ]
+  },
+
+  "conversion_forum_kyiv_2026": {
+    title: "Conversion Forum Kyiv", description: "Один день практических инсайтов и нетворкинга для affiliate и performance-маркетинга",
+    city: "Kyiv", country: "UA", countryName: "Украина",
+    dates: "Август 2026", attendees: "1,000", promo: null,
+    weather: { temp: "20-28°C", description: "Тёплое лето, солнечно" },
+    heroImage: "images/heroes/conversion_kyiv.jpg",
+    startISO: "2026-08-01T10:00:00Z", endISO: "2026-08-01T20:00:00Z",
+    restaurants: [
+      { name: "Kanapa", vibe: "посидеть", avgCheck: "$40-100", description: "Современная украинская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Beef", vibe: "тихо", avgCheck: "$50-120", description: "Стейкхаус премиум класса", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Очень Хорошо", vibe: "громко", avgCheck: "$30-70", description: "Модный ресторан, коктейли", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "100 років тому вперед", vibe: "посидеть", avgCheck: "$35-80", description: "Ретро-атмосфера", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Ostannya Barykada", vibe: "громко", avgCheck: "$40-90", description: "Культовый бар на Майдане", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+    ],
+    brands: [
+      { name: "Conversion Club", category: "Медиа", logo: "https://ui-avatars.com/api/?name=CC&background=C8E712&color=fff" },
+      { name: "Revenuelab", category: "Партнёрка", logo: "https://logo.clearbit.com/revenuelab.co" },
+      { name: "Clickdealer", category: "Партнёрка", logo: "https://logo.clearbit.com/clickdealer.com" },
+      { name: "AdCombo", category: "Партнёрка", logo: "https://logo.clearbit.com/adcombo.com" },
+      { name: "Yellana", category: "Партнёрка", logo: "https://logo.clearbit.com/yellana.com" },
+    ],
+    sideEvents: []
   },
 
 };
@@ -1295,7 +1398,7 @@ function populateModal(eventId) {
     ` : '';
 
     heroEl.innerHTML = `
-      <div class="modal-hero" style="background-image: linear-gradient(to bottom, transparent 40%, rgba(22,24,29,0.95)), url('${event.heroImage || ''}')">
+      <div class="modal-hero" style="background-image: linear-gradient(to bottom, transparent 40%, rgba(27,27,27,0.95)), url('${event.heroImage || ''}')">
         <button class="modal-close-btn" onclick="closeModal()" type="button">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -1429,7 +1532,7 @@ function populateRestaurantsTab(restaurants) {
   restaurants.forEach(r => {
     const vibeInfo = vibeMap[r.vibe] || { label: r.vibe, class: 'vibe-tag-sit' };
     html += `
-      <div class="restaurant-card relative flex gap-4 p-4 rounded-xl border border-[#2A2E37] bg-[#0F1115] mb-3 cursor-pointer">
+      <div class="restaurant-card relative flex gap-4 p-4 rounded-xl border border-[#333333] bg-[#1B1B1B] mb-3 cursor-pointer">
         ${r.avgCheck ? `<div class="absolute top-3 right-3"><span class="restaurant-check-pill">${r.avgCheck}</span></div>` : ''}
         <img src="${r.img || 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=200&auto=format&fit=crop'}" class="w-20 h-20 rounded-xl object-cover flex-shrink-0 shadow-lg" alt="${r.name}" loading="lazy" decoding="async">
         <div class="flex-1 flex flex-col min-w-0">
@@ -1556,9 +1659,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Citizenship
   const citizenshipSelect = qs("#citizenshipSelect");
   if (citizenshipSelect) {
-    currentCitizenship = citizenshipSelect.value || "RU";
+    currentCitizenship = citizenshipSelect.value || "";
     citizenshipSelect.addEventListener("change", () => {
-      currentCitizenship = citizenshipSelect.value || "RU";
+      currentCitizenship = citizenshipSelect.value || "";
       updateAllVisaTags();
       applyFilters();
       // если модалка открыта — обновим бейдж в ней
@@ -2374,6 +2477,11 @@ window.onTelegramAuth = function(user) {
 };
 
 function initAccessModal() {
+  // ⚡ ВРЕМЕННО ОТКЛЮЧЕНО для удобства просмотра правок.
+  // Чтобы включить обратно — поменяй true → false:
+  const SKIP_AUTH = true;
+  if (SKIP_AUTH) return;
+
   // Check if user already has access
   if (checkAccess()) {
     return; // Don't show modal
@@ -2444,3 +2552,156 @@ function initAccessModal() {
     }, 500);
   });
 }
+
+// =====================================================
+// TELEGRAM AUTH SYSTEM
+// =====================================================
+
+// ⚠️ НАСТРОЙКА АВТОРИЗАЦИИ:
+// 1. Создай бота в @BotFather и получи username (без @)
+// 2. Настрой Google Apps Script (см. AUTH_SETUP_INSTRUCTIONS.md)
+// 3. Замени botUsername и scriptUrl ниже
+const AUTH_CONFIG = {
+  botUsername: 'YOUR_BOT_USERNAME', // ⬅️ ЗАМЕНИТЬ! (без @, например: secretroomcalendar_bot)
+  channelUsername: '@secreetroommedia',
+  scriptUrl: 'YOUR_GOOGLE_APPS_SCRIPT_URL', // ⬅️ ЗАМЕНИТЬ после deploy Apps Script
+  storageKey: 'sr_auth_token'
+};
+
+// Check auth on page load
+function checkAuth() {
+  const token = localStorage.getItem(AUTH_CONFIG.storageKey);
+  
+  if (token) {
+    // User is authorized
+    document.body.classList.remove('auth-required');
+    hideAuthOverlay();
+  } else {
+    // User needs to auth
+    document.body.classList.add('auth-required');
+    showAuthOverlay();
+  }
+}
+
+function showAuthOverlay() {
+  const overlay = document.getElementById('authOverlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    initTelegramWidget();
+  }
+}
+
+function hideAuthOverlay() {
+  const overlay = document.getElementById('authOverlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+}
+
+// Initialize Telegram Login Widget
+function initTelegramWidget() {
+  const container = document.getElementById('tgLoginWidget');
+  if (!container || container.hasChildNodes()) return;
+
+  // Create Telegram Login Button
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://telegram.org/js/telegram-widget.js?22';
+  script.setAttribute('data-telegram-login', AUTH_CONFIG.botUsername);
+  script.setAttribute('data-size', 'large');
+  script.setAttribute('data-radius', '12');
+  script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  script.setAttribute('data-request-access', 'write');
+  
+  container.appendChild(script);
+}
+
+// Telegram callback
+window.onTelegramAuth = function(user) {
+  console.log('Telegram auth received:', user);
+  
+  // Store user data temporarily
+  window.telegramUser = user;
+  
+  // Show profession step
+  showStep('authStep2');
+};
+
+function showStep(stepId) {
+  document.querySelectorAll('.auth-step').forEach(el => el.style.display = 'none');
+  const step = document.getElementById(stepId);
+  if (step) step.style.display = 'block';
+}
+
+// Handle profession submit
+document.addEventListener('DOMContentLoaded', () => {
+  const submitBtn = document.getElementById('authSubmitBtn');
+  const professionSelect = document.getElementById('authProfession');
+  
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async () => {
+      const profession = professionSelect.value;
+      
+      if (!profession) {
+        alert('Выберите профессию');
+        return;
+      }
+      
+      if (!window.telegramUser) {
+        alert('Ошибка авторизации. Попробуйте снова.');
+        return;
+      }
+      
+      // Show loading
+      showStep('authLoading');
+      
+      try {
+        // Send to Google Apps Script
+        const response = await fetch(AUTH_CONFIG.scriptUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            telegram_id: window.telegramUser.id,
+            first_name: window.telegramUser.first_name,
+            last_name: window.telegramUser.last_name || '',
+            username: window.telegramUser.username || '',
+            photo_url: window.telegramUser.photo_url || '',
+            auth_date: window.telegramUser.auth_date,
+            hash: window.telegramUser.hash,
+            profession: profession,
+            timestamp: new Date().toISOString()
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.isSubscribed) {
+          // Save token
+          localStorage.setItem(AUTH_CONFIG.storageKey, data.token);
+          
+          // Hide auth overlay
+          document.body.classList.remove('auth-required');
+          hideAuthOverlay();
+          
+          // Reload to show full content
+          location.reload();
+        } else if (!data.isSubscribed) {
+          // Not subscribed
+          showStep('authError');
+          document.getElementById('authErrorText').textContent = 
+            'Вы не подписаны на канал @secreetroommedia. Подпишитесь и попробуйте снова.';
+        } else {
+          throw new Error(data.message || 'Ошибка авторизации');
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+        showStep('authError');
+        document.getElementById('authErrorText').textContent = 
+          'Произошла ошибка. Попробуйте снова или напишите @secretroom_sales';
+      }
+    });
+  }
+  
+  // Check auth on load
+  checkAuth();
+});
