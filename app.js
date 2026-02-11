@@ -2558,13 +2558,13 @@ function initAccessModal() {
 // =====================================================
 
 // ⚠️ НАСТРОЙКА АВТОРИЗАЦИИ:
-// 1. Создай бота в @BotFather и получи username (без @)
-// 2. Настрой Google Apps Script (см. AUTH_SETUP_INSTRUCTIONS.md)
-// 3. Замени botUsername и scriptUrl ниже
+// 1. Бот: SecretRoomCalendar_bot
+// 2. Канал: @secreetroommedia
+// 3. Google Apps Script уже настроен ✅
 const AUTH_CONFIG = {
-  botUsername: 'YOUR_BOT_USERNAME', // ⬅️ ЗАМЕНИТЬ! (без @, например: secretroomcalendar_bot)
+  botUsername: 'SecretRoomCalendar_bot', // ✅ Ваш бот
   channelUsername: '@secreetroommedia',
-  scriptUrl: 'YOUR_GOOGLE_APPS_SCRIPT_URL', // ⬅️ ЗАМЕНИТЬ после deploy Apps Script
+  scriptUrl: 'https://script.google.com/macros/s/AKfycby_yjYFYP6Yphc_s1mb0l4leKZUUmt4h1gfrPEM8Ab8E4lytggfKkjfQlUTxC5sHaHJ/exec', // ✅ Уже существующий скрипт
   storageKey: 'sr_auth_token'
 };
 

@@ -14,10 +14,10 @@
 // 8. Скопируй URL и вставь в app.js в AUTH_CONFIG.scriptUrl
 
 const CONFIG = {
-  BOT_TOKEN: '8191206268:AAEYjnXVO9q7kBGBzvir5ntXPedoMQO7IrM',
+  BOT_TOKEN: '8191206268:AAEYjnXVO9q7kBGBzvir5ntPedoMQO7IrM',
   CHANNEL_ID: '@secreetroommedia',
-  SPREADSHEET_ID: 'YOUR_SPREADSHEET_ID', // ID из URL Google Sheets
-  SHEET_NAME: 'Auth Users' // Название листа
+  SPREADSHEET_ID: 'YOUR_SPREADSHEET_ID', // ⬅️ ЗАМЕНИТЬ на ID вашей существующей таблицы
+  SHEET_NAME: 'Telegram Auth' // Лист для Telegram авторизации (создастся автоматически)
 };
 
 // Main handler
