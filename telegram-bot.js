@@ -9,7 +9,7 @@ const CONFIG = {
   CHANNEL_ID: '@secreetroommedia',
   SPREADSHEET_ID: '1kwiWTnsfaxy-iNA9rXTHeMKalRS4Q42mgsezzTQLZJY',
   SHEET_NAME: 'Bot Users',
-  CALENDAR_URL: 'https://elenavsemogu.github.io/calendar-2026/' // ⬅️ ЗАМЕНИТЬ на свой домен!
+  CALENDAR_URL: 'https://elenavsemogu.github.io/calendar-2026/'
 };
 
 // Webhook handler
@@ -36,19 +36,58 @@ function handleMessage(message) {
   const userId = message.from.id;
   const text = message.text || '';
   
-  // Save user to sheet
-  saveUser({
-    telegram_id: userId,
-    first_name: message.from.first_name,
-    last_name: message.from.last_name || '',
-    username: message.from.username || '',
-    timestamp: new Date().toISOString()
-  });
+  // Handle contact sharing
+  if (message.contact) {
+    handleContactShared(message);
+    return;
+  }
   
   // Handle /start command
   if (text.startsWith('/start')) {
-    checkSubscriptionAndReply(chatId, userId);
+    sendWelcomeMessage(chatId, message.from);
+    return;
   }
+}
+
+// Send welcome message with contact request
+function sendWelcomeMessage(chatId, user) {
+  const firstName = user.first_name || 'друг';
+  
+  sendMessage(chatId,
+    `👋 *Привет, ${firstName}!*\n\n` +
+    '🗓 Добро пожаловать в *Secret Room Calendar*!\n\n' +
+    'Здесь ты найдешь все главные iGaming конференции 2026 года.\n\n' +
+    '📱 Чтобы продолжить, поделись своим контактом — это займет 1 секунду!',
+    {
+      reply_markup: {
+        keyboard: [[
+          { text: '✅ Да, поделиться контактом', request_contact: true }
+        ]],
+        resize_keyboard: true,
+        one_time_keyboard: true
+      }
+    }
+  );
+}
+
+// Handle contact shared
+function handleContactShared(message) {
+  const chatId = message.chat.id;
+  const userId = message.contact.user_id || message.from.id;
+  const contact = message.contact;
+  
+  // Save user with contact info
+  saveUser({
+    telegram_id: userId,
+    first_name: contact.first_name,
+    last_name: contact.last_name || '',
+    username: message.from.username || '',
+    phone: contact.phone_number || '',
+    timestamp: new Date().toISOString()
+  });
+  
+  // Check subscription and reply
+  checkSubscriptionAndReply(chatId, userId, contact.first_name);
 }
 
 // Handle callback buttons
@@ -56,17 +95,39 @@ function handleCallback(callback) {
   const chatId = callback.message.chat.id;
   const userId = callback.from.id;
   const data = callback.data;
+  const firstName = callback.from.first_name;
   
   if (data === 'check_subscription') {
-    checkSubscriptionAndReply(chatId, userId);
+    const isSubscribed = checkChannelSubscription(userId);
+    
+    if (isSubscribed) {
+      // Generate token and send calendar link
+      const token = generateToken(userId);
+      const calendarLink = CONFIG.CALENDAR_URL + '?auth=' + token;
+      
+      sendMessage(chatId,
+        `🎉 *Отлично, ${firstName}!*\n\n` +
+        '✅ Подписка подтверждена!\n\n' +
+        '🗓 Открывай календарь — он уже ждет тебя:',
+        {
+          reply_markup: {
+            inline_keyboard: [[
+              { text: '🗓 Открыть календарь', url: calendarLink }
+            ]]
+          }
+        }
+      );
+      
+      answerCallback(callback.id, '✅ Подписка подтверждена!');
+    } else {
+      answerCallback(callback.id, '⚠️ Подписка не найдена. Подпишись на канал и попробуй снова.');
+    }
   }
-  
-  // Answer callback to remove "loading" state
-  answerCallback(callback.id);
 }
 
 // Check subscription and send appropriate message
-function checkSubscriptionAndReply(chatId, userId) {
+function checkSubscriptionAndReply(chatId, userId, firstName) {
+  const name = firstName || 'друг';
   const isSubscribed = checkChannelSubscription(userId);
   
   if (isSubscribed) {
@@ -75,30 +136,40 @@ function checkSubscriptionAndReply(chatId, userId) {
     const calendarLink = CONFIG.CALENDAR_URL + '?auth=' + token;
     
     sendMessage(chatId, 
-      '✅ *Отлично!*\n\n' +
-      'Вы подписаны на канал Secret Room.\n' +
-      'Откройте календарь iGaming конференций 2026:\n\n' +
-      '👇 Нажмите кнопку ниже',
+      `🎉 *Отлично, ${name}!*\n\n` +
+      '✅ Ты уже подписан на *Secret Room*\n\n' +
+      '🗓 Открывай календарь всех главных iGaming конференций 2026:\n\n' +
+      '• Даты и локации\n' +
+      '• Визовые требования\n' +
+      '• Промокоды на билеты\n' +
+      '• Гид по ресторанам\n\n' +
+      '👇 Жми на кнопку ниже',
       {
         reply_markup: {
           inline_keyboard: [[
             { text: '🗓 Открыть календарь', url: calendarLink }
-          ]]
+          ]],
+          remove_keyboard: true
         }
       }
     );
   } else {
     sendMessage(chatId,
-      '⚠️ *Нужна подписка*\n\n' +
-      'Чтобы получить доступ к календарю, подпишитесь на наш канал:\n\n' +
-      '👉 @secreetroommedia\n\n' +
-      'После подписки нажмите кнопку "Проверить"',
+      `👋 *Спасибо, ${name}!*\n\n` +
+      '📢 Теперь подпишись на канал *Secret Room*, чтобы получить доступ к календарю!\n\n' +
+      '💎 В канале ты найдешь:\n' +
+      '• Анонсы всех ивентов\n' +
+      '• Эксклюзивные промокоды\n' +
+      '• Закрытые сайд-ивенты\n' +
+      '• Инсайды из индустрии\n\n' +
+      '👇 Подписывайся и получай доступ к календарю:',
       {
         reply_markup: {
           inline_keyboard: [
-            [{ text: '📢 Подписаться', url: 'https://t.me/secreetroommedia' }],
-            [{ text: '✅ Проверить подписку', callback_data: 'check_subscription' }]
-          ]
+            [{ text: '📢 Подписаться на Secret Room', url: 'https://t.me/secreetroommedia' }],
+            [{ text: '✅ Я подписался! Открыть календарь', callback_data: 'check_subscription' }]
+          ],
+          remove_keyboard: true
         }
       }
     );
@@ -191,6 +262,7 @@ function saveUser(data) {
         'First Name',
         'Last Name',
         'Username',
+        'Phone',
         'Last Visit'
       ]);
     }
@@ -212,6 +284,7 @@ function saveUser(data) {
       data.first_name,
       data.last_name,
       data.username,
+      data.phone || '',
       new Date().toISOString()
     ];
     
