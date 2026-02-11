@@ -129,7 +129,7 @@ function saveToSheet(data) {
       data.first_name,
       data.last_name,
       data.username,
-      data.profession,
+      data.profession || 'Не указано',
       data.photo_url,
       data.auth_date
     ];

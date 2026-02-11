@@ -2617,14 +2617,15 @@ function initTelegramWidget() {
 }
 
 // Telegram callback
-window.onTelegramAuth = function(user) {
+window.onTelegramAuth = async function(user) {
   console.log('Telegram auth received:', user);
   
   // Store user data temporarily
   window.telegramUser = user;
   
-  // Show profession step
-  showStep('authStep2');
+  // Show loading and check subscription immediately
+  showStep('authLoading');
+  await checkSubscriptionAndAuth();
 };
 
 function showStep(stepId) {
@@ -2633,72 +2634,71 @@ function showStep(stepId) {
   if (step) step.style.display = 'block';
 }
 
-// Handle profession submit
-document.addEventListener('DOMContentLoaded', () => {
-  const submitBtn = document.getElementById('authSubmitBtn');
-  const professionSelect = document.getElementById('authProfession');
+// Check subscription and grant access
+async function checkSubscriptionAndAuth() {
+  if (!window.telegramUser) {
+    alert('Ошибка авторизации. Попробуйте снова.');
+    location.reload();
+    return;
+  }
   
-  if (submitBtn) {
-    submitBtn.addEventListener('click', async () => {
-      const profession = professionSelect.value;
+  try {
+    // Send to Google Apps Script
+    const response = await fetch(AUTH_CONFIG.scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        telegram_id: window.telegramUser.id,
+        first_name: window.telegramUser.first_name,
+        last_name: window.telegramUser.last_name || '',
+        username: window.telegramUser.username || '',
+        photo_url: window.telegramUser.photo_url || '',
+        auth_date: window.telegramUser.auth_date,
+        hash: window.telegramUser.hash,
+        timestamp: new Date().toISOString()
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.isSubscribed) {
+      // Save token
+      localStorage.setItem(AUTH_CONFIG.storageKey, data.token);
       
-      if (!profession) {
-        alert('Выберите профессию');
-        return;
-      }
+      // Hide auth overlay
+      document.body.classList.remove('auth-required');
+      hideAuthOverlay();
       
-      if (!window.telegramUser) {
-        alert('Ошибка авторизации. Попробуйте снова.');
-        return;
-      }
+      // Reload to show full content
+      location.reload();
+    } else if (!data.isSubscribed) {
+      // Not subscribed - show subscription step
+      showStep('authStep2');
+    } else {
+      throw new Error(data.message || 'Ошибка авторизации');
+    }
+  } catch (error) {
+    console.error('Auth error:', error);
+    showStep('authError');
+    document.getElementById('authErrorText').textContent = 
+      'Произошла ошибка. Попробуйте снова или напишите @secretroom_sales';
+  }
+}
+
+// Handle retry button (check subscription again)
+document.addEventListener('DOMContentLoaded', () => {
+  const retryBtn = document.getElementById('authRetryBtn');
+  
+  if (retryBtn) {
+    retryBtn.addEventListener('click', async () => {
+      retryBtn.disabled = true;
+      retryBtn.textContent = 'Проверяем...';
       
-      // Show loading
       showStep('authLoading');
+      await checkSubscriptionAndAuth();
       
-      try {
-        // Send to Google Apps Script
-        const response = await fetch(AUTH_CONFIG.scriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            telegram_id: window.telegramUser.id,
-            first_name: window.telegramUser.first_name,
-            last_name: window.telegramUser.last_name || '',
-            username: window.telegramUser.username || '',
-            photo_url: window.telegramUser.photo_url || '',
-            auth_date: window.telegramUser.auth_date,
-            hash: window.telegramUser.hash,
-            profession: profession,
-            timestamp: new Date().toISOString()
-          })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success && data.isSubscribed) {
-          // Save token
-          localStorage.setItem(AUTH_CONFIG.storageKey, data.token);
-          
-          // Hide auth overlay
-          document.body.classList.remove('auth-required');
-          hideAuthOverlay();
-          
-          // Reload to show full content
-          location.reload();
-        } else if (!data.isSubscribed) {
-          // Not subscribed
-          showStep('authError');
-          document.getElementById('authErrorText').textContent = 
-            'Вы не подписаны на канал @secreetroommedia. Подпишитесь и попробуйте снова.';
-        } else {
-          throw new Error(data.message || 'Ошибка авторизации');
-        }
-      } catch (error) {
-        console.error('Auth error:', error);
-        showStep('authError');
-        document.getElementById('authErrorText').textContent = 
-          'Произошла ошибка. Попробуйте снова или напишите @secretroom_sales';
-      }
+      retryBtn.disabled = false;
+      retryBtn.textContent = 'Проверить подписку';
     });
   }
   

@@ -1069,64 +1069,31 @@
     <p class="text-sm text-white/60 mb-6">Авторизуйтесь через Telegram, чтобы получить полный доступ к календарю</p>
     
     <!-- Auth Steps -->
+    <!-- Step 1: Telegram Login -->
     <div id="authStep1" class="auth-step">
       <div class="bg-[#1B1B1B] rounded-2xl p-6 mb-4">
-        <div class="flex items-start gap-3 mb-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#F5DA0F] text-[#1B1B1B] font-extrabold flex items-center justify-center">1</div>
-          <div class="text-left">
-            <h3 class="text-sm font-bold text-white mb-1">Подпишитесь на канал</h3>
-            <p class="text-xs text-white/50">Обязательный шаг для доступа</p>
-          </div>
-        </div>
-        <a href="https://t.me/secreetroommedia" target="_blank" class="block w-full py-3 rounded-xl bg-[#2E39F7] text-white font-bold hover:opacity-90 transition">
-          Подписаться на @secreetroommedia
-        </a>
-      </div>
-
-      <div class="bg-[#1B1B1B] rounded-2xl p-6 mb-6">
-        <div class="flex items-start gap-3 mb-4">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#F5DA0F] text-[#1B1B1B] font-extrabold flex items-center justify-center">2</div>
-          <div class="text-left">
-            <h3 class="text-sm font-bold text-white mb-1">Войдите через Telegram</h3>
-            <p class="text-xs text-white/50">Это быстро и безопасно</p>
-          </div>
-        </div>
         <div id="tgLoginWidget" class="flex justify-center"></div>
       </div>
-
       <p class="text-xs text-white/40">Нажимая кнопку, вы соглашаетесь с обработкой данных</p>
     </div>
 
-    <!-- Step 2: Profession Selection -->
+    <!-- Step 2: Not Subscribed -->
     <div id="authStep2" class="auth-step" style="display: none;">
-      <div class="bg-[#1B1B1B] rounded-2xl p-6">
-        <h3 class="text-lg font-bold text-white mb-4">Последний шаг!</h3>
-        <p class="text-sm text-white/60 mb-4">Выберите вашу профессию:</p>
-        
-        <select id="authProfession" class="w-full px-4 py-3 bg-[#2A2A2A] border border-[#444444] rounded-xl text-white focus:border-[#F5DA0F] focus:outline-none mb-4">
-          <option value="">Выберите профессию...</option>
-          <option value="Affiliate Manager">Affiliate Manager</option>
-          <option value="Медиабайер">Медиабайер</option>
-          <option value="Тимлид (Affiliate)">Тимлид (Affiliate)</option>
-          <option value="Арбитражник">Арбитражник</option>
-          <option value="Вебмастер">Вебмастер</option>
-          <option value="CEO / Основатель">CEO / Основатель</option>
-          <option value="COO">COO</option>
-          <option value="CMO">CMO</option>
-          <option value="Business Development Manager">Business Development Manager</option>
-          <option value="Partnership Manager">Partnership Manager</option>
-          <option value="Account Manager">Account Manager</option>
-          <option value="Sales Manager">Sales Manager</option>
-          <option value="Product Manager">Product Manager</option>
-          <option value="Другое">Другое</option>
-        </select>
-
-        <button id="authSubmitBtn" class="w-full py-4 rounded-xl bg-gradient-to-r from-[#F5DA0F] to-[#C8E712] text-[#1B1B1B] font-extrabold hover:opacity-90 transition flex items-center justify-center gap-2">
-          <span id="authSubmitText">Получить доступ</span>
-          <svg id="authSubmitSpinner" class="hidden animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      <div class="bg-[#1B1B1B] rounded-2xl p-6 text-center">
+        <div class="w-16 h-16 rounded-full bg-[#F5DA0F]/20 flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-[#F5DA0F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
           </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Нужна подписка</h3>
+        <p class="text-sm text-white/60 mb-6">Подпишитесь на канал, чтобы получить доступ к календарю</p>
+        
+        <a href="https://t.me/secreetroommedia" target="_blank" class="block w-full py-4 rounded-xl bg-[#2E39F7] text-white font-bold hover:opacity-90 transition mb-3">
+          Подписаться на @secreetroommedia
+        </a>
+        
+        <button id="authRetryBtn" class="w-full py-4 rounded-xl border-2 border-[#F5DA0F] text-[#F5DA0F] font-bold hover:bg-[#F5DA0F]/10 transition">
+          Проверить подписку
         </button>
       </div>
     </div>
