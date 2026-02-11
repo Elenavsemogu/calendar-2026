@@ -1066,62 +1066,39 @@
     
     <!-- Title -->
     <h2 class="text-2xl font-extrabold text-white mb-2">Добро пожаловать!</h2>
-    <p class="text-sm text-white/60 mb-6">Авторизуйтесь через Telegram, чтобы получить полный доступ к календарю</p>
+    <p class="text-sm text-white/60 mb-6">Получите доступ к календарю через Telegram — это быстро и просто!</p>
     
     <!-- Auth Steps -->
-    <!-- Step 1: Telegram Login -->
+    <!-- Step 1: Go to Bot -->
     <div id="authStep1" class="auth-step">
       <div class="bg-[#1B1B1B] rounded-2xl p-6 mb-4">
-        <div id="tgLoginWidget" class="flex justify-center"></div>
-      </div>
-      <p class="text-xs text-white/40">Нажимая кнопку, вы соглашаетесь с обработкой данных</p>
-    </div>
-
-    <!-- Step 2: Not Subscribed -->
-    <div id="authStep2" class="auth-step" style="display: none;">
-      <div class="bg-[#1B1B1B] rounded-2xl p-6 text-center">
-        <div class="w-16 h-16 rounded-full bg-[#F5DA0F]/20 flex items-center justify-center mx-auto mb-4">
-          <svg class="w-8 h-8 text-[#F5DA0F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-[#2E39F7] flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <h3 class="text-lg font-bold text-white">Всего 2 клика!</h3>
+            <p class="text-xs text-white/50">Откройте бота в Telegram</p>
+          </div>
         </div>
-        <h3 class="text-lg font-bold text-white mb-2">Нужна подписка</h3>
-        <p class="text-sm text-white/60 mb-6">Подпишитесь на канал, чтобы получить доступ к календарю</p>
         
-        <a href="https://t.me/secreetroommedia" target="_blank" class="block w-full py-4 rounded-xl bg-[#2E39F7] text-white font-bold hover:opacity-90 transition mb-3">
-          Подписаться на @secreetroommedia
+        <a href="https://t.me/calendarreg_bot?start=calendar" target="_blank" class="block w-full py-4 rounded-xl bg-gradient-to-r from-[#2E39F7] to-[#5B6EF7] text-white font-bold text-center hover:opacity-90 transition shadow-lg">
+          🚀 Открыть в Telegram
         </a>
-        
-        <button id="authRetryBtn" class="w-full py-4 rounded-xl border-2 border-[#F5DA0F] text-[#F5DA0F] font-bold hover:bg-[#F5DA0F]/10 transition">
-          Проверить подписку
-        </button>
+      </div>
+      
+      <div class="bg-[#333333]/50 rounded-xl p-4 text-left">
+        <p class="text-xs text-white/60 mb-2">✅ Бот проверит подписку на канал</p>
+        <p class="text-xs text-white/60 mb-2">✅ Вы получите персональную ссылку</p>
+        <p class="text-xs text-white/60">✅ Доступ откроется автоматически</p>
       </div>
     </div>
 
-    <!-- Loading State -->
-    <div id="authLoading" class="auth-step" style="display: none;">
-      <div class="py-8">
-        <svg class="animate-spin h-12 w-12 mx-auto text-[#F5DA0F] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <p class="text-white/60">Проверяем подписку...</p>
-      </div>
-    </div>
-
-    <!-- Error State -->
-    <div id="authError" class="auth-step" style="display: none;">
-      <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4">
-        <p class="text-red-400 text-sm" id="authErrorText"></p>
-      </div>
-      <button onclick="location.reload()" class="text-[#F5DA0F] font-bold text-sm hover:underline">Попробовать снова</button>
-    </div>
 
   </div>
 </div>
-
-<!-- Telegram Login Widget Script -->
-<script async src="https://telegram.org/js/telegram-widget.js?22"></script>
 
 </body>
 </html>

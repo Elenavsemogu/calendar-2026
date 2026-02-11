@@ -2570,6 +2570,17 @@ const AUTH_CONFIG = {
 
 // Check auth on page load
 function checkAuth() {
+  // Check for token in URL (from Telegram bot)
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlToken = urlParams.get('auth');
+  
+  if (urlToken) {
+    // Save token from URL
+    localStorage.setItem(AUTH_CONFIG.storageKey, urlToken);
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+  
   const token = localStorage.getItem(AUTH_CONFIG.storageKey);
   
   if (token) {
@@ -2598,110 +2609,13 @@ function hideAuthOverlay() {
   }
 }
 
-// Initialize Telegram Login Widget
-function initTelegramWidget() {
-  const container = document.getElementById('tgLoginWidget');
-  if (!container || container.hasChildNodes()) return;
+// No longer needed - bot handles auth now
+// function initTelegramWidget() { ... }
 
-  // Create Telegram Login Button
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = 'https://telegram.org/js/telegram-widget.js?22';
-  script.setAttribute('data-telegram-login', AUTH_CONFIG.botUsername);
-  script.setAttribute('data-size', 'large');
-  script.setAttribute('data-radius', '12');
-  script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-  script.setAttribute('data-request-access', 'write');
-  
-  container.appendChild(script);
-}
+// No longer needed - bot handles auth now
+// window.onTelegramAuth = async function(user) { ... }
 
-// Telegram callback
-window.onTelegramAuth = async function(user) {
-  console.log('Telegram auth received:', user);
-  
-  // Store user data temporarily
-  window.telegramUser = user;
-  
-  // Show loading and check subscription immediately
-  showStep('authLoading');
-  await checkSubscriptionAndAuth();
-};
-
-function showStep(stepId) {
-  document.querySelectorAll('.auth-step').forEach(el => el.style.display = 'none');
-  const step = document.getElementById(stepId);
-  if (step) step.style.display = 'block';
-}
-
-// Check subscription and grant access
-async function checkSubscriptionAndAuth() {
-  if (!window.telegramUser) {
-    alert('Ошибка авторизации. Попробуйте снова.');
-    location.reload();
-    return;
-  }
-  
-  try {
-    // Send to Google Apps Script
-    const response = await fetch(AUTH_CONFIG.scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        telegram_id: window.telegramUser.id,
-        first_name: window.telegramUser.first_name,
-        last_name: window.telegramUser.last_name || '',
-        username: window.telegramUser.username || '',
-        photo_url: window.telegramUser.photo_url || '',
-        auth_date: window.telegramUser.auth_date,
-        hash: window.telegramUser.hash,
-        timestamp: new Date().toISOString()
-      })
-    });
-    
-    const data = await response.json();
-    
-    if (data.success && data.isSubscribed) {
-      // Save token
-      localStorage.setItem(AUTH_CONFIG.storageKey, data.token);
-      
-      // Hide auth overlay
-      document.body.classList.remove('auth-required');
-      hideAuthOverlay();
-      
-      // Reload to show full content
-      location.reload();
-    } else if (!data.isSubscribed) {
-      // Not subscribed - show subscription step
-      showStep('authStep2');
-    } else {
-      throw new Error(data.message || 'Ошибка авторизации');
-    }
-  } catch (error) {
-    console.error('Auth error:', error);
-    showStep('authError');
-    document.getElementById('authErrorText').textContent = 
-      'Произошла ошибка. Попробуйте снова или напишите @secretroom_sales';
-  }
-}
-
-// Handle retry button (check subscription again)
+// Simple init - just check auth on load
 document.addEventListener('DOMContentLoaded', () => {
-  const retryBtn = document.getElementById('authRetryBtn');
-  
-  if (retryBtn) {
-    retryBtn.addEventListener('click', async () => {
-      retryBtn.disabled = true;
-      retryBtn.textContent = 'Проверяем...';
-      
-      showStep('authLoading');
-      await checkSubscriptionAndAuth();
-      
-      retryBtn.disabled = false;
-      retryBtn.textContent = 'Проверить подписку';
-    });
-  }
-  
-  // Check auth on load
   checkAuth();
 });
