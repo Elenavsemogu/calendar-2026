@@ -2558,11 +2558,11 @@ function initAccessModal() {
 // =====================================================
 
 // ⚠️ НАСТРОЙКА АВТОРИЗАЦИИ:
-// 1. Бот: SecretRoomCalendar_bot
+// 1. Бот: calendarreg_bot
 // 2. Канал: @secreetroommedia
 // 3. Google Apps Script уже настроен ✅
 const AUTH_CONFIG = {
-  botUsername: 'SecretRoomCalendar_bot', // ✅ Ваш бот
+  botUsername: 'calendarreg_bot', // ✅ Ваш бот
   channelUsername: '@secreetroommedia',
   scriptUrl: 'https://script.google.com/macros/s/AKfycby_yjYFYP6Yphc_s1mb0l4leKZUUmt4h1gfrPEM8Ab8E4lytggfKkjfQlUTxC5sHaHJ/exec', // ✅ Уже существующий скрипт
   storageKey: 'sr_auth_token'
