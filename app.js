@@ -2119,6 +2119,9 @@ END:VCALENDAR`;
 
 // Основная функция добавления в календарь
 function addToCalendar(event) {
+  console.log('🗓 addToCalendar called!', event);
+  console.log('isTelegramMiniApp:', isTelegramMiniApp);
+  
   // Формируем данные
   const title = encodeURIComponent(event.title);
   const location = encodeURIComponent(`${event.city}, ${event.countryName || event.country}`);
@@ -2131,6 +2134,8 @@ function addToCalendar(event) {
   // Google Calendar URL (работает везде как fallback)
   const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
 
+  console.log('Google Calendar URL:', googleUrl);
+
   // Определяем платформу
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isAndroid = /Android/i.test(navigator.userAgent);
@@ -2138,15 +2143,19 @@ function addToCalendar(event) {
   // Если в Telegram Mini App - используем Google Calendar URL
   // Он работает надежно и открывает календарь на всех платформах
   if (isTelegramMiniApp) {
+    console.log('✅ Using Telegram Mini App mode');
     if (TelegramWebApp?.openLink) {
+      console.log('📱 Opening via TelegramWebApp.openLink');
       TelegramWebApp.openLink(googleUrl);
     } else {
+      console.log('🌐 Opening via window.open');
       window.open(googleUrl, '_blank');
     }
     return;
   }
 
   if (isIOS) {
+    console.log('📱 iOS detected - using ICS Blob');
     // iOS: генерируем ICS и открываем через Blob
     // Safari автоматически предложит добавить в Calendar
     const icsContent = generateICSForIOS(event);
@@ -2162,11 +2171,13 @@ function addToCalendar(event) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
   } else if (isAndroid) {
+    console.log('🤖 Android detected - using Google Calendar URL');
     // Android: Google Calendar URL работает лучше всего
     // Android сам предложит открыть в приложении Google Calendar
     window.location.href = googleUrl;
 
   } else {
+    console.log('💻 Desktop detected - opening in new tab');
     // Desktop: открываем Google Calendar в новой вкладке
     window.open(googleUrl, '_blank');
   }
