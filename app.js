@@ -1749,6 +1749,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initCalendarExport();
 
   // ------------------------------
+  // Bookmarks on cards
+  // ------------------------------
+  initBookmarks();
+
+  // ------------------------------
   // Access Modal (Lead Capture)
   // ------------------------------
   initAccessModal();
@@ -1884,7 +1889,114 @@ function copyPromoCode() {
 }
 
 // Multi-Event Modal Functions (for mobile)
-// Храним выбранные события для массового добавления
+// =====================================================
+// Bookmarked events (закладки на карточках)
+// =====================================================
+const bookmarkedEvents = new Set();
+const addedEvents = new Set(JSON.parse(sessionStorage.getItem('sr_added_events') || '[]'));
+
+function saveAddedEvents() {
+  sessionStorage.setItem('sr_added_events', JSON.stringify([...addedEvents]));
+}
+
+function toggleBookmark(eventId) {
+  if (bookmarkedEvents.has(eventId)) {
+    bookmarkedEvents.delete(eventId);
+  } else {
+    bookmarkedEvents.add(eventId);
+  }
+  updateBookmarkUI(eventId);
+  updateFloatingBar();
+}
+
+function updateBookmarkUI(eventId) {
+  const isBookmarked = bookmarkedEvents.has(eventId);
+  // Обновляем иконку на карточке
+  qsa(`.event-bookmark[data-bookmark-id="${eventId}"]`).forEach(el => {
+    el.classList.toggle('bookmarked', isBookmarked);
+  });
+}
+
+function updateFloatingBar() {
+  const bar = qs('#floatingCalendarBar');
+  const count = bookmarkedEvents.size;
+  const countEl = qs('#floatingBarCount');
+  
+  if (count > 0) {
+    bar?.classList.add('visible');
+    if (countEl) {
+      const word = count === 1 ? 'событие' : count < 5 ? 'события' : 'событий';
+      countEl.textContent = `🔖 ${count} ${word}`;
+    }
+  } else {
+    bar?.classList.remove('visible');
+  }
+}
+
+function initBookmarks() {
+  // Добавляем закладки на каждую карточку
+  qsa('.event-card[data-event-id]').forEach(card => {
+    const eventId = card.getAttribute('data-event-id');
+    if (!eventId) return;
+    
+    // Карточка должна быть position: relative
+    card.style.position = 'relative';
+    
+    // Создаем закладку
+    const bookmark = document.createElement('div');
+    bookmark.className = 'event-bookmark';
+    bookmark.dataset.bookmarkId = eventId;
+    
+    // Если уже добавлено ранее — другая иконка
+    if (addedEvents.has(eventId)) {
+      bookmark.innerHTML = '<span style="font-size:13px">✅</span>';
+      bookmark.title = 'Уже добавлено';
+    } else {
+      bookmark.innerHTML = `<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+    }
+    
+    bookmark.addEventListener('click', (e) => {
+      e.stopPropagation(); // Не открывать модалку
+      toggleBookmark(eventId);
+    });
+    
+    card.appendChild(bookmark);
+  });
+  
+  // Кнопка "Экспорт" в плавающей панели
+  qs('#floatingBarBtn')?.addEventListener('click', () => {
+    if (bookmarkedEvents.size === 0) return;
+    const events = [...bookmarkedEvents].map(id => EVENTS[id]).filter(Boolean);
+    addMultipleToCalendar(events);
+    
+    // Запоминаем добавленные
+    events.forEach(ev => {
+      const id = Object.keys(EVENTS).find(k => EVENTS[k] === ev);
+      if (id) {
+        addedEvents.add(id);
+        // Обновляем закладку на карточке
+        qsa(`.event-bookmark[data-bookmark-id="${id}"]`).forEach(el => {
+          el.innerHTML = '<span style="font-size:13px">✅</span>';
+          el.classList.remove('bookmarked');
+        });
+      }
+    });
+    saveAddedEvents();
+    
+    // Очищаем выбор
+    bookmarkedEvents.clear();
+    updateFloatingBar();
+  });
+  
+  // Кнопка "✕" очистить выбор
+  qs('#floatingBarClear')?.addEventListener('click', () => {
+    bookmarkedEvents.forEach(id => updateBookmarkUI(id));
+    bookmarkedEvents.clear();
+    updateFloatingBar();
+  });
+}
+
+// Храним выбранные события для модалки
 let selectedEventsForBulk = {};
 
 function updateBulkCount() {
@@ -1919,9 +2031,6 @@ function showMultiEventModal(visibleCards) {
     if (bulkAddBlock) bulkAddBlock.style.display = 'none';
   }
 
-  // Список событий
-  const allCheckboxes = [];
-
   visibleCards.forEach(card => {
     const eventId = card.dataset.eventId;
     const event = EVENTS[eventId];
@@ -1930,59 +2039,44 @@ function showMultiEventModal(visibleCards) {
 
     const eventItem = document.createElement('div');
     eventItem.className = 'multi-event-item';
-    eventItem.style.cssText = 'display:flex;align-items:flex-start;gap:12px';
+    eventItem.dataset.eventId = eventId;
 
-    // Чекбокс (только в Mini App)
-    if (isTelegramMiniApp) {
-      const cbWrap = document.createElement('div');
-      cbWrap.style.cssText = 'flex-shrink:0;padding-top:2px';
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.style.cssText = 'width:20px;height:20px;accent-color:#F5DA0F;cursor:pointer';
-      cb.dataset.eventId = eventId;
-      cb.addEventListener('change', () => {
-        selectedEventsForBulk[eventId] = cb.checked;
-        updateBulkCount();
-        // Обновляем "Выбрать все"
-        if (selectAllCb) {
-          const allChecked = allCheckboxes.every(c => c.checked);
-          selectAllCb.checked = allChecked;
-        }
-      });
-      allCheckboxes.push(cb);
-      cbWrap.appendChild(cb);
-      eventItem.appendChild(cbWrap);
-    }
+    // Чекбокс визуальный
+    const cbDiv = document.createElement('div');
+    cbDiv.className = 'event-checkbox';
+    eventItem.appendChild(cbDiv);
 
     const info = document.createElement('div');
-    info.style.cssText = 'flex:1;min-width:0';
+    info.className = 'multi-event-info';
 
     const titleEl = document.createElement('div');
     titleEl.className = 'multi-event-title';
     titleEl.textContent = event.title;
+    
+    // Если уже добавлено — показываем
+    if (addedEvents.has(eventId)) {
+      titleEl.textContent = '✅ ' + event.title;
+    }
 
     const dates = document.createElement('div');
     dates.className = 'multi-event-dates';
-    dates.innerHTML = `📅 ${event.dates}`;
+    dates.textContent = event.dates;
 
     info.appendChild(titleEl);
     info.appendChild(dates);
+    eventItem.appendChild(info);
 
-    // Кнопка "Добавить" (индивидуальная)
-    const addButton = document.createElement('button');
-    addButton.className = 'multi-event-add-btn';
-    addButton.textContent = isTelegramMiniApp ? '+' : 'Добавить в календарь';
-    if (isTelegramMiniApp) {
-      addButton.style.cssText = 'flex-shrink:0;width:36px;height:36px;padding:0;font-size:18px;border-radius:50%;display:flex;align-items:center;justify-content:center';
-    }
-    addButton.addEventListener('click', () => {
-      addToCalendar(event);
-      addButton.textContent = '✓';
-      addButton.classList.add('added');
+    // Tap по всей строке = toggle чекбокс
+    eventItem.addEventListener('click', () => {
+      const isSelected = eventItem.classList.toggle('selected');
+      selectedEventsForBulk[eventId] = isSelected;
+      updateBulkCount();
+      // Обновляем "Выбрать все"
+      if (selectAllCb) {
+        selectAllCb.checked = qsa('#multiEventList .multi-event-item').every(el => el.classList.contains('selected'));
+      }
     });
 
-    info.appendChild(addButton);
-    eventItem.appendChild(info);
     eventList.appendChild(eventItem);
   });
 
@@ -1990,9 +2084,15 @@ function showMultiEventModal(visibleCards) {
   if (selectAllCb) {
     selectAllCb.checked = false;
     selectAllCb.onchange = () => {
-      allCheckboxes.forEach(cb => {
-        cb.checked = selectAllCb.checked;
-        selectedEventsForBulk[cb.dataset.eventId] = selectAllCb.checked;
+      qsa('#multiEventList .multi-event-item').forEach(item => {
+        const id = item.dataset.eventId;
+        if (selectAllCb.checked) {
+          item.classList.add('selected');
+          selectedEventsForBulk[id] = true;
+        } else {
+          item.classList.remove('selected');
+          selectedEventsForBulk[id] = false;
+        }
       });
       updateBulkCount();
     };
