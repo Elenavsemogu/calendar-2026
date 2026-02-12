@@ -314,7 +314,7 @@ function generateToken(telegramId) {
 
 // Set webhook (run this function once after deploy)
 function setWebhook() {
-  const webAppUrl = 'YOUR_WEB_APP_URL'; // ⬅️ Вставить URL после deploy
+  const webAppUrl = 'https://script.google.com/macros/s/AKfycbxlewS37-qUskTWsOr9q7pHDNrNPBB-18q04dZhwaQwD-gP7gpwocWBshwLdjVxwfor/exec';
   const url = `https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/setWebhook?url=${webAppUrl}`;
   
   const response = UrlFetchApp.fetch(url);
