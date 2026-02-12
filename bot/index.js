@@ -218,12 +218,26 @@ async function saveToSheet(data) {
     });
     
     const url = CONFIG.GAS_URL + '?' + params.toString();
+    console.log('Saving to GAS URL:', url.substring(0, 80) + '...');
     const res = await fetch(url, { redirect: 'follow' });
-    console.log('Saved to sheet:', data.telegram_id, data.first_name, data.username);
+    const text = await res.text();
+    console.log('GAS response status:', res.status, 'body:', text.substring(0, 200));
   } catch (err) {
     console.error('Sheet save error:', err.message);
   }
 }
+
+// Test endpoint - вызвать: https://sr-calendar-bot.onrender.com/test-save
+app.get('/test-save', async (req, res) => {
+  await saveToSheet({
+    telegram_id: '88888',
+    first_name: 'RenderTest',
+    last_name: 'Direct',
+    username: 'rendertest',
+    phone: '+70009999999'
+  });
+  res.json({ done: true });
+});
 
 // =====================================================
 // TOKEN GENERATION
