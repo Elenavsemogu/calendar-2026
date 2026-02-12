@@ -115,3 +115,39 @@ function saveUser(data) {
     rowRange.setBackground('#E6F9E6'); // Светло-зелёный для новых
   }
 }
+
+// =====================================================
+// ОБНОВИТЬ ШАПКУ (запустить 1 раз вручную!)
+// =====================================================
+function updateHeader() {
+  var ss = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
+  
+  if (!sheet) {
+    Logger.log('Лист не найден!');
+    return;
+  }
+  
+  // Обновляем первую строку
+  sheet.getRange(1, 1, 1, 9).setValues([[
+    '📅 Дата', '🆔 Telegram ID', '👤 Имя', '👤 Фамилия', '📱 Username', '🌍 Язык', '⭐ Premium', '📊 Источник', '🔄 Статус'
+  ]]);
+  
+  // Форматируем шапку
+  var headerRange = sheet.getRange(1, 1, 1, 9);
+  headerRange.setBackground('#1B1B1B');
+  headerRange.setFontColor('#F5DA0F');
+  headerRange.setFontWeight('bold');
+  headerRange.setFontSize(11);
+  headerRange.setHorizontalAlignment('center');
+  
+  // Замораживаем шапку
+  sheet.setFrozenRows(1);
+  
+  // Автоширина
+  for (var i = 1; i <= 9; i++) {
+    sheet.autoResizeColumn(i);
+  }
+  
+  Logger.log('✅ Шапка обновлена!');
+}
