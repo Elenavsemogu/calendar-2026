@@ -2135,17 +2135,13 @@ function addToCalendar(event) {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isAndroid = /Android/i.test(navigator.userAgent);
 
-  // Если в Telegram Mini App - используем ICS файл (работает идеально!)
+  // Если в Telegram Mini App - используем Google Calendar URL
+  // Он работает надежно и открывает календарь на всех платформах
   if (isTelegramMiniApp) {
-    const icsContent = generateICSForIOS(event);
-    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-    
-    // В Telegram Mini App открываем data: URL через window.open
-    // Telegram автоматически предложит открыть в календаре
     if (TelegramWebApp?.openLink) {
-      TelegramWebApp.openLink(dataUrl);
+      TelegramWebApp.openLink(googleUrl);
     } else {
-      window.open(dataUrl, '_blank');
+      window.open(googleUrl, '_blank');
     }
     return;
   }
