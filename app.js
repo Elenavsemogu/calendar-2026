@@ -2145,23 +2145,28 @@ function addToCalendar(event) {
     if (isTelegramMiniApp) {
       console.log('✅ Using Telegram Mini App mode');
       
-      // На iPhone используем ICS файл для встроенного Календаря
+      // На iPhone создаем ICS файл и открываем
       if (isIOS) {
-        console.log('📱 iOS detected - using ICS file for native Calendar');
+        console.log('📱 iOS detected - creating ICS file');
         
         const icsContent = generateICSForIOS(event);
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
+        const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
         
-        if (TelegramWebApp?.openLink) {
-          // Telegram откроет blob URL и iOS предложит добавить в Календарь
-          TelegramWebApp.openLink(url);
-        } else {
-          window.open(url, '_blank');
-        }
+        // Создаем невидимую ссылку для скачивания
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `${event.title.replace(/\s+/g, '-')}.ics`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
         
-        // Очистка через 2 секунды
-        setTimeout(() => URL.revokeObjectURL(url), 2000);
+        // Показываем уведомление
+        setTimeout(() => {
+          if (TelegramWebApp?.showAlert) {
+            TelegramWebApp.showAlert('Файл загружен! Откройте его для добавления в Календарь.');
+          }
+          document.body.removeChild(link);
+        }, 300);
       } else {
         // На Android и других платформах используем Google Calendar
         console.log('🤖 Android/Other - using Google Calendar URL');
