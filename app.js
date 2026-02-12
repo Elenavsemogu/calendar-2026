@@ -2120,68 +2120,48 @@ END:VCALENDAR`;
 // Основная функция добавления в календарь
 function addToCalendar(event) {
   console.log('🗓 addToCalendar called!', event);
-  console.log('isTelegramMiniApp:', isTelegramMiniApp);
   
-  try {
-    // Формируем данные
-    const title = encodeURIComponent(event.title);
-    const location = encodeURIComponent(`${event.city}, ${event.countryName || event.country}`);
-    const description = encodeURIComponent(event.description || '');
+  // Формируем данные
+  const title = encodeURIComponent(event.title);
+  const location = encodeURIComponent(`${event.city}, ${event.countryName || event.country}`);
+  const description = encodeURIComponent(event.description || '');
 
-    // Форматируем даты для Google Calendar (YYYYMMDDTHHmmssZ)
-    const startDate = event.startISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
-    const endDate = event.endISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  // Форматируем даты для Google Calendar (YYYYMMDDTHHmmssZ)
+  const startDate = event.startISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const endDate = event.endISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
 
-    // Google Calendar URL (работает везде как fallback)
-    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
+  // Google Calendar URL
+  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
 
-    console.log('Google Calendar URL:', googleUrl);
+  // Определяем платформу
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = /Android/i.test(navigator.userAgent);
 
-    // Определяем платформу
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isAndroid = /Android/i.test(navigator.userAgent);
-
-    // Если в Telegram Mini App
-    if (isTelegramMiniApp) {
-      console.log('✅ Using Telegram Mini App mode');
+  // ====================================================
+  // TELEGRAM MINI APP
+  // ====================================================
+  if (isTelegramMiniApp) {
+    
+    // --- iPhone: открываем страницу в Safari которая генерирует ICS ---
+    // Safari увидит text/calendar и покажет нативный диалог "Добавить в Календарь"
+    if (isIOS) {
+      const icsPageUrl = `https://elenavsemogu.github.io/calendar-2026/add-to-calendar.html?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}`;
       
-      // На iPhone создаем ICS файл и открываем
-      if (isIOS) {
-        console.log('📱 iOS detected - creating ICS file');
-        
-        const icsContent = generateICSForIOS(event);
-        const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-        
-        // Создаем невидимую ссылку для скачивания
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = `${event.title.replace(/\s+/g, '-')}.ics`;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        
-        // Показываем уведомление
-        setTimeout(() => {
-          if (TelegramWebApp?.showAlert) {
-            TelegramWebApp.showAlert('Файл загружен! Откройте его для добавления в Календарь.');
-          }
-          document.body.removeChild(link);
-        }, 300);
+      if (TelegramWebApp?.openLink) {
+        TelegramWebApp.openLink(icsPageUrl);
       } else {
-        // На Android и других платформах используем Google Calendar
-        console.log('🤖 Android/Other - using Google Calendar URL');
-        
-        if (TelegramWebApp?.openLink) {
-          TelegramWebApp.openLink(googleUrl);
-        } else {
-          window.open(googleUrl, '_blank');
-        }
+        window.open(icsPageUrl, '_blank');
       }
-      return;
+    
+    // --- Android: Google Calendar URL ---
+    } else {
+      if (TelegramWebApp?.openLink) {
+        TelegramWebApp.openLink(googleUrl);
+      } else {
+        window.open(googleUrl, '_blank');
+      }
     }
-  } catch (error) {
-    console.error('❌ Error in addToCalendar:', error);
-    alert('Ошибка: ' + error.message);
+    return;
   }
 
   if (isIOS) {
