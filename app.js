@@ -13,6 +13,32 @@ function formatK(n) {
 }
 
 // ------------------------------
+// Telegram Mini App Integration
+// ------------------------------
+const TelegramWebApp = window.Telegram?.WebApp;
+const isTelegramMiniApp = !!TelegramWebApp?.initData;
+
+if (isTelegramMiniApp) {
+  console.log('Running as Telegram Mini App!');
+  TelegramWebApp.ready();
+  TelegramWebApp.expand();
+  
+  // Получаем данные пользователя из Telegram
+  const tgUser = TelegramWebApp.initDataUnsafe?.user;
+  if (tgUser) {
+    console.log('Telegram user:', tgUser.id, tgUser.first_name, tgUser.username);
+    
+    // Автоматически авторизуем пользователя
+    const token = 'tg_' + tgUser.id + '_' + Date.now();
+    localStorage.setItem('sr_auth_token', token);
+  }
+  
+  // Адаптируем цвета под тему Telegram
+  document.documentElement.style.setProperty('--tg-theme-bg-color', TelegramWebApp.backgroundColor || '#1B1B1B');
+  document.documentElement.style.setProperty('--tg-theme-text-color', TelegramWebApp.textColor || '#FBF2E8');
+}
+
+// ------------------------------
 // State
 // ------------------------------
 let currentCitizenship = "";
@@ -2109,6 +2135,21 @@ function addToCalendar(event) {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isAndroid = /Android/i.test(navigator.userAgent);
 
+  // Если в Telegram Mini App - используем ICS файл (работает идеально!)
+  if (isTelegramMiniApp) {
+    const icsContent = generateICSForIOS(event);
+    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+    
+    // В Telegram Mini App открываем data: URL через window.open
+    // Telegram автоматически предложит открыть в календаре
+    if (TelegramWebApp?.openLink) {
+      TelegramWebApp.openLink(dataUrl);
+    } else {
+      window.open(dataUrl, '_blank');
+    }
+    return;
+  }
+
   if (isIOS) {
     // iOS: генерируем ICS и открываем через Blob
     // Safari автоматически предложит добавить в Calendar
@@ -2570,6 +2611,13 @@ const AUTH_CONFIG = {
 
 // Check auth on page load
 function checkAuth() {
+  // If running in Telegram Mini App, auto-authorize
+  if (isTelegramMiniApp) {
+    document.body.classList.remove('auth-required');
+    hideAuthOverlay();
+    return;
+  }
+  
   // Check for token in URL (from Telegram bot)
   const urlParams = new URLSearchParams(window.location.search);
   const urlToken = urlParams.get('auth');

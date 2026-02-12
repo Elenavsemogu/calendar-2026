@@ -99,16 +99,13 @@ async function handleStart(message) {
   const isSubscribed = await checkChannelSubscription(userId);
   
   if (isSubscribed) {
-    const token = generateToken(userId);
-    const calendarLink = `${CONFIG.CALENDAR_URL}?auth=${token}`;
-    
     await tg('sendMessage', {
       chat_id: chatId,
       text: `👋 *Привет, ${user.first_name}!*\n\n✅ Ты подписан на *Secret Room*\n\n🗓 Открывай календарь всех главных iGaming конференций 2026:\n\n• Даты и локации\n• Визовые требования\n• Промокоды на билеты\n• Гид по ресторанам\n\n👇 Жми на кнопку:`,
       parse_mode: 'Markdown',
       reply_markup: {
         inline_keyboard: [[
-          { text: '🗓 Открыть календарь', url: calendarLink }
+          { text: '🗓 Открыть календарь', web_app: { url: CONFIG.CALENDAR_URL } }
         ]]
       }
     });
@@ -136,16 +133,13 @@ async function handleCallback(callback) {
     const isSubscribed = await checkChannelSubscription(userId);
     
     if (isSubscribed) {
-      const token = generateToken(userId);
-      const calendarLink = `${CONFIG.CALENDAR_URL}?auth=${token}`;
-      
       await tg('sendMessage', {
         chat_id: chatId,
         text: `🎉 *Отлично, ${firstName}!*\n\n✅ Подписка подтверждена!\n\n🗓 Открывай календарь:`,
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [[
-            { text: '🗓 Открыть календарь', url: calendarLink }
+            { text: '🗓 Открыть календарь', web_app: { url: CONFIG.CALENDAR_URL } }
           ]]
         }
       });
