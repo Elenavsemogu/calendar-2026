@@ -316,7 +316,7 @@ async function handleStart(message) {
       parse_mode: 'Markdown',
       reply_markup: {
         inline_keyboard: [[
-          { text: '🗓 Открыть календарь', web_app: { url: CONFIG.CALENDAR_URL } }
+          { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
         ]]
       }
     });
@@ -346,11 +346,11 @@ async function handleCallback(callback) {
     if (isSubscribed) {
       await tg('sendMessage', {
         chat_id: chatId,
-        text: `🎉 *Отлично, ${firstName}!*\n\n✅ Подписка подтверждена!\n\n🗓 Открывай календарь:`,
+        text: `🎉 *Отлично, ${firstName}!*\n\n✅ Подписка подтверждена!\n\n📅 Открывай календарь:`,
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [[
-            { text: '🗓 Открыть календарь', web_app: { url: CONFIG.CALENDAR_URL } }
+            { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
           ]]
         }
       });
@@ -460,6 +460,16 @@ async function setupWebhook() {
   
   console.log(`Webhook set to: ${webhookUrl}`);
   console.log('Result:', result);
+  
+  // Настраиваем Menu Button (кнопка внизу чата)
+  const menuResult = await tg('setChatMenuButton', {
+    menu_button: {
+      type: 'web_app',
+      text: '📅 Календарь конференций',
+      web_app: { url: CONFIG.CALENDAR_URL }
+    }
+  });
+  console.log('Menu button set:', menuResult.ok ? 'OK' : menuResult.description);
 }
 
 // =====================================================
