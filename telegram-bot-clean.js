@@ -49,31 +49,28 @@ function saveUser(data) {
 
   if (!sheet) {
     sheet = ss.insertSheet(CONFIG.SHEET_NAME);
-    sheet.appendRow(['Timestamp', 'Telegram ID', 'First Name', 'Last Name', 'Username', 'Phone']);
+    sheet.appendRow(['Timestamp', 'Telegram ID', 'First Name', 'Last Name', 'Username', 'Phone', 'Статус']);
   }
 
+  // Проверяем был ли уже этот пользователь
   var values = sheet.getDataRange().getValues();
-  var existingRow = -1;
+  var isReturning = false;
 
   for (var i = 1; i < values.length; i++) {
     if (values[i][1] == data.telegram_id) {
-      existingRow = i + 1;
+      isReturning = true;
       break;
     }
   }
 
-  var rowData = [
+  // Всегда добавляем новую строку
+  sheet.appendRow([
     data.timestamp || new Date().toISOString(),
     data.telegram_id,
     data.first_name || '',
     data.last_name || '',
     data.username || '',
-    data.phone || ''
-  ];
-
-  if (existingRow > 0) {
-    sheet.getRange(existingRow, 1, 1, rowData.length).setValues([rowData]);
-  } else {
-    sheet.appendRow(rowData);
-  }
+    data.phone || '',
+    isReturning ? 'Повторный визит' : 'Новый'
+  ]);
 }
