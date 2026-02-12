@@ -2216,39 +2216,61 @@ function addToCalendar(event) {
   // ====================================================
   if (isTelegramMiniApp) {
 
-    // --- iPhone: iframe с ICS (нативный диалог прямо в Telegram) ---
+    // --- iPhone: бот отправляет .ics файл прямо в чат ---
+    // Пользователь нажимает на файл → iOS показывает нативный Календарь
+    // Всё внутри Telegram! Без Safari, без вкладок, без скачиваний.
     if (isIOS) {
+      const chatId = TelegramWebApp.initDataUnsafe?.user?.id;
+      
+      if (!chatId) {
+        // Fallback: Google Calendar если нет chat_id
+        if (TelegramWebApp?.openLink) TelegramWebApp.openLink(googleUrl);
+        return;
+      }
+      
       showCalendarToast(event.title, 'loading');
       
-      // Скрытый iframe загружает ICS с сервера.
-      // WKWebView перехватывает Content-Type: text/calendar
-      // и показывает нативный iOS диалог "Добавить в Календарь"
-      // прямо поверх Mini App. Пользователь НЕ уходит из Telegram.
-      const iframe = document.createElement('iframe');
-      iframe.style.cssText = 'display:none;width:0;height:0;border:0';
-      iframe.src = icsUrl;
-      document.body.appendChild(iframe);
-      
-      // Если iframe не сработал (через 2.5с), пробуем прямую навигацию
-      const fallbackTimer = setTimeout(() => {
-        // Прямая навигация - тоже может вызвать нативный диалог
-        window.location.href = icsUrl;
-      }, 2500);
-      
-      // Слушаем blur/visibility - если диалог появился, отменяем fallback
-      const cancelFallback = () => {
-        clearTimeout(fallbackTimer);
-        showCalendarToast(event.title, 'success');
-        window.removeEventListener('blur', cancelFallback);
-        document.removeEventListener('visibilitychange', cancelFallback);
-      };
-      window.addEventListener('blur', cancelFallback);
-      document.addEventListener('visibilitychange', cancelFallback);
-      
-      // Очистка iframe через 5с
-      setTimeout(() => {
-        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      }, 5000);
+      // Отправляем запрос на сервер — бот пришлет .ics файл в чат
+      fetch('https://sr-calendar-bot.onrender.com/send-ics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          title: event.title || '',
+          location: `${event.city || ''}, ${event.countryName || event.country || ''}`,
+          description: event.description || event.title || '',
+          start: normalizeISOtoICS(event.startISO),
+          end: normalizeISOtoICS(event.endISO)
+        })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          showCalendarToast(event.title, 'success');
+          // Показываем нативный Telegram popup с инструкцией
+          if (TelegramWebApp?.showPopup) {
+            TelegramWebApp.showPopup({
+              title: '📅 Готово!',
+              message: 'Файл отправлен в чат. Нажмите на него чтобы добавить событие в календарь.',
+              buttons: [
+                { id: 'go_chat', type: 'default', text: 'Перейти в чат' },
+                { id: 'stay', type: 'cancel', text: 'Остаться' }
+              ]
+            }, (btnId) => {
+              if (btnId === 'go_chat') {
+                TelegramWebApp.close();
+              }
+            });
+          }
+        } else {
+          // Fallback: Google Calendar
+          if (TelegramWebApp?.openLink) TelegramWebApp.openLink(googleUrl);
+        }
+      })
+      .catch(() => {
+        // Fallback: Google Calendar при ошибке сети
+        if (TelegramWebApp?.openLink) TelegramWebApp.openLink(googleUrl);
+      });
       
       return;
     }

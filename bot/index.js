@@ -1,8 +1,18 @@
 const express = require('express');
 const fetch = require('node-fetch');
+const FormData = require('form-data');
 
 const app = express();
 app.use(express.json());
+
+// CORS для запросов из Mini App
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
 
 // =====================================================
 // CONFIG
@@ -63,9 +73,67 @@ app.get('/', (req, res) => {
 });
 
 // =====================================================
-// ICS ENDPOINT - для нативного Календаря на iPhone
-// Safari видит Content-Type: text/calendar и показывает
-// нативный iOS диалог "Добавить событие в Календарь"
+// SEND-ICS: бот отправляет .ics файл в чат пользователю
+// Пользователь нажимает на файл → iOS Calendar открывается
+// Всё внутри Telegram, без Safari, без вкладок
+// =====================================================
+app.post('/send-ics', async (req, res) => {
+  try {
+    const { chat_id, title, location, description, start, end } = req.body;
+
+    if (!chat_id) return res.status(400).json({ ok: false, error: 'chat_id required' });
+
+    // Генерируем ICS
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Secretroom//Calendar//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + Date.now() + '-' + Math.random().toString(36).substr(2, 9) + '@secretroom',
+      'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
+      'DTSTART:' + (start || ''),
+      'DTEND:' + (end || ''),
+      'SUMMARY:' + (title || 'Event'),
+      'LOCATION:' + (location || ''),
+      'DESCRIPTION:' + (description || ''),
+      'STATUS:CONFIRMED',
+      'TRANSP:OPAQUE',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    // Чистим название для файла
+    const safeTitle = (title || 'event').replace(/[^a-zA-Z0-9а-яА-ЯёЁ\s-]/g, '').replace(/\s+/g, '_').substring(0, 50);
+
+    // Отправляем как документ через Telegram Bot API
+    const form = new FormData();
+    form.append('chat_id', String(chat_id));
+    form.append('document', Buffer.from(icsContent, 'utf-8'), {
+      filename: safeTitle + '.ics',
+      contentType: 'text/calendar'
+    });
+    form.append('caption', '📅 Нажмите на файл чтобы добавить в календарь');
+
+    const tgRes = await fetch(`${TG}/sendDocument`, {
+      method: 'POST',
+      body: form,
+      headers: form.getHeaders()
+    });
+
+    const tgData = await tgRes.json();
+    console.log('sendDocument result:', tgData.ok ? 'OK' : tgData.description);
+
+    res.json({ ok: tgData.ok });
+  } catch (err) {
+    console.error('send-ics error:', err.message);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// =====================================================
+// ICS ENDPOINT (GET) - fallback для прямого скачивания
 // =====================================================
 app.get('/ics', (req, res) => {
   const { title, location, description, start, end } = req.query;
