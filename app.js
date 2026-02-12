@@ -2141,22 +2141,36 @@ function addToCalendar(event) {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isAndroid = /Android/i.test(navigator.userAgent);
 
-    // Если в Telegram Mini App - используем Google Calendar URL
-    // Он работает надежно и открывает календарь на всех платформах
+    // Если в Telegram Mini App
     if (isTelegramMiniApp) {
       console.log('✅ Using Telegram Mini App mode');
       
-      // Показываем уведомление пользователю
-      if (TelegramWebApp?.showAlert) {
-        TelegramWebApp.showAlert('Открываю календарь...');
-      }
-      
-      if (TelegramWebApp?.openLink) {
-        console.log('📱 Opening via TelegramWebApp.openLink');
-        TelegramWebApp.openLink(googleUrl);
+      // На iPhone используем ICS файл для встроенного Календаря
+      if (isIOS) {
+        console.log('📱 iOS detected - using ICS file for native Calendar');
+        
+        const icsContent = generateICSForIOS(event);
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        
+        if (TelegramWebApp?.openLink) {
+          // Telegram откроет blob URL и iOS предложит добавить в Календарь
+          TelegramWebApp.openLink(url);
+        } else {
+          window.open(url, '_blank');
+        }
+        
+        // Очистка через 2 секунды
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
       } else {
-        console.log('🌐 Opening via window.open');
-        window.open(googleUrl, '_blank');
+        // На Android и других платформах используем Google Calendar
+        console.log('🤖 Android/Other - using Google Calendar URL');
+        
+        if (TelegramWebApp?.openLink) {
+          TelegramWebApp.openLink(googleUrl);
+        } else {
+          window.open(googleUrl, '_blank');
+        }
       }
       return;
     }
