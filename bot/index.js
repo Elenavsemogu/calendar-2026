@@ -12,6 +12,7 @@ const CONFIG = {
   CHANNEL_ID: '@secreetroommedia',
   SPREADSHEET_ID: '1kwiWTnsfaxy-iNA9rXTHeMKalRS4Q42mgsezzTQLZJY',
   CALENDAR_URL: 'https://elenavsemogu.github.io/calendar-2026/',
+  GAS_URL: 'https://script.google.com/macros/s/AKfycbwGehuSOvyX3tWyq9oKGqMS4TkMb3h24zZuShJVjpPptee9E2w-qDbbGJ2J0tkmhZmi/exec',
   PORT: process.env.PORT || 3000,
   WEBHOOK_SECRET: process.env.WEBHOOK_SECRET || 'secretroom2026'
 };
@@ -100,12 +101,13 @@ async function handleContactShared(message) {
   const userId = message.contact.user_id || message.from.id;
   const contact = message.contact;
   
-  // Сохраняем пользователя
-  console.log('New user:', {
-    id: userId,
-    name: contact.first_name,
-    username: message.from.username,
-    phone: contact.phone_number
+  // Сохраняем пользователя в Google Sheets
+  await saveToSheet({
+    telegram_id: userId,
+    first_name: contact.first_name || '',
+    last_name: contact.last_name || '',
+    username: message.from.username || '',
+    phone: contact.phone_number || ''
   });
   
   await checkSubscriptionAndReply(chatId, userId, contact.first_name);
@@ -198,6 +200,31 @@ async function checkChannelSubscription(telegramId) {
   } catch (err) {
     console.error('Subscription check error:', err.message);
     return false;
+  }
+}
+
+// =====================================================
+// SAVE TO GOOGLE SHEETS (via Google Apps Script)
+// =====================================================
+async function saveToSheet(data) {
+  try {
+    const res = await fetch(CONFIG.GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'saveUser',
+        telegram_id: data.telegram_id,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        username: data.username,
+        phone: data.phone,
+        timestamp: new Date().toISOString()
+      }),
+      redirect: 'follow'
+    });
+    console.log('Saved to sheet:', data.telegram_id, data.first_name, data.username);
+  } catch (err) {
+    console.error('Sheet save error:', err.message);
   }
 }
 
