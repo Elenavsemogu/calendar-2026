@@ -67,50 +67,64 @@ app.get('/', (req, res) => {
 // =====================================================
 async function handleMessage(message) {
   const chatId = message.chat.id;
+  const text = message.text || '';
   
-  if (message.contact) {
-    await handleContactShared(message);
-    return;
-  }
-  
-  if (message.text && message.text.startsWith('/start')) {
-    await sendWelcomeMessage(chatId, message.from);
+  if (text.startsWith('/start')) {
+    handleStart(message);
     return;
   }
 }
 
-async function sendWelcomeMessage(chatId, user) {
-  const firstName = user.first_name || 'друг';
-  
-  await tg('sendMessage', {
-    chat_id: chatId,
-    text: `👋 *Привет, ${firstName}!*\n\n🗓 Добро пожаловать в *Secret Room Calendar*!\n\nЗдесь ты найдешь все главные iGaming конференции 2026 года.\n\n📱 Чтобы продолжить, поделись своим контактом:`,
-    parse_mode: 'Markdown',
-    reply_markup: {
-      keyboard: [[
-        { text: '✅ Да, поделиться контактом', request_contact: true }
-      ]],
-      resize_keyboard: true,
-      one_time_keyboard: true
-    }
-  });
-}
-
-async function handleContactShared(message) {
+async function handleStart(message) {
   const chatId = message.chat.id;
-  const userId = message.contact.user_id || message.from.id;
-  const contact = message.contact;
+  const userId = message.from.id;
+  const user = message.from;
   
-  // Сохраняем пользователя в Google Sheets
+  // Парсим UTM метки из /start параметра
+  const parts = message.text.split(' ');
+  const utmParam = parts[1] || '';
+  
+  // Сохраняем данные пользователя
   await saveToSheet({
     telegram_id: userId,
-    first_name: contact.first_name || '',
-    last_name: contact.last_name || '',
-    username: message.from.username || '',
-    phone: contact.phone_number || ''
+    first_name: user.first_name || '',
+    last_name: user.last_name || '',
+    username: user.username || '',
+    language_code: user.language_code || '',
+    is_premium: user.is_premium ? 'Да' : 'Нет',
+    utm_source: utmParam || 'Прямой переход'
   });
   
-  await checkSubscriptionAndReply(chatId, userId, contact.first_name);
+  // Проверяем подписку сразу
+  const isSubscribed = await checkChannelSubscription(userId);
+  
+  if (isSubscribed) {
+    const token = generateToken(userId);
+    const calendarLink = `${CONFIG.CALENDAR_URL}?auth=${token}`;
+    
+    await tg('sendMessage', {
+      chat_id: chatId,
+      text: `👋 *Привет, ${user.first_name}!*\n\n✅ Ты подписан на *Secret Room*\n\n🗓 Открывай календарь всех главных iGaming конференций 2026:\n\n• Даты и локации\n• Визовые требования\n• Промокоды на билеты\n• Гид по ресторанам\n\n👇 Жми на кнопку:`,
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [[
+          { text: '🗓 Открыть календарь', url: calendarLink }
+        ]]
+      }
+    });
+  } else {
+    await tg('sendMessage', {
+      chat_id: chatId,
+      text: `👋 *Привет, ${user.first_name}!*\n\n📢 Подпишись на канал *Secret Room* чтобы получить доступ к календарю!\n\n💎 В канале:\n• Анонсы всех ивентов\n• Эксклюзивные промокоды\n• Закрытые сайд-ивенты\n• Инсайды из индустрии\n\n👇 Подписывайся:`,
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '📢 Подписаться на Secret Room', url: 'https://t.me/secreetroommedia' }],
+          [{ text: '✅ Я подписался! Открыть календарь', callback_data: 'check_subscription' }]
+        ]
+      }
+    });
+  }
 }
 
 async function handleCallback(callback) {
@@ -152,39 +166,6 @@ async function handleCallback(callback) {
 // =====================================================
 // SUBSCRIPTION CHECK
 // =====================================================
-async function checkSubscriptionAndReply(chatId, userId, firstName) {
-  const name = firstName || 'друг';
-  const isSubscribed = await checkChannelSubscription(userId);
-  
-  if (isSubscribed) {
-    const token = generateToken(userId);
-    const calendarLink = `${CONFIG.CALENDAR_URL}?auth=${token}`;
-    
-    await tg('sendMessage', {
-      chat_id: chatId,
-      text: `🎉 *Отлично, ${name}!*\n\n✅ Ты подписан на *Secret Room*\n\n🗓 Жми кнопку — календарь ждет тебя:`,
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [[
-          { text: '🗓 Открыть календарь', url: calendarLink }
-        ]]
-      }
-    });
-  } else {
-    await tg('sendMessage', {
-      chat_id: chatId,
-      text: `👋 *Спасибо, ${name}!*\n\n📢 Подпишись на канал *Secret Room* чтобы получить доступ к календарю!\n\n💎 Эксклюзивные промокоды, анонсы ивентов и инсайды индустрии`,
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: '📢 Подписаться на Secret Room', url: 'https://t.me/secreetroommedia' }],
-          [{ text: '✅ Я подписался! Открыть календарь', callback_data: 'check_subscription' }]
-        ]
-      }
-    });
-  }
-}
-
 async function checkChannelSubscription(telegramId) {
   try {
     const result = await tg('getChatMember', {
@@ -213,7 +194,9 @@ async function saveToSheet(data) {
       first_name: data.first_name || '',
       last_name: data.last_name || '',
       username: data.username || '',
-      phone: data.phone || '',
+      language_code: data.language_code || '',
+      is_premium: data.is_premium || '',
+      utm_source: data.utm_source || '',
       timestamp: new Date().toISOString()
     });
     

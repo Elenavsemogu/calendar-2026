@@ -49,7 +49,25 @@ function saveUser(data) {
 
   if (!sheet) {
     sheet = ss.insertSheet(CONFIG.SHEET_NAME);
-    sheet.appendRow(['Timestamp', 'Telegram ID', 'First Name', 'Last Name', 'Username', 'Phone', 'Статус']);
+    
+    // Создаём красивую шапку
+    sheet.appendRow(['📅 Дата', '🆔 Telegram ID', '👤 Имя', '👤 Фамилия', '📱 Username', '🌍 Язык', '⭐ Premium', '📊 Источник', '🔄 Статус']);
+    
+    // Форматируем шапку
+    var headerRange = sheet.getRange(1, 1, 1, 9);
+    headerRange.setBackground('#1B1B1B');
+    headerRange.setFontColor('#F5DA0F');
+    headerRange.setFontWeight('bold');
+    headerRange.setFontSize(11);
+    headerRange.setHorizontalAlignment('center');
+    
+    // Замораживаем шапку
+    sheet.setFrozenRows(1);
+    
+    // Автоширина колонок
+    for (var i = 1; i <= 9; i++) {
+      sheet.autoResizeColumn(i);
+    }
   }
 
   // Проверяем был ли уже этот пользователь
@@ -63,14 +81,37 @@ function saveUser(data) {
     }
   }
 
+  // Форматируем дату: дд/мм/гггг чч:мм
+  var timestamp = data.timestamp ? new Date(data.timestamp) : new Date();
+  var day = ('0' + timestamp.getDate()).slice(-2);
+  var month = ('0' + (timestamp.getMonth() + 1)).slice(-2);
+  var year = timestamp.getFullYear();
+  var hours = ('0' + timestamp.getHours()).slice(-2);
+  var minutes = ('0' + timestamp.getMinutes()).slice(-2);
+  var formattedDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
+
   // Всегда добавляем новую строку
-  sheet.appendRow([
-    data.timestamp || new Date().toISOString(),
+  var newRow = [
+    formattedDate,
     data.telegram_id,
     data.first_name || '',
     data.last_name || '',
-    data.username || '',
-    data.phone || '',
-    isReturning ? 'Повторный визит' : 'Новый'
-  ]);
+    data.username ? '@' + data.username : 'Нет username',
+    data.language_code || '',
+    data.is_premium || 'Нет',
+    data.utm_source || 'Прямой переход',
+    isReturning ? '🔄 Повторный' : '🆕 Новый'
+  ];
+  
+  sheet.appendRow(newRow);
+  
+  // Форматируем новую строку
+  var lastRow = sheet.getLastRow();
+  var rowRange = sheet.getRange(lastRow, 1, 1, 9);
+  
+  if (isReturning) {
+    rowRange.setBackground('#FFF9E6'); // Светло-жёлтый для повторных
+  } else {
+    rowRange.setBackground('#E6F9E6'); // Светло-зелёный для новых
+  }
 }
