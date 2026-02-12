@@ -1749,11 +1749,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initCalendarExport();
 
   // ------------------------------
-  // Bookmarks on cards
-  // ------------------------------
-  initBookmarks();
-
-  // ------------------------------
   // Access Modal (Lead Capture)
   // ------------------------------
   initAccessModal();
@@ -1798,19 +1793,8 @@ function initCalendarExport() {
 
     if (visibleCards.length === 0) return;
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (isMobile || isTelegramMiniApp) {
-      // Mobile / Telegram Mini App: show modal with event list
-      showMultiEventModal(visibleCards);
-    } else {
-      // Desktop browser: download ICS file
-      const conferences = visibleCards.map(card => extractConferenceData(card));
-      const icsData = generateMultiEventICS(conferences);
-      if (icsData) {
-        downloadICSFile(icsData, "secretroom-calendar-2026");
-      }
-    }
+    // Всегда открываем модалку с выбором событий и календаря
+    showMultiEventModal(visibleCards);
   });
 
   // Modal button: add current event - direct calendar opening
@@ -1890,110 +1874,12 @@ function copyPromoCode() {
 
 // Multi-Event Modal Functions (for mobile)
 // =====================================================
-// Bookmarked events (закладки на карточках)
+// Добавленные события (запоминаем в сессии)
 // =====================================================
-const bookmarkedEvents = new Set();
 const addedEvents = new Set(JSON.parse(sessionStorage.getItem('sr_added_events') || '[]'));
 
 function saveAddedEvents() {
   sessionStorage.setItem('sr_added_events', JSON.stringify([...addedEvents]));
-}
-
-function toggleBookmark(eventId) {
-  if (bookmarkedEvents.has(eventId)) {
-    bookmarkedEvents.delete(eventId);
-  } else {
-    bookmarkedEvents.add(eventId);
-  }
-  updateBookmarkUI(eventId);
-  updateFloatingBar();
-}
-
-function updateBookmarkUI(eventId) {
-  const isBookmarked = bookmarkedEvents.has(eventId);
-  // Обновляем иконку на карточке
-  qsa(`.event-bookmark[data-bookmark-id="${eventId}"]`).forEach(el => {
-    el.classList.toggle('bookmarked', isBookmarked);
-  });
-}
-
-function updateFloatingBar() {
-  const bar = qs('#floatingCalendarBar');
-  const count = bookmarkedEvents.size;
-  const countEl = qs('#floatingBarCount');
-  
-  if (count > 0) {
-    bar?.classList.add('visible');
-    if (countEl) {
-      const word = count === 1 ? 'событие' : count < 5 ? 'события' : 'событий';
-      countEl.textContent = `🔖 ${count} ${word}`;
-    }
-  } else {
-    bar?.classList.remove('visible');
-  }
-}
-
-function initBookmarks() {
-  // Добавляем закладки на каждую карточку
-  qsa('.event-card[data-event-id]').forEach(card => {
-    const eventId = card.getAttribute('data-event-id');
-    if (!eventId) return;
-    
-    // Карточка должна быть position: relative
-    card.style.position = 'relative';
-    
-    // Создаем закладку
-    const bookmark = document.createElement('div');
-    bookmark.className = 'event-bookmark';
-    bookmark.dataset.bookmarkId = eventId;
-    
-    // Если уже добавлено ранее — другая иконка
-    if (addedEvents.has(eventId)) {
-      bookmark.innerHTML = '<span style="font-size:13px">✅</span>';
-      bookmark.title = 'Уже добавлено';
-    } else {
-      bookmark.innerHTML = `<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-    }
-    
-    bookmark.addEventListener('click', (e) => {
-      e.stopPropagation(); // Не открывать модалку
-      toggleBookmark(eventId);
-    });
-    
-    card.appendChild(bookmark);
-  });
-  
-  // Кнопка "Экспорт" в плавающей панели
-  qs('#floatingBarBtn')?.addEventListener('click', () => {
-    if (bookmarkedEvents.size === 0) return;
-    const events = [...bookmarkedEvents].map(id => EVENTS[id]).filter(Boolean);
-    addMultipleToCalendar(events);
-    
-    // Запоминаем добавленные
-    events.forEach(ev => {
-      const id = Object.keys(EVENTS).find(k => EVENTS[k] === ev);
-      if (id) {
-        addedEvents.add(id);
-        // Обновляем закладку на карточке
-        qsa(`.event-bookmark[data-bookmark-id="${id}"]`).forEach(el => {
-          el.innerHTML = '<span style="font-size:13px">✅</span>';
-          el.classList.remove('bookmarked');
-        });
-      }
-    });
-    saveAddedEvents();
-    
-    // Очищаем выбор
-    bookmarkedEvents.clear();
-    updateFloatingBar();
-  });
-  
-  // Кнопка "✕" очистить выбор
-  qs('#floatingBarClear')?.addEventListener('click', () => {
-    bookmarkedEvents.forEach(id => updateBookmarkUI(id));
-    bookmarkedEvents.clear();
-    updateFloatingBar();
-  });
 }
 
 // Храним выбранные события для модалки
@@ -2002,10 +1888,18 @@ let selectedEventsForBulk = {};
 function updateBulkCount() {
   const count = Object.keys(selectedEventsForBulk).filter(k => selectedEventsForBulk[k]).length;
   const countEl = qs("#bulkAddCount");
-  const bulkBtn = qs("#bulkAddBtn");
-  if (countEl) countEl.textContent = `Выбрано: ${count} ${count === 1 ? 'событие' : count < 5 ? 'события' : 'событий'}`;
-  if (bulkBtn) bulkBtn.disabled = count === 0;
-  if (bulkBtn) bulkBtn.style.opacity = count === 0 ? '0.4' : '1';
+  const appleBtn = qs("#addAppleCalBtn");
+  const googleBtn = qs("#addGoogleCalBtn");
+  
+  if (count > 0) {
+    const word = count === 1 ? 'событие' : count < 5 ? 'события' : 'событий';
+    if (countEl) countEl.textContent = `Выбрано: ${count} ${word}`;
+  } else {
+    if (countEl) countEl.textContent = 'Выберите события';
+  }
+  
+  if (appleBtn) appleBtn.disabled = count === 0;
+  if (googleBtn) googleBtn.disabled = count === 0;
 }
 
 function showMultiEventModal(visibleCards) {
@@ -2018,23 +1912,10 @@ function showMultiEventModal(visibleCards) {
   eventList.innerHTML = '';
   selectedEventsForBulk = {};
 
-  // Показываем "Выбрать все" и кнопку только в Mini App
-  const selectAllBlock = qs("#multiEventSelectAll");
-  const bulkAddBlock = qs("#multiEventBulkAdd");
-  const selectAllCb = qs("#selectAllCheckbox");
-
-  if (isTelegramMiniApp) {
-    if (selectAllBlock) selectAllBlock.style.display = 'block';
-    if (bulkAddBlock) bulkAddBlock.style.display = 'block';
-  } else {
-    if (selectAllBlock) selectAllBlock.style.display = 'none';
-    if (bulkAddBlock) bulkAddBlock.style.display = 'none';
-  }
-
+  // Список событий
   visibleCards.forEach(card => {
     const eventId = card.dataset.eventId;
     const event = EVENTS[eventId];
-
     if (!event) return;
 
     const eventItem = document.createElement('div');
@@ -2052,74 +1933,109 @@ function showMultiEventModal(visibleCards) {
     const titleEl = document.createElement('div');
     titleEl.className = 'multi-event-title';
     titleEl.textContent = event.title;
-    
-    // Если уже добавлено — показываем
-    if (addedEvents.has(eventId)) {
-      titleEl.textContent = '✅ ' + event.title;
-    }
 
-    const dates = document.createElement('div');
-    dates.className = 'multi-event-dates';
-    dates.textContent = event.dates;
+    const meta = document.createElement('div');
+    meta.className = 'multi-event-dates';
+    meta.textContent = `${event.dates} · ${event.city}`;
 
     info.appendChild(titleEl);
-    info.appendChild(dates);
+    info.appendChild(meta);
     eventItem.appendChild(info);
 
-    // Tap по всей строке = toggle чекбокс
+    // Tap по всей строке = выбрать
     eventItem.addEventListener('click', () => {
-      const isSelected = eventItem.classList.toggle('selected');
-      selectedEventsForBulk[eventId] = isSelected;
+      eventItem.classList.toggle('selected');
+      selectedEventsForBulk[eventId] = eventItem.classList.contains('selected');
       updateBulkCount();
-      // Обновляем "Выбрать все"
-      if (selectAllCb) {
-        selectAllCb.checked = qsa('#multiEventList .multi-event-item').every(el => el.classList.contains('selected'));
-      }
     });
 
     eventList.appendChild(eventItem);
   });
 
-  // "Выбрать все" логика
-  if (selectAllCb) {
-    selectAllCb.checked = false;
-    selectAllCb.onchange = () => {
-      qsa('#multiEventList .multi-event-item').forEach(item => {
+  // "Выбрать все"
+  const selectAllBtn = qs("#selectAllBtn");
+  if (selectAllBtn) {
+    selectAllBtn.onclick = () => {
+      const items = qsa('#multiEventList .multi-event-item');
+      const allSelected = items.every(el => el.classList.contains('selected'));
+      items.forEach(item => {
         const id = item.dataset.eventId;
-        if (selectAllCb.checked) {
-          item.classList.add('selected');
-          selectedEventsForBulk[id] = true;
-        } else {
+        if (allSelected) {
           item.classList.remove('selected');
           selectedEventsForBulk[id] = false;
+        } else {
+          item.classList.add('selected');
+          selectedEventsForBulk[id] = true;
         }
       });
+      selectAllBtn.textContent = allSelected ? 'Выбрать все' : 'Снять все';
       updateBulkCount();
     };
   }
 
-  // Кнопка массового добавления
-  const bulkBtn = qs("#bulkAddBtn");
-  if (bulkBtn) {
-    bulkBtn.onclick = () => {
+  // Кнопка Google Calendar
+  const googleBtn = qs("#addGoogleCalBtn");
+  if (googleBtn) {
+    googleBtn.onclick = () => {
       const selectedIds = Object.keys(selectedEventsForBulk).filter(k => selectedEventsForBulk[k]);
       if (selectedIds.length === 0) return;
       
       const events = selectedIds.map(id => EVENTS[id]).filter(Boolean);
-      addMultipleToCalendar(events);
       
-      bulkBtn.textContent = '✅ Отправлено!';
-      bulkBtn.disabled = true;
-      setTimeout(() => {
-        bulkBtn.textContent = '📅 Добавить выбранные в календарь';
-        bulkBtn.disabled = false;
-      }, 3000);
+      // Google Calendar — открываем по одному (Google не поддерживает multi-event URL)
+      events.forEach((ev, i) => {
+        const url = buildGoogleCalendarUrl(ev);
+        setTimeout(() => {
+          if (isTelegramMiniApp && TelegramWebApp?.openLink) {
+            TelegramWebApp.openLink(url);
+          } else {
+            window.open(url, '_blank');
+          }
+        }, i * 800);
+      });
+      
+      // Запоминаем
+      selectedIds.forEach(id => addedEvents.add(id));
+      saveAddedEvents();
+      
+      googleBtn.textContent = '✅ Открыто!';
+      setTimeout(() => { googleBtn.innerHTML = '<span>📅</span> Google'; }, 2000);
+    };
+  }
+
+  // Кнопка Apple Calendar
+  const appleBtn = qs("#addAppleCalBtn");
+  if (appleBtn) {
+    appleBtn.onclick = () => {
+      const selectedIds = Object.keys(selectedEventsForBulk).filter(k => selectedEventsForBulk[k]);
+      if (selectedIds.length === 0) return;
+      
+      const events = selectedIds.map(id => EVENTS[id]).filter(Boolean);
+      
+      // Apple Calendar: один ICS файл с несколькими событиями через сервер
+      // openLink откроет Safari → Safari покажет нативный диалог Calendar
+      const eventsParam = events.map(ev => {
+        return `${encodeURIComponent(ev.title)}|${encodeURIComponent(ev.city + ', ' + (ev.countryName || ev.country))}|${normalizeISOtoICS(ev.startISO)}|${normalizeISOtoICS(ev.endISO)}`;
+      }).join(';;');
+      
+      const icsUrl = `https://sr-calendar-bot.onrender.com/ics-multi?events=${encodeURIComponent(eventsParam)}`;
+      
+      if (isTelegramMiniApp && TelegramWebApp?.openLink) {
+        TelegramWebApp.openLink(icsUrl);
+      } else {
+        window.open(icsUrl, '_blank');
+      }
+      
+      // Запоминаем
+      selectedIds.forEach(id => addedEvents.add(id));
+      saveAddedEvents();
+      
+      appleBtn.textContent = '✅ Открыто!';
+      setTimeout(() => { appleBtn.innerHTML = '<span>🍎</span> Apple'; }, 2000);
     };
   }
 
   updateBulkCount();
-
-  // Show modal
   modal.classList.add('show');
 }
 
@@ -2489,85 +2405,22 @@ function addToCalendar(event) {
   // ====================================================
   if (isTelegramMiniApp) {
 
-    // --- iPhone: бот отправляет .ics файл прямо в чат ---
-    // Пользователь нажимает на файл → iOS показывает нативный Календарь
-    // Всё внутри Telegram! Без Safari, без вкладок, без скачиваний.
+    // --- iPhone: Apple Calendar через Safari (ICS с сервера) ---
     if (isIOS) {
-      const chatId = TelegramWebApp.initDataUnsafe?.user?.id;
-      
-      if (!chatId) {
-        // Fallback: Google Calendar если нет chat_id
-        if (TelegramWebApp?.openLink) TelegramWebApp.openLink(googleUrl);
-        return;
-      }
-      
-      showCalendarToast(event.title, 'loading');
-      
-      // Отправляем запрос на сервер — бот пришлет .ics файл в чат
-      fetch('https://sr-calendar-bot.onrender.com/send-ics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatId,
-          title: event.title || '',
-          location: `${event.city || ''}, ${event.countryName || event.country || ''}`,
-          description: event.description || event.title || '',
-          start: normalizeISOtoICS(event.startISO),
-          end: normalizeISOtoICS(event.endISO)
-        })
-      })
-      .then(r => r.json())
-      .then(data => {
-        if (data.ok) {
-          showCalendarToast(event.title, 'success');
-          // Показываем нативный Telegram popup с инструкцией
-          if (TelegramWebApp?.showPopup) {
-            TelegramWebApp.showPopup({
-              title: '📅 Готово!',
-              message: 'Файл отправлен в чат. Нажмите на него чтобы добавить событие в календарь.',
-              buttons: [
-                { id: 'go_chat', type: 'default', text: 'Перейти в чат' },
-                { id: 'stay', type: 'cancel', text: 'Остаться' }
-              ]
-            }, (btnId) => {
-              if (btnId === 'go_chat') {
-                TelegramWebApp.close();
-              }
-            });
-          }
-        } else {
-          // Fallback: Google Calendar
-          if (TelegramWebApp?.openLink) TelegramWebApp.openLink(googleUrl);
-        }
-      })
-      .catch(() => {
-        // Fallback: Google Calendar при ошибке сети
-        if (TelegramWebApp?.openLink) TelegramWebApp.openLink(googleUrl);
-      });
-      
-      return;
-    }
-
-    // --- Android: Google Calendar ---
-    if (isAndroid) {
-      showCalendarToast(event.title, 'loading');
       if (TelegramWebApp?.openLink) {
-        TelegramWebApp.openLink(googleUrl);
+        TelegramWebApp.openLink(icsUrl);
       } else {
-        window.open(googleUrl, '_blank');
+        window.open(icsUrl, '_blank');
       }
-      setTimeout(() => showCalendarToast(event.title, 'success'), 1000);
       return;
     }
 
-    // --- Desktop Telegram: Google Calendar в новой вкладке ---
-    showCalendarToast(event.title, 'loading');
+    // --- Android / Desktop: Google Calendar ---
     if (TelegramWebApp?.openLink) {
       TelegramWebApp.openLink(googleUrl);
     } else {
       window.open(googleUrl, '_blank');
     }
-    setTimeout(() => showCalendarToast(event.title, 'success'), 1000);
     return;
   }
 

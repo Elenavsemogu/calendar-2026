@@ -1050,45 +1050,29 @@
       </div>
 
       <!-- Select All -->
-      <div id="multiEventSelectAll" class="px-5 pt-4 pb-1" style="display:none">
-        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;color:#888;font-size:13px;font-weight:600">
-          <input type="checkbox" id="selectAllCheckbox" style="width:18px;height:18px;accent-color:#F5DA0F;cursor:pointer">
-          Выбрать все
-        </label>
+      <div id="multiEventSelectAll" class="px-5 pt-3 pb-0">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span id="bulkAddCount" style="color:#666;font-size:12px;font-weight:600">Выберите события</span>
+          <button id="selectAllBtn" type="button" style="background:none;border:none;color:#F5DA0F;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;padding:4px 0">Выбрать все</button>
+        </div>
       </div>
 
       <!-- Event List -->
-      <div id="multiEventList" class="p-5">
+      <div id="multiEventList" class="p-5" style="padding-top:12px">
         <!-- Events will be populated here -->
       </div>
 
-      <!-- Bulk Add Button -->
-      <div id="multiEventBulkAdd" class="px-5 pb-5" style="display:none">
-        <button id="bulkAddBtn" type="button" style="
-          width:100%;padding:14px;border:none;border-radius:14px;
-          background:#F5DA0F;color:#1B1B1B;font-size:15px;font-weight:800;
-          font-family:'Nunito',sans-serif;cursor:pointer;
-          transition: all 0.2s; opacity: 0.4;
-        ">
-          📅 Добавить в календарь
+      <!-- Calendar Picker: Apple / Google -->
+      <div class="calendar-picker">
+        <button id="addAppleCalBtn" class="calendar-picker-btn btn-apple" type="button" disabled>
+          <span>🍎</span> Apple
         </button>
-        <p id="bulkAddCount" style="text-align:center;color:#666;font-size:11px;margin-top:8px">
-          Нажмите на события чтобы выбрать
-        </p>
+        <button id="addGoogleCalBtn" class="calendar-picker-btn btn-google" type="button" disabled>
+          <span>📅</span> Google
+        </button>
       </div>
+      <p class="calendar-picker-hint">Выберите события и нажмите куда добавить</p>
     </div>
-  </div>
-</div>
-
-<!-- Floating Calendar Bar -->
-<div id="floatingCalendarBar">
-  <div class="bar-inner">
-    <div class="bar-info">
-      <div class="bar-count" id="floatingBarCount">0 событий</div>
-      <div class="bar-hint">Нажмите на 🔖 чтобы выбрать</div>
-    </div>
-    <button class="bar-btn" id="floatingBarBtn" type="button">📅 Экспорт</button>
-    <button class="bar-clear" id="floatingBarClear" type="button">✕</button>
   </div>
 </div>
 

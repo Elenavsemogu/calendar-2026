@@ -197,7 +197,51 @@ app.post('/send-multi-ics', async (req, res) => {
 });
 
 // =====================================================
-// ICS ENDPOINT (GET) - fallback для прямого скачивания
+// ICS-MULTI: один ICS файл с несколькими событиями (GET)
+// Safari откроет и покажет нативный диалог Calendar
+// =====================================================
+app.get('/ics-multi', (req, res) => {
+  try {
+    const eventsStr = decodeURIComponent(req.query.events || '');
+    const eventParts = eventsStr.split(';;').filter(Boolean);
+
+    const vevents = eventParts.map(part => {
+      const [title, location, start, end] = part.split('|').map(s => decodeURIComponent(s || ''));
+      return [
+        'BEGIN:VEVENT',
+        'UID:' + Date.now() + '-' + Math.random().toString(36).substr(2, 9) + '@secretroom',
+        'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
+        'DTSTART:' + (start || ''),
+        'DTEND:' + (end || ''),
+        'SUMMARY:' + (title || 'Event'),
+        'LOCATION:' + (location || ''),
+        'STATUS:CONFIRMED',
+        'END:VEVENT'
+      ].join('\r\n');
+    }).join('\r\n');
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Secretroom//Calendar//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      vevents,
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+    res.setHeader('Content-Disposition', 'inline; filename="secretroom-calendar.ics"');
+    res.send(icsContent);
+  } catch (err) {
+    console.error('ics-multi error:', err.message);
+    res.status(500).send('Error generating ICS');
+  }
+});
+
+// =====================================================
+// ICS ENDPOINT (GET) - одно событие
 // =====================================================
 app.get('/ics', (req, res) => {
   const { title, location, description, start, end } = req.query;
