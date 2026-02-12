@@ -204,24 +204,21 @@ async function checkChannelSubscription(telegramId) {
 }
 
 // =====================================================
-// SAVE TO GOOGLE SHEETS (via Google Apps Script)
+// SAVE TO GOOGLE SHEETS (via Google Apps Script GET)
 // =====================================================
 async function saveToSheet(data) {
   try {
-    const res = await fetch(CONFIG.GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'saveUser',
-        telegram_id: data.telegram_id,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        username: data.username,
-        phone: data.phone,
-        timestamp: new Date().toISOString()
-      }),
-      redirect: 'follow'
+    const params = new URLSearchParams({
+      telegram_id: data.telegram_id || '',
+      first_name: data.first_name || '',
+      last_name: data.last_name || '',
+      username: data.username || '',
+      phone: data.phone || '',
+      timestamp: new Date().toISOString()
     });
+    
+    const url = CONFIG.GAS_URL + '?' + params.toString();
+    const res = await fetch(url, { redirect: 'follow' });
     console.log('Saved to sheet:', data.telegram_id, data.first_name, data.username);
   } catch (err) {
     console.error('Sheet save error:', err.message);

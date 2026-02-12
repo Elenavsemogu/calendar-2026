@@ -1,7 +1,7 @@
 // =====================================================
 // SECRET ROOM CALENDAR — DATA SAVER
-// Google Apps Script — только сохранение данных в таблицу
-// Бот работает на Render, сюда приходят данные для записи
+// Сохраняет данные пользователей в Google Sheets
+// Бот работает на Render, сюда приходят данные
 // =====================================================
 
 var CONFIG = {
@@ -9,11 +9,31 @@ var CONFIG = {
   SHEET_NAME: 'Bot Users'
 };
 
-// Принимаем данные от бота на Render
+function doGet(e) {
+  try {
+    var data = e.parameter;
+    
+    if (data.telegram_id) {
+      saveUser(data);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({success: true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    Logger.log('Error: ' + err);
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    saveUser(data);
+    
+    if (data.telegram_id) {
+      saveUser(data);
+    }
+    
     return ContentService.createTextOutput(JSON.stringify({success: true}))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
@@ -23,7 +43,6 @@ function doPost(e) {
   }
 }
 
-// Сохраняем пользователя в таблицу
 function saveUser(data) {
   var ss = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
   var sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
@@ -33,7 +52,6 @@ function saveUser(data) {
     sheet.appendRow(['Timestamp', 'Telegram ID', 'First Name', 'Last Name', 'Username', 'Phone']);
   }
 
-  // Проверяем есть ли уже пользователь
   var values = sheet.getDataRange().getValues();
   var existingRow = -1;
 
