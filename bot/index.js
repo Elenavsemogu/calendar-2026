@@ -63,6 +63,39 @@ app.get('/', (req, res) => {
 });
 
 // =====================================================
+// ICS ENDPOINT - для нативного Календаря на iPhone
+// Safari видит Content-Type: text/calendar и показывает
+// нативный iOS диалог "Добавить событие в Календарь"
+// =====================================================
+app.get('/ics', (req, res) => {
+  const { title, location, description, start, end } = req.query;
+
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Secretroom//Calendar//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:' + Date.now() + '-' + Math.random().toString(36).substr(2, 9) + '@secretroom',
+    'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
+    'DTSTART:' + (start || ''),
+    'DTEND:' + (end || ''),
+    'SUMMARY:' + decodeURIComponent(title || 'Event'),
+    'LOCATION:' + decodeURIComponent(location || ''),
+    'DESCRIPTION:' + decodeURIComponent(description || ''),
+    'STATUS:CONFIRMED',
+    'TRANSP:OPAQUE',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+  res.setHeader('Content-Disposition', 'inline; filename="event.ics"');
+  res.send(icsContent);
+});
+
+// =====================================================
 // MESSAGE HANDLERS
 // =====================================================
 async function handleMessage(message) {

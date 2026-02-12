@@ -2142,15 +2142,16 @@ function addToCalendar(event) {
   // ====================================================
   if (isTelegramMiniApp) {
     
-    // --- iPhone: открываем страницу в Safari которая генерирует ICS ---
-    // Safari увидит text/calendar и покажет нативный диалог "Добавить в Календарь"
+    // --- iPhone: сервер отдает ICS с Content-Type: text/calendar ---
+    // Safari видит этот заголовок и показывает нативный диалог "Добавить в Календарь"
+    // Без редиректов, без скачиваний, без blob URL
     if (isIOS) {
-      const icsPageUrl = `https://elenavsemogu.github.io/calendar-2026/add-to-calendar.html?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}`;
+      const icsServerUrl = `https://sr-calendar-bot.onrender.com/ics?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}`;
       
       if (TelegramWebApp?.openLink) {
-        TelegramWebApp.openLink(icsPageUrl);
+        TelegramWebApp.openLink(icsServerUrl);
       } else {
-        window.open(icsPageUrl, '_blank');
+        window.open(icsServerUrl, '_blank');
       }
     
     // --- Android: Google Calendar URL ---
