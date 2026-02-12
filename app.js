@@ -1785,7 +1785,7 @@ function initCalendarExport() {
   const addBtn = qs("#addToCalendarBtn");
   const modalAddBtn = qs("#modalAddToCalendarBtn");
 
-  // Main button: smart behavior (mobile = modal list, desktop = ICS file)
+  // Main button: smart behavior
   addBtn?.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -1793,14 +1793,13 @@ function initCalendarExport() {
 
     if (visibleCards.length === 0) return;
 
-    // Check if mobile device
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    if (isMobile) {
-      // Mobile: show modal with event list
+    if (isMobile || isTelegramMiniApp) {
+      // Mobile / Telegram Mini App: show modal with event list
       showMultiEventModal(visibleCards);
     } else {
-      // Desktop: download ICS file
+      // Desktop browser: download ICS file
       const conferences = visibleCards.map(card => extractConferenceData(card));
       const icsData = generateMultiEventICS(conferences);
       if (icsData) {
@@ -2117,79 +2116,184 @@ END:VEVENT
 END:VCALENDAR`;
 }
 
-// Основная функция добавления в календарь
-function addToCalendar(event) {
-  console.log('🗓 addToCalendar called!', event);
+// =====================================================
+// ICS Server URL (Render)
+// =====================================================
+const ICS_SERVER = 'https://sr-calendar-bot.onrender.com/ics';
+
+// =====================================================
+// Toast-уведомление
+// =====================================================
+function showCalendarToast(eventTitle, status) {
+  // Удаляем старый toast если есть
+  const oldToast = document.getElementById('calendarToast');
+  if (oldToast) oldToast.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'calendarToast';
+  toast.style.cssText = `
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: #222; border: 1px solid #F5DA0F; border-radius: 16px;
+    padding: 14px 20px; z-index: 99999; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5); max-width: 90vw;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: "Nunito", sans-serif;
+  `;
+
+  if (status === 'success') {
+    toast.innerHTML = `<span style="font-size:20px">✅</span><span style="color:#FBF2E8;font-size:14px;font-weight:600">${eventTitle}</span>`;
+  } else if (status === 'loading') {
+    toast.innerHTML = `<span style="font-size:20px;animation:spin 1s linear infinite;display:inline-block">⏳</span><span style="color:#FBF2E8;font-size:14px;font-weight:600">Добавляю ${eventTitle}...</span>`;
+  }
+
+  document.body.appendChild(toast);
+
+  // Анимация появления
+  requestAnimationFrame(() => {
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+  });
+
+  // Автоудаление через 3 секунды
+  setTimeout(() => {
+    toast.style.transform = 'translateX(-50%) translateY(100px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// =====================================================
+// Построить URL для ICS сервера
+// =====================================================
+// Нормализация ISO даты в формат ICS (YYYYMMDDTHHmmssZ)
+function normalizeISOtoICS(isoStr) {
+  if (!isoStr) return '';
+  // Если только дата без времени: "2026-09-07" → "20260907T090000Z"
+  if (isoStr.length <= 10) {
+    return isoStr.replace(/-/g, '') + 'T090000Z';
+  }
+  // Если дата с временем: "2026-03-03T09:00:00Z" → "20260303T090000Z"
+  let result = isoStr.replace(/[-:]/g, '').split('.')[0];
+  if (!result.endsWith('Z')) result += 'Z';
+  return result;
+}
+
+function buildICSUrl(event) {
+  const title = encodeURIComponent(event.title || '');
+  const location = encodeURIComponent(`${event.city || ''}, ${event.countryName || event.country || ''}`);
+  const description = encodeURIComponent(event.description || event.title || '');
+  const startDate = normalizeISOtoICS(event.startISO);
+  const endDate = normalizeISOtoICS(event.endISO);
   
-  // Формируем данные
-  const title = encodeURIComponent(event.title);
-  const location = encodeURIComponent(`${event.city}, ${event.countryName || event.country}`);
+  return `${ICS_SERVER}?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}`;
+}
+
+// =====================================================
+// Построить URL для Google Calendar
+// =====================================================
+function buildGoogleCalendarUrl(event) {
+  const title = encodeURIComponent(event.title || '');
+  const location = encodeURIComponent(`${event.city || ''}, ${event.countryName || event.country || ''}`);
   const description = encodeURIComponent(event.description || '');
+  const startDate = normalizeISOtoICS(event.startISO);
+  const endDate = normalizeISOtoICS(event.endISO);
+  
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
+}
 
-  // Форматируем даты для Google Calendar (YYYYMMDDTHHmmssZ)
-  const startDate = event.startISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
-  const endDate = event.endISO.replace(/[-:]/g, '').split('.')[0] + 'Z';
+// =====================================================
+// Основная функция добавления в календарь
+// =====================================================
+function addToCalendar(event) {
+  if (!event || !event.title) return;
 
-  // Google Calendar URL
-  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
-
-  // Определяем платформу
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isAndroid = /Android/i.test(navigator.userAgent);
+  const isMobile = isIOS || isAndroid;
+  const icsUrl = buildICSUrl(event);
+  const googleUrl = buildGoogleCalendarUrl(event);
 
   // ====================================================
   // TELEGRAM MINI APP
   // ====================================================
   if (isTelegramMiniApp) {
-    
-    // --- iPhone: сервер отдает ICS с Content-Type: text/calendar ---
-    // Safari видит этот заголовок и показывает нативный диалог "Добавить в Календарь"
-    // Без редиректов, без скачиваний, без blob URL
+
+    // --- iPhone: iframe с ICS (нативный диалог прямо в Telegram) ---
     if (isIOS) {
-      const icsServerUrl = `https://sr-calendar-bot.onrender.com/ics?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}`;
+      showCalendarToast(event.title, 'loading');
       
-      if (TelegramWebApp?.openLink) {
-        TelegramWebApp.openLink(icsServerUrl);
-      } else {
-        window.open(icsServerUrl, '_blank');
-      }
-    
-    // --- Android: Google Calendar URL ---
-    } else {
+      // Скрытый iframe загружает ICS с сервера.
+      // WKWebView перехватывает Content-Type: text/calendar
+      // и показывает нативный iOS диалог "Добавить в Календарь"
+      // прямо поверх Mini App. Пользователь НЕ уходит из Telegram.
+      const iframe = document.createElement('iframe');
+      iframe.style.cssText = 'display:none;width:0;height:0;border:0';
+      iframe.src = icsUrl;
+      document.body.appendChild(iframe);
+      
+      // Если iframe не сработал (через 2.5с), пробуем прямую навигацию
+      const fallbackTimer = setTimeout(() => {
+        // Прямая навигация - тоже может вызвать нативный диалог
+        window.location.href = icsUrl;
+      }, 2500);
+      
+      // Слушаем blur/visibility - если диалог появился, отменяем fallback
+      const cancelFallback = () => {
+        clearTimeout(fallbackTimer);
+        showCalendarToast(event.title, 'success');
+        window.removeEventListener('blur', cancelFallback);
+        document.removeEventListener('visibilitychange', cancelFallback);
+      };
+      window.addEventListener('blur', cancelFallback);
+      document.addEventListener('visibilitychange', cancelFallback);
+      
+      // Очистка iframe через 5с
+      setTimeout(() => {
+        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+      }, 5000);
+      
+      return;
+    }
+
+    // --- Android: Google Calendar ---
+    if (isAndroid) {
+      showCalendarToast(event.title, 'loading');
       if (TelegramWebApp?.openLink) {
         TelegramWebApp.openLink(googleUrl);
       } else {
         window.open(googleUrl, '_blank');
       }
+      setTimeout(() => showCalendarToast(event.title, 'success'), 1000);
+      return;
     }
+
+    // --- Desktop Telegram: Google Calendar в новой вкладке ---
+    showCalendarToast(event.title, 'loading');
+    if (TelegramWebApp?.openLink) {
+      TelegramWebApp.openLink(googleUrl);
+    } else {
+      window.open(googleUrl, '_blank');
+    }
+    setTimeout(() => showCalendarToast(event.title, 'success'), 1000);
     return;
   }
 
-  if (isIOS) {
-    console.log('📱 iOS detected - using ICS Blob');
-    // iOS: генерируем ICS и открываем через Blob
-    // Safari автоматически предложит добавить в Calendar
-    const icsContent = generateICSForIOS(event);
+  // ====================================================
+  // ОБЫЧНЫЙ БРАУЗЕР (не Mini App)
+  // ====================================================
 
-    // Через Blob (лучше работает в новых iOS)
+  if (isIOS) {
+    // iOS Safari: blob с text/calendar вызовет нативный диалог Calendar
+    const icsContent = generateICSForIOS(event);
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-
-    // Открываем в том же окне — iOS подхватит и покажет диалог добавления
     window.location.href = url;
-
-    // Очистка через 1 секунду
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
   } else if (isAndroid) {
-    console.log('🤖 Android detected - using Google Calendar URL');
-    // Android: Google Calendar URL работает лучше всего
-    // Android сам предложит открыть в приложении Google Calendar
+    // Android: Google Calendar URL
     window.location.href = googleUrl;
 
   } else {
-    console.log('💻 Desktop detected - opening in new tab');
-    // Desktop: открываем Google Calendar в новой вкладке
+    // Desktop: Google Calendar в новой вкладке
     window.open(googleUrl, '_blank');
   }
 }

@@ -90,6 +90,8 @@ app.get('/ics', (req, res) => {
     'END:VCALENDAR'
   ].join('\r\n');
 
+  // CORS — чтобы iframe из Mini App мог загружать
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
   res.setHeader('Content-Disposition', 'inline; filename="event.ics"');
   res.send(icsContent);
