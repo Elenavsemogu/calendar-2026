@@ -133,6 +133,70 @@ app.post('/send-ics', async (req, res) => {
 });
 
 // =====================================================
+// SEND-MULTI-ICS: бот отправляет один .ics с несколькими событиями
+// Один файл = все события добавляются в календарь одним нажатием
+// =====================================================
+app.post('/send-multi-ics', async (req, res) => {
+  try {
+    const { chat_id, events } = req.body;
+
+    if (!chat_id || !events || !events.length) {
+      return res.status(400).json({ ok: false, error: 'chat_id and events required' });
+    }
+
+    // Генерируем ICS с несколькими VEVENT
+    const vevents = events.map(ev => [
+      'BEGIN:VEVENT',
+      'UID:' + Date.now() + '-' + Math.random().toString(36).substr(2, 9) + '@secretroom',
+      'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
+      'DTSTART:' + (ev.start || ''),
+      'DTEND:' + (ev.end || ''),
+      'SUMMARY:' + (ev.title || 'Event'),
+      'LOCATION:' + (ev.location || ''),
+      'DESCRIPTION:' + (ev.description || ''),
+      'STATUS:CONFIRMED',
+      'TRANSP:OPAQUE',
+      'END:VEVENT'
+    ].join('\r\n')).join('\r\n');
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Secretroom//Calendar//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      vevents,
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const count = events.length;
+
+    // Отправляем файл через бота
+    const form = new FormData();
+    form.append('chat_id', String(chat_id));
+    form.append('document', Buffer.from(icsContent, 'utf-8'), {
+      filename: `SecretRoom_${count}_events.ics`,
+      contentType: 'text/calendar'
+    });
+    form.append('caption', `📅 ${count} ${count === 1 ? 'событие' : count < 5 ? 'события' : 'событий'}. Нажмите на файл чтобы добавить все в календарь.`);
+
+    const tgRes = await fetch(`${TG}/sendDocument`, {
+      method: 'POST',
+      body: form,
+      headers: form.getHeaders()
+    });
+
+    const tgData = await tgRes.json();
+    console.log('sendMultiICS result:', tgData.ok ? `OK (${count} events)` : tgData.description);
+
+    res.json({ ok: tgData.ok });
+  } catch (err) {
+    console.error('send-multi-ics error:', err.message);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// =====================================================
 // ICS ENDPOINT (GET) - fallback для прямого скачивания
 // =====================================================
 app.get('/ics', (req, res) => {

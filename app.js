@@ -1884,16 +1884,44 @@ function copyPromoCode() {
 }
 
 // Multi-Event Modal Functions (for mobile)
+// Храним выбранные события для массового добавления
+let selectedEventsForBulk = {};
+
+function updateBulkCount() {
+  const count = Object.keys(selectedEventsForBulk).filter(k => selectedEventsForBulk[k]).length;
+  const countEl = qs("#bulkAddCount");
+  const bulkBtn = qs("#bulkAddBtn");
+  if (countEl) countEl.textContent = `Выбрано: ${count} ${count === 1 ? 'событие' : count < 5 ? 'события' : 'событий'}`;
+  if (bulkBtn) bulkBtn.disabled = count === 0;
+  if (bulkBtn) bulkBtn.style.opacity = count === 0 ? '0.4' : '1';
+}
+
 function showMultiEventModal(visibleCards) {
   const modal = qs("#multiEventModal");
   const eventList = qs("#multiEventList");
 
   if (!modal || !eventList) return;
 
-  // Clear previous content
+  // Clear
   eventList.innerHTML = '';
+  selectedEventsForBulk = {};
 
-  // Create event items
+  // Показываем "Выбрать все" и кнопку только в Mini App
+  const selectAllBlock = qs("#multiEventSelectAll");
+  const bulkAddBlock = qs("#multiEventBulkAdd");
+  const selectAllCb = qs("#selectAllCheckbox");
+
+  if (isTelegramMiniApp) {
+    if (selectAllBlock) selectAllBlock.style.display = 'block';
+    if (bulkAddBlock) bulkAddBlock.style.display = 'block';
+  } else {
+    if (selectAllBlock) selectAllBlock.style.display = 'none';
+    if (bulkAddBlock) bulkAddBlock.style.display = 'none';
+  }
+
+  // Список событий
+  const allCheckboxes = [];
+
   visibleCards.forEach(card => {
     const eventId = card.dataset.eventId;
     const event = EVENTS[eventId];
@@ -1902,33 +1930,94 @@ function showMultiEventModal(visibleCards) {
 
     const eventItem = document.createElement('div');
     eventItem.className = 'multi-event-item';
+    eventItem.style.cssText = 'display:flex;align-items:flex-start;gap:12px';
 
-    const title = document.createElement('div');
-    title.className = 'multi-event-title';
-    title.textContent = event.title;
+    // Чекбокс (только в Mini App)
+    if (isTelegramMiniApp) {
+      const cbWrap = document.createElement('div');
+      cbWrap.style.cssText = 'flex-shrink:0;padding-top:2px';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.style.cssText = 'width:20px;height:20px;accent-color:#F5DA0F;cursor:pointer';
+      cb.dataset.eventId = eventId;
+      cb.addEventListener('change', () => {
+        selectedEventsForBulk[eventId] = cb.checked;
+        updateBulkCount();
+        // Обновляем "Выбрать все"
+        if (selectAllCb) {
+          const allChecked = allCheckboxes.every(c => c.checked);
+          selectAllCb.checked = allChecked;
+        }
+      });
+      allCheckboxes.push(cb);
+      cbWrap.appendChild(cb);
+      eventItem.appendChild(cbWrap);
+    }
+
+    const info = document.createElement('div');
+    info.style.cssText = 'flex:1;min-width:0';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'multi-event-title';
+    titleEl.textContent = event.title;
 
     const dates = document.createElement('div');
     dates.className = 'multi-event-dates';
     dates.innerHTML = `📅 ${event.dates}`;
 
+    info.appendChild(titleEl);
+    info.appendChild(dates);
+
+    // Кнопка "Добавить" (индивидуальная)
     const addButton = document.createElement('button');
     addButton.className = 'multi-event-add-btn';
-    addButton.textContent = 'Добавить в календарь';
+    addButton.textContent = isTelegramMiniApp ? '+' : 'Добавить в календарь';
+    if (isTelegramMiniApp) {
+      addButton.style.cssText = 'flex-shrink:0;width:36px;height:36px;padding:0;font-size:18px;border-radius:50%;display:flex;align-items:center;justify-content:center';
+    }
     addButton.addEventListener('click', () => {
-      // Сразу открываем нативный календарь
       addToCalendar(event);
-
-      // Visual feedback
-      addButton.textContent = '✓ Добавлено';
+      addButton.textContent = '✓';
       addButton.classList.add('added');
     });
 
-    eventItem.appendChild(title);
-    eventItem.appendChild(dates);
-    eventItem.appendChild(addButton);
-
+    info.appendChild(addButton);
+    eventItem.appendChild(info);
     eventList.appendChild(eventItem);
   });
+
+  // "Выбрать все" логика
+  if (selectAllCb) {
+    selectAllCb.checked = false;
+    selectAllCb.onchange = () => {
+      allCheckboxes.forEach(cb => {
+        cb.checked = selectAllCb.checked;
+        selectedEventsForBulk[cb.dataset.eventId] = selectAllCb.checked;
+      });
+      updateBulkCount();
+    };
+  }
+
+  // Кнопка массового добавления
+  const bulkBtn = qs("#bulkAddBtn");
+  if (bulkBtn) {
+    bulkBtn.onclick = () => {
+      const selectedIds = Object.keys(selectedEventsForBulk).filter(k => selectedEventsForBulk[k]);
+      if (selectedIds.length === 0) return;
+      
+      const events = selectedIds.map(id => EVENTS[id]).filter(Boolean);
+      addMultipleToCalendar(events);
+      
+      bulkBtn.textContent = '✅ Отправлено!';
+      bulkBtn.disabled = true;
+      setTimeout(() => {
+        bulkBtn.textContent = '📅 Добавить выбранные в календарь';
+        bulkBtn.disabled = false;
+      }, 3000);
+    };
+  }
+
+  updateBulkCount();
 
   // Show modal
   modal.classList.add('show');
@@ -2197,6 +2286,90 @@ function buildGoogleCalendarUrl(event) {
   const endDate = normalizeISOtoICS(event.endISO);
   
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
+}
+
+// =====================================================
+// Массовое добавление событий в календарь
+// =====================================================
+function addMultipleToCalendar(events) {
+  if (!events || events.length === 0) return;
+
+  // Если одно событие — обычное добавление
+  if (events.length === 1) {
+    addToCalendar(events[0]);
+    return;
+  }
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  // В Telegram Mini App на iPhone: бот отправляет один .ics файл со всеми событиями
+  if (isTelegramMiniApp && isIOS) {
+    const chatId = TelegramWebApp.initDataUnsafe?.user?.id;
+    if (!chatId) return;
+
+    showCalendarToast(`${events.length} событий`, 'loading');
+
+    const eventData = events.map(ev => ({
+      title: ev.title || '',
+      location: `${ev.city || ''}, ${ev.countryName || ev.country || ''}`,
+      description: ev.description || ev.title || '',
+      start: normalizeISOtoICS(ev.startISO),
+      end: normalizeISOtoICS(ev.endISO)
+    }));
+
+    fetch('https://sr-calendar-bot.onrender.com/send-multi-ics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, events: eventData })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.ok) {
+        showCalendarToast(`${events.length} событий`, 'success');
+        if (TelegramWebApp?.showPopup) {
+          TelegramWebApp.showPopup({
+            title: `📅 ${events.length} событий отправлено!`,
+            message: 'Файл в чате. Нажмите на него — все события добавятся в календарь одним нажатием.',
+            buttons: [
+              { id: 'go_chat', type: 'default', text: 'Перейти в чат' },
+              { id: 'stay', type: 'cancel', text: 'Остаться' }
+            ]
+          }, (btnId) => {
+            if (btnId === 'go_chat') TelegramWebApp.close();
+          });
+        }
+      }
+    })
+    .catch(() => {
+      // Fallback: добавляем по одному
+      events.forEach(ev => addToCalendar(ev));
+    });
+
+    return;
+  }
+
+  // В Telegram Mini App на Android/Desktop: Google Calendar по одному
+  if (isTelegramMiniApp) {
+    events.forEach((ev, i) => {
+      setTimeout(() => addToCalendar(ev), i * 500);
+    });
+    return;
+  }
+
+  // Обычный браузер: скачиваем один ICS файл
+  const conferences = events.map(ev => ({
+    title: ev.title,
+    location: `${ev.city}, ${ev.countryName || ev.country}`,
+    country: ev.country,
+    startDate: ev.startISO ? ev.startISO.split('T')[0] : null,
+    endDate: ev.endISO ? ev.endISO.split('T')[0] : null,
+    isTBD: false,
+    description: ev.description || ''
+  }));
+  const icsData = generateMultiEventICS(conferences);
+  if (icsData) {
+    downloadICSFile(icsData, 'secretroom-calendar-2026');
+  }
 }
 
 // =====================================================
