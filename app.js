@@ -1982,24 +1982,61 @@ function showMultiEventModal(visibleCards) {
       
       const events = selectedIds.map(id => EVENTS[id]).filter(Boolean);
       
-      // Google Calendar — открываем по одному (Google не поддерживает multi-event URL)
-      events.forEach((ev, i) => {
-        const url = buildGoogleCalendarUrl(ev);
-        setTimeout(() => {
+      // Google Calendar не поддерживает bulk-add — открываем по одному
+      if (events.length > 1) {
+        // Предупреждаем и открываем по одному с большим интервалом
+        const openNext = (index) => {
+          if (index >= events.length) {
+            googleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Все добавлены';
+            setTimeout(() => { googleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 14h2v2H8z" fill="currentColor"/></svg> Google Calendar'; }, 3000);
+            return;
+          }
+          const ev = events[index];
+          const url = buildGoogleCalendarUrl(ev);
+          googleBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> ${index + 1} из ${events.length}...`;
+          
           if (isTelegramMiniApp && TelegramWebApp?.openLink) {
             TelegramWebApp.openLink(url);
           } else {
             window.open(url, '_blank');
           }
-        }, i * 800);
-      });
+          
+          // Следующее событие через 2.5 секунды
+          setTimeout(() => openNext(index + 1), 2500);
+        };
+        
+        // Показываем предупреждение
+        if (isTelegramMiniApp && TelegramWebApp?.showPopup) {
+          TelegramWebApp.showPopup({
+            title: 'Google Calendar',
+            message: `Выбрано ${events.length} событий. Google Calendar добавляет по одному — каждое откроется отдельно. Нажмите «Сохранить» в каждом.`,
+            buttons: [
+              { id: 'go', type: 'default', text: 'Добавлять' },
+              { id: 'cancel', type: 'cancel', text: 'Отмена' }
+            ]
+          }, (btnId) => {
+            if (btnId === 'go') openNext(0);
+          });
+        } else {
+          if (confirm(`Выбрано ${events.length} событий. Google Calendar добавляет по одному — каждое откроется в новой вкладке. Нажмите «Сохранить» в каждой. Продолжить?`)) {
+            openNext(0);
+          }
+        }
+      } else {
+        // Одно событие — сразу открываем
+        const url = buildGoogleCalendarUrl(events[0]);
+        if (isTelegramMiniApp && TelegramWebApp?.openLink) {
+          TelegramWebApp.openLink(url);
+        } else {
+          window.open(url, '_blank');
+        }
+        googleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Готово';
+        setTimeout(() => { googleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 14h2v2H8z" fill="currentColor"/></svg> Google Calendar'; }, 2000);
+      }
       
       // Запоминаем
       selectedIds.forEach(id => addedEvents.add(id));
       saveAddedEvents();
-      
-      googleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Готово';
-      setTimeout(() => { googleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 14h2v2H8z" fill="currentColor"/></svg> Google Calendar'; }, 2000);
     };
   }
 
@@ -2015,7 +2052,7 @@ function showMultiEventModal(visibleCards) {
       if (isTelegramMiniApp) {
         // Mini App: openLink к ICS серверу → Safari → нативный диалог
         const eventsParam = events.map(ev => {
-          return `${encodeURIComponent(ev.title)}|${encodeURIComponent(ev.city + ', ' + (ev.countryName || ev.country))}|${normalizeISOtoICS(ev.startISO)}|${normalizeISOtoICS(ev.endISO)}`;
+          return `${encodeURIComponent(ev.title)}|${encodeURIComponent(ev.city + ', ' + (ev.countryName || ev.country))}|${isoToAllDay(ev.startISO)}|${isoToAllDayEnd(ev.endISO)}`;
         }).join(';;');
         const icsUrl = `https://sr-calendar-bot.onrender.com/ics-multi?events=${encodeURIComponent(eventsParam)}`;
         
@@ -2214,25 +2251,21 @@ END:VCALENDAR`;
 }
 
 
-// Генерация ICS для iOS (упрощенная)
+// Генерация ICS для iOS (all-day события)
 function generateICSForIOS(event) {
-  const formatDate = (isoString) => {
-    if (!isoString) return '';
-    return isoString.replace(/[-:]/g, '').split('.')[0] + 'Z';
-  };
-
   const title = event.title || '';
   const location = `${event.city}, ${event.countryName || event.country}`;
   const description = event.description || event.title;
+  const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
   return `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Secretroom//Calendar//RU
 BEGIN:VEVENT
 UID:${event.title.replace(/\s+/g, '-')}-${Date.now()}@secretroom
-DTSTAMP:${formatDate(new Date().toISOString())}
-DTSTART:${formatDate(event.startISO)}
-DTEND:${formatDate(event.endISO)}
+DTSTAMP:${now}
+DTSTART;VALUE=DATE:${isoToAllDay(event.startISO)}
+DTEND;VALUE=DATE:${isoToAllDayEnd(event.endISO)}
 SUMMARY:${title}
 LOCATION:${location}
 DESCRIPTION:${description}
@@ -2287,27 +2320,39 @@ function showCalendarToast(eventTitle, status) {
 // =====================================================
 // Построить URL для ICS сервера
 // =====================================================
-// Нормализация ISO даты в формат ICS (YYYYMMDDTHHmmssZ)
+// Извлечь дату (YYYYMMDD) из ISO строки для all-day событий
+function isoToAllDay(isoStr) {
+  if (!isoStr) return '';
+  // "2026-03-04T09:00:00Z" → "20260304", "2026-03-04" → "20260304"
+  return isoStr.split('T')[0].replace(/-/g, '');
+}
+
+// Для all-day событий endDate эксклюзивный — нужно прибавить 1 день
+function isoToAllDayEnd(isoStr) {
+  if (!isoStr) return '';
+  const dateStr = isoStr.split('T')[0];
+  const d = new Date(dateStr + 'T12:00:00Z'); // полдень чтобы не было проблем с DST
+  d.setUTCDate(d.getUTCDate() + 1);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  return `${y}${m}${day}`;
+}
+
+// Нормализация ISO даты в формат ICS (для обратной совместимости)
 function normalizeISOtoICS(isoStr) {
   if (!isoStr) return '';
-  // Если только дата без времени: "2026-09-07" → "20260907T090000Z"
-  if (isoStr.length <= 10) {
-    return isoStr.replace(/-/g, '') + 'T090000Z';
-  }
-  // Если дата с временем: "2026-03-03T09:00:00Z" → "20260303T090000Z"
-  let result = isoStr.replace(/[-:]/g, '').split('.')[0];
-  if (!result.endsWith('Z')) result += 'Z';
-  return result;
+  return isoToAllDay(isoStr);
 }
 
 function buildICSUrl(event) {
   const title = encodeURIComponent(event.title || '');
   const location = encodeURIComponent(`${event.city || ''}, ${event.countryName || event.country || ''}`);
   const description = encodeURIComponent(event.description || event.title || '');
-  const startDate = normalizeISOtoICS(event.startISO);
-  const endDate = normalizeISOtoICS(event.endISO);
+  const startDate = isoToAllDay(event.startISO);
+  const endDate = isoToAllDayEnd(event.endISO);
   
-  return `${ICS_SERVER}?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}`;
+  return `${ICS_SERVER}?title=${title}&location=${location}&description=${description}&start=${startDate}&end=${endDate}&allday=1`;
 }
 
 // =====================================================
@@ -2317,8 +2362,9 @@ function buildGoogleCalendarUrl(event) {
   const title = encodeURIComponent(event.title || '');
   const location = encodeURIComponent(`${event.city || ''}, ${event.countryName || event.country || ''}`);
   const description = encodeURIComponent(event.description || '');
-  const startDate = normalizeISOtoICS(event.startISO);
-  const endDate = normalizeISOtoICS(event.endISO);
+  // Google Calendar: для all-day событий используем формат YYYYMMDD/YYYYMMDD (endDate эксклюзивный)
+  const startDate = isoToAllDay(event.startISO);
+  const endDate = isoToAllDayEnd(event.endISO);
   
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${description}`;
 }

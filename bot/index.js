@@ -207,17 +207,26 @@ app.get('/ics-multi', (req, res) => {
 
     const vevents = eventParts.map(part => {
       const [title, location, start, end] = part.split('|').map(s => decodeURIComponent(s || ''));
-      return [
+      const lines = [
         'BEGIN:VEVENT',
         'UID:' + Date.now() + '-' + Math.random().toString(36).substr(2, 9) + '@secretroom',
         'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
-        'DTSTART:' + (start || ''),
-        'DTEND:' + (end || ''),
+      ];
+      // All-day если дата 8 символов (YYYYMMDD)
+      if (start && start.length === 8) {
+        lines.push('DTSTART;VALUE=DATE:' + start);
+        lines.push('DTEND;VALUE=DATE:' + (end || start));
+      } else {
+        lines.push('DTSTART:' + (start || ''));
+        lines.push('DTEND:' + (end || ''));
+      }
+      lines.push(
         'SUMMARY:' + (title || 'Event'),
         'LOCATION:' + (location || ''),
         'STATUS:CONFIRMED',
         'END:VEVENT'
-      ].join('\r\n');
+      );
+      return lines.join('\r\n');
     }).join('\r\n');
 
     const icsContent = [
@@ -244,9 +253,9 @@ app.get('/ics-multi', (req, res) => {
 // ICS ENDPOINT (GET) - одно событие
 // =====================================================
 app.get('/ics', (req, res) => {
-  const { title, location, description, start, end } = req.query;
+  const { title, location, description, start, end, allday } = req.query;
 
-  const icsContent = [
+  const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//Secretroom//Calendar//EN',
@@ -255,8 +264,18 @@ app.get('/ics', (req, res) => {
     'BEGIN:VEVENT',
     'UID:' + Date.now() + '-' + Math.random().toString(36).substr(2, 9) + '@secretroom',
     'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
-    'DTSTART:' + (start || ''),
-    'DTEND:' + (end || ''),
+  ];
+  
+  // All-day события (VALUE=DATE) vs timed
+  if (allday === '1' && start && start.length === 8) {
+    lines.push('DTSTART;VALUE=DATE:' + start);
+    lines.push('DTEND;VALUE=DATE:' + (end || start));
+  } else {
+    lines.push('DTSTART:' + (start || ''));
+    lines.push('DTEND:' + (end || ''));
+  }
+  
+  lines.push(
     'SUMMARY:' + decodeURIComponent(title || 'Event'),
     'LOCATION:' + decodeURIComponent(location || ''),
     'DESCRIPTION:' + decodeURIComponent(description || ''),
@@ -264,9 +283,10 @@ app.get('/ics', (req, res) => {
     'TRANSP:OPAQUE',
     'END:VEVENT',
     'END:VCALENDAR'
-  ].join('\r\n');
+  );
 
-  // CORS — чтобы iframe из Mini App мог загружать
+  const icsContent = lines.join('\r\n');
+
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
   res.setHeader('Content-Disposition', 'inline; filename="event.ics"');
