@@ -1342,6 +1342,39 @@ body { background-color: #1B1B1B; color: #FBF2E8; }
 }
 
 /* =====================================================
+   OPEN IN BROWSER LINK (Mini App only)
+   ===================================================== */
+
+.open-in-browser-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #FBF2E8;
+  opacity: 0.45;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: opacity 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.open-in-browser-link:hover {
+  opacity: 0.75;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.open-in-browser-link:active {
+  opacity: 1;
+}
+
+.open-in-browser-link svg {
+  flex-shrink: 0;
+}
+
+/* =====================================================
    AUTH OVERLAY & BLUR
    ===================================================== */
 

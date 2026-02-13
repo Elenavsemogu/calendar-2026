@@ -36,6 +36,21 @@ if (isTelegramMiniApp) {
   // Адаптируем цвета под тему Telegram
   document.documentElement.style.setProperty('--tg-theme-bg-color', TelegramWebApp.backgroundColor || '#1B1B1B');
   document.documentElement.style.setProperty('--tg-theme-text-color', TelegramWebApp.textColor || '#FBF2E8');
+  
+  // Показываем ссылку "Открыть в браузере"
+  const browserLink = document.getElementById('openInBrowserLink');
+  if (browserLink) {
+    browserLink.style.display = 'inline-flex';
+    browserLink.href = 'https://elenavsemogu.github.io/calendar-2026/';
+    browserLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (TelegramWebApp?.openLink) {
+        TelegramWebApp.openLink('https://elenavsemogu.github.io/calendar-2026/');
+      } else {
+        window.open('https://elenavsemogu.github.io/calendar-2026/', '_blank');
+      }
+    });
+  }
 }
 
 // ------------------------------
