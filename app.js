@@ -434,9 +434,13 @@ function getVisaInfo(citizenship, country) {
 }
 
 // Генерация HTML для визового тега
-function getVisaTagHTML(visaInfo) {
+function getVisaTagHTML(visaInfo, compact) {
+  const sizeClass = compact
+    ? 'text-[10px] font-bold px-1.5 rounded border'
+    : 'px-2 py-1 rounded-full text-xs border';
+
   if (!visaInfo) {
-    return '<span class="px-2 py-1 rounded-full text-xs bg-gray-500/20 text-gray-400" title="Информация уточняется">? Уточнить</span>';
+    return `<span class="${sizeClass} bg-gray-500/20 text-gray-400" title="Информация уточняется">? Уточнить</span>`;
   }
 
   const colorClasses = {
@@ -457,7 +461,7 @@ function getVisaTagHTML(visaInfo) {
   const label = labels[visaInfo.required] || visaInfo.type;
   const title = visaInfo.notes || visaInfo.type;
 
-  return `<span class="px-2 py-1 rounded-full text-xs border ${colorClass}" title="${title}">${label}</span>`;
+  return `<span class="${sizeClass} ${colorClass}" title="${title}">${label}</span>`;
 }
 
 function applyVisaTag(el, status, countryCode) {
@@ -482,17 +486,19 @@ function applyVisaTag(el, status, countryCode) {
 function updateAllVisaTags() {
   qsa("[data-visa-tag]").forEach((tag) => {
     const cc = tag.getAttribute("data-visa-tag");
+    const isCompact = tag.hasAttribute("data-visa-compact");
 
     // Попробовать использовать новую визовую матрицу
     const visaInfo = getVisaInfo(currentCitizenship, cc);
     if (visaInfo) {
       // Сохранить data-visa-tag атрибут
       const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = getVisaTagHTML(visaInfo);
+      tempDiv.innerHTML = getVisaTagHTML(visaInfo, isCompact);
       const newTag = tempDiv.firstChild;
 
       // Добавить data-visa-tag обратно
       newTag.setAttribute('data-visa-tag', cc);
+      if (isCompact) newTag.setAttribute('data-visa-compact', '1');
 
       // Заменить элемент
       tag.parentNode.replaceChild(newTag, tag);
@@ -1966,6 +1972,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Inject visa tags into small cards that don't have them yet
   qsa('.event-card[data-country]').forEach(card => {
+    const isMajor = card.classList.contains('major-card');
     if (!card.querySelector('[data-visa-tag]')) {
       const cc = card.getAttribute('data-country');
       if (cc) {
@@ -1974,6 +1981,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const visaSpan = document.createElement('span');
           visaSpan.className = 'text-[10px] font-bold px-1.5 rounded';
           visaSpan.setAttribute('data-visa-tag', cc);
+          if (!isMajor) visaSpan.setAttribute('data-visa-compact', '1');
           visaSpan.textContent = '...';
           flexRow.appendChild(visaSpan);
         }
