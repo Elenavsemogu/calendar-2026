@@ -1964,6 +1964,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Inject visa tags into small cards that don't have them yet
+  qsa('.event-card[data-country]').forEach(card => {
+    if (!card.querySelector('[data-visa-tag]')) {
+      const cc = card.getAttribute('data-country');
+      if (cc) {
+        const flexRow = card.querySelector('.flex.gap-2');
+        if (flexRow) {
+          const visaSpan = document.createElement('span');
+          visaSpan.className = 'text-[10px] font-bold px-1.5 rounded';
+          visaSpan.setAttribute('data-visa-tag', cc);
+          visaSpan.textContent = '...';
+          flexRow.appendChild(visaSpan);
+        }
+      }
+    }
+  });
+
   // Visa tags initial
   updateAllVisaTags();
 
