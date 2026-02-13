@@ -432,16 +432,19 @@ async function finishQuestionnaire(chatId, data) {
   const isSubscribed = await checkChannelSubscription(data.telegram_id);
   
   if (isSubscribed) {
-    // Подписан → сразу отдаём календарь
+    // Подписан → отдаём календарь с выбором
     clearUserState(chatId);
+    const authToken = 'tg_' + data.telegram_id + '_' + Date.now();
+    const browserUrl = CONFIG.CALENDAR_URL + '?auth=' + authToken;
     await tg('sendMessage', {
       chat_id: chatId,
-      text: `Спасибо, всё записали! 🤝\n\nКалендарь твой — открывай прямо сейчас 👇\n\n_А если захочешь вернуться позже — он всегда доступен по кнопке внизу чата._`,
+      text: `Спасибо, всё записали! 🤝\n\nКалендарь твой — выбирай как удобнее открыть 👇`,
       parse_mode: 'Markdown',
       reply_markup: {
-        inline_keyboard: [[
-          { text: '📅 Открыть календарь', web_app: { url: CONFIG.CALENDAR_URL } }
-        ]]
+        inline_keyboard: [
+          [{ text: '📅 Открыть в Telegram', web_app: { url: CONFIG.CALENDAR_URL } }],
+          [{ text: '🌐 Открыть в браузере', url: browserUrl }]
+        ]
       }
     });
   } else {
@@ -482,15 +485,18 @@ async function handleCallback(callback) {
         text: '✅ Подписка подтверждена!'
       });
       
-      // Анкета уже пройдена → сразу календарь
+      // Анкета уже пройдена → календарь с выбором
+      const authToken = 'tg_' + userId + '_' + Date.now();
+      const browserUrl = CONFIG.CALENDAR_URL + '?auth=' + authToken;
       await tg('sendMessage', {
         chat_id: chatId,
-        text: `Отлично, ${firstName}! Всё готово 🎉\n\nКалендарь твой — открывай прямо сейчас 👇\n\n_А если захочешь вернуться позже — он всегда доступен по кнопке внизу чата._`,
+        text: `Отлично, ${firstName}! Всё готово 🎉\n\nКалендарь твой — выбирай как удобнее открыть 👇`,
         parse_mode: 'Markdown',
         reply_markup: {
-          inline_keyboard: [[
-            { text: '📅 Открыть календарь', web_app: { url: CONFIG.CALENDAR_URL } }
-          ]]
+          inline_keyboard: [
+            [{ text: '📅 Открыть в Telegram', web_app: { url: CONFIG.CALENDAR_URL } }],
+            [{ text: '🌐 Открыть в браузере', url: browserUrl }]
+          ]
         }
       });
     } else {
