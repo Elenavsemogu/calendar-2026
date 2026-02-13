@@ -356,30 +356,13 @@ async function handleStart(message) {
     utm_source: utmParam || 'Прямой переход'
   });
   
-  // Проверяем подписку сразу
-  const isSubscribed = await checkChannelSubscription(userId);
-  
-  if (isSubscribed) {
-    // Подписан → начинаем анкету
-    await tg('sendMessage', {
-      chat_id: chatId,
-      text: `👋 *Привет, ${user.first_name}!*\n\n✅ Ты подписан на *Secret Room*\n\nПрежде чем открыть календарь, расскажи немного о себе. Это займёт буквально минуту.\n\n*Как тебя зовут?*`,
-      parse_mode: 'Markdown'
-    });
-    setUserState(chatId, { step: 'waiting_name', data: { telegram_id: userId, tg_username: user.username || '' } });
-  } else {
-    await tg('sendMessage', {
-      chat_id: chatId,
-      text: `👋 *Привет, ${user.first_name}!*\n\n📢 Подпишись на канал *Secret Room* чтобы получить доступ к календарю!\n\n💎 В канале:\n• Анонсы всех ивентов\n• Эксклюзивные промокоды\n• Закрытые сайд-ивенты\n• Инсайды из индустрии\n\n👇 Подписывайся:`,
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: '📢 Подписаться на Secret Room', url: 'https://t.me/secreetroommedia' }],
-          [{ text: '✅ Я подписался!', callback_data: 'check_subscription' }]
-        ]
-      }
-    });
-  }
+  // Приветствие + сразу первый вопрос (для всех одинаково)
+  await tg('sendMessage', {
+    chat_id: chatId,
+    text: `Привет, ${user.first_name}! 👋\n\nКоманда *Secret Room* собрала в одном месте все главные iGaming конференции 2026 года — с датами, визовыми режимами, крутыми местами, сайд-ивентами и промокодами на билеты.\n\nОтветь на пару вопросов — и календарь твой навсегда.\n\n*Как тебя зовут?*`,
+    parse_mode: 'Markdown'
+  });
+  setUserState(chatId, { step: 'waiting_name', data: { telegram_id: userId, tg_username: user.username || '', utm_source: utmParam } });
 }
 
 // =====================================================
@@ -442,21 +425,40 @@ async function handleQuestionnaireText(chatId, user, text, state) {
 // АНКЕТА: завершение и сохранение
 // =====================================================
 async function finishQuestionnaire(chatId, data) {
-  clearUserState(chatId);
-  
   // Сохраняем анкету в таблицу
   await saveProfileToSheet(data);
   
-  await tg('sendMessage', {
-    chat_id: chatId,
-    text: `🎉 *Спасибо, всё записали!*\n\n📅 Теперь открывай календарь всех главных iGaming конференций 2026:\n\n• Даты и локации\n• Визовые требования\n• Промокоды на билеты\n• Гид по ресторанам\n\n👇 Жми на кнопку:`,
-    parse_mode: 'Markdown',
-    reply_markup: {
-      inline_keyboard: [[
-        { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
-      ]]
-    }
-  });
+  // Проверяем подписку на канал
+  const isSubscribed = await checkChannelSubscription(data.telegram_id);
+  
+  if (isSubscribed) {
+    // Подписан → сразу отдаём календарь
+    clearUserState(chatId);
+    await tg('sendMessage', {
+      chat_id: chatId,
+      text: `Спасибо, всё записали! 🤝\n\nКалендарь твой — пользуйся на здоровье 👇`,
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [[
+          { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
+        ]]
+      }
+    });
+  } else {
+    // Не подписан → просим подписаться (последний шаг)
+    setUserState(chatId, { step: 'waiting_subscription', data });
+    await tg('sendMessage', {
+      chat_id: chatId,
+      text: `Почти готово! Осталось подписаться на канал *Secret Room* — там анонсы, промокоды и закрытые ивенты 👇`,
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '📢 Подписаться на Secret Room', url: 'https://t.me/secreetroommedia' }],
+          [{ text: '✅ Готово!', callback_data: 'check_subscription' }]
+        ]
+      }
+    });
+  }
 }
 
 // =====================================================
@@ -468,27 +470,33 @@ async function handleCallback(callback) {
   const user = callback.from;
   const firstName = user.first_name || '';
   
-  // Проверка подписки
+  // Проверка подписки (после анкеты)
   if (callback.data === 'check_subscription') {
     const isSubscribed = await checkChannelSubscription(userId);
     
     if (isSubscribed) {
+      clearUserState(chatId);
+      
       await tg('answerCallbackQuery', {
         callback_query_id: callback.id,
         text: '✅ Подписка подтверждена!'
       });
       
-      // Начинаем анкету
+      // Анкета уже пройдена → сразу календарь
       await tg('sendMessage', {
         chat_id: chatId,
-        text: `🎉 *Отлично, ${firstName}!*\n\n✅ Подписка подтверждена!\n\nПрежде чем открыть календарь, расскажи немного о себе. Это займёт буквально минуту.\n\n*Как тебя зовут?*`,
-        parse_mode: 'Markdown'
+        text: `Отлично, ${firstName}! Всё готово 🎉\n\nКалендарь твой — пользуйся на здоровье 👇`,
+        parse_mode: 'Markdown',
+        reply_markup: {
+          inline_keyboard: [[
+            { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
+          ]]
+        }
       });
-      setUserState(chatId, { step: 'waiting_name', data: { telegram_id: userId, tg_username: user.username || '' } });
     } else {
       await tg('answerCallbackQuery', {
         callback_query_id: callback.id,
-        text: '⚠️ Подписка не найдена. Подпишись на канал и попробуй снова.'
+        text: '⚠️ Подписка не найдена. Подпишись на канал и попробуй ещё раз.'
       });
     }
     return;
