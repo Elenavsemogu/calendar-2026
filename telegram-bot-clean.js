@@ -13,7 +13,9 @@ function doGet(e) {
   try {
     var data = e.parameter;
     
-    if (data.telegram_id) {
+    if (data.type === 'profile') {
+      saveProfile(data);
+    } else if (data.telegram_id) {
       saveUser(data);
     }
     
@@ -113,6 +115,65 @@ function saveUser(data) {
     rowRange.setBackground('#FFF9E6'); // Светло-жёлтый для повторных
   } else {
     rowRange.setBackground('#E6F9E6'); // Светло-зелёный для новых
+  }
+}
+
+// =====================================================
+// СОХРАНЕНИЕ АНКЕТЫ (лист "Анкеты")
+// =====================================================
+function saveProfile(data) {
+  var ss = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+  var sheetName = 'Анкеты';
+  var sheet = ss.getSheetByName(sheetName);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    
+    // Шапка
+    sheet.appendRow(['📅 Дата', '🆔 Telegram ID', '📱 Username', '👤 Имя', '💼 Должность и компания', '📩 Открыт к предложениям', '📊 Опыт на рынке', '🎂 Возраст']);
+    
+    var headerRange = sheet.getRange(1, 1, 1, 8);
+    headerRange.setBackground('#1B1B1B');
+    headerRange.setFontColor('#F5DA0F');
+    headerRange.setFontWeight('bold');
+    headerRange.setFontSize(11);
+    headerRange.setHorizontalAlignment('center');
+    sheet.setFrozenRows(1);
+    
+    for (var i = 1; i <= 8; i++) {
+      sheet.autoResizeColumn(i);
+    }
+  }
+
+  // Форматируем дату
+  var timestamp = data.timestamp ? new Date(data.timestamp) : new Date();
+  var day = ('0' + timestamp.getDate()).slice(-2);
+  var month = ('0' + (timestamp.getMonth() + 1)).slice(-2);
+  var year = timestamp.getFullYear();
+  var hours = ('0' + timestamp.getHours()).slice(-2);
+  var minutes = ('0' + timestamp.getMinutes()).slice(-2);
+  var formattedDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
+
+  var newRow = [
+    formattedDate,
+    data.telegram_id || '',
+    data.tg_username ? '@' + data.tg_username : '',
+    data.name || '',
+    data.position || '',
+    data.open_to_jobs || '',
+    data.experience || '',
+    data.age || ''
+  ];
+  
+  sheet.appendRow(newRow);
+  
+  // Подсветка строки
+  var lastRow = sheet.getLastRow();
+  var rowRange = sheet.getRange(lastRow, 1, 1, 8);
+  if (data.open_to_jobs === 'Да') {
+    rowRange.setBackground('#E6F9E6'); // Зелёный — открыт к работе
+  } else {
+    rowRange.setBackground('#FFFFFF');
   }
 }
 

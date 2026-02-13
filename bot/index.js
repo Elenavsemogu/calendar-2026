@@ -294,18 +294,48 @@ app.get('/ics', (req, res) => {
 });
 
 // =====================================================
+// АНКЕТА: состояния пользователей в памяти
+// =====================================================
+// Шаги: waiting_name → waiting_position → waiting_open_to_jobs →
+//        (если Да) waiting_experience → waiting_age → done
+const userStates = new Map();
+
+function getUserState(chatId) {
+  return userStates.get(chatId) || null;
+}
+
+function setUserState(chatId, state) {
+  userStates.set(chatId, state);
+}
+
+function clearUserState(chatId) {
+  userStates.delete(chatId);
+}
+
+// =====================================================
 // MESSAGE HANDLERS
 // =====================================================
 async function handleMessage(message) {
   const chatId = message.chat.id;
-  const text = message.text || '';
+  const text = (message.text || '').trim();
   
   if (text.startsWith('/start')) {
+    clearUserState(chatId);
     handleStart(message);
+    return;
+  }
+  
+  // Проверяем, есть ли активная анкета
+  const state = getUserState(chatId);
+  if (state) {
+    await handleQuestionnaireText(chatId, message.from, text, state);
     return;
   }
 }
 
+// =====================================================
+// /START
+// =====================================================
 async function handleStart(message) {
   const chatId = message.chat.id;
   const userId = message.from.id;
@@ -315,7 +345,7 @@ async function handleStart(message) {
   const parts = message.text.split(' ');
   const utmParam = parts[1] || '';
   
-  // Сохраняем данные пользователя
+  // Сохраняем базовые данные пользователя
   await saveToSheet({
     telegram_id: userId,
     first_name: user.first_name || '',
@@ -330,16 +360,13 @@ async function handleStart(message) {
   const isSubscribed = await checkChannelSubscription(userId);
   
   if (isSubscribed) {
+    // Подписан → начинаем анкету
     await tg('sendMessage', {
       chat_id: chatId,
-      text: `👋 *Привет, ${user.first_name}!*\n\n✅ Ты подписан на *Secret Room*\n\n🗓 Открывай календарь всех главных iGaming конференций 2026:\n\n• Даты и локации\n• Визовые требования\n• Промокоды на билеты\n• Гид по ресторанам\n\n👇 Жми на кнопку:`,
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [[
-          { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
-        ]]
-      }
+      text: `👋 *Привет, ${user.first_name}!*\n\n✅ Ты подписан на *Secret Room*\n\nПрежде чем открыть календарь, расскажи немного о себе. Это займёт буквально минуту.\n\n*Как тебя зовут?*`,
+      parse_mode: 'Markdown'
     });
+    setUserState(chatId, { step: 'waiting_name', data: { telegram_id: userId, tg_username: user.username || '' } });
   } else {
     await tg('sendMessage', {
       chat_id: chatId,
@@ -348,43 +375,153 @@ async function handleStart(message) {
       reply_markup: {
         inline_keyboard: [
           [{ text: '📢 Подписаться на Secret Room', url: 'https://t.me/secreetroommedia' }],
-          [{ text: '✅ Я подписался! Открыть календарь', callback_data: 'check_subscription' }]
+          [{ text: '✅ Я подписался!', callback_data: 'check_subscription' }]
         ]
       }
     });
   }
 }
 
+// =====================================================
+// АНКЕТА: обработка текстовых ответов
+// =====================================================
+async function handleQuestionnaireText(chatId, user, text, state) {
+  const { step, data } = state;
+  
+  switch (step) {
+    case 'waiting_name':
+      data.name = text;
+      await tg('sendMessage', {
+        chat_id: chatId,
+        text: `Приятно познакомиться, *${text}*! 🤝\n\n*Твоя должность и компания?*\n\nНапример: _CMO, BetCompany_`,
+        parse_mode: 'Markdown'
+      });
+      setUserState(chatId, { step: 'waiting_position', data });
+      break;
+      
+    case 'waiting_position':
+      data.position = text;
+      await tg('sendMessage', {
+        chat_id: chatId,
+        text: `*Открыт(а) ли ты к входящим предложениям о работе?*`,
+        parse_mode: 'Markdown',
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: '✅ Да, открыт(а)', callback_data: 'jobs_yes' },
+              { text: '🚫 Нет', callback_data: 'jobs_no' }
+            ]
+          ]
+        }
+      });
+      setUserState(chatId, { step: 'waiting_open_to_jobs', data });
+      break;
+      
+    case 'waiting_experience':
+      data.experience = text;
+      await tg('sendMessage', {
+        chat_id: chatId,
+        text: `*Сколько тебе лет?*`,
+        parse_mode: 'Markdown'
+      });
+      setUserState(chatId, { step: 'waiting_age', data });
+      break;
+      
+    case 'waiting_age':
+      data.age = text;
+      // Анкета завершена — сохраняем и показываем календарь
+      await finishQuestionnaire(chatId, data);
+      break;
+      
+    default:
+      break;
+  }
+}
+
+// =====================================================
+// АНКЕТА: завершение и сохранение
+// =====================================================
+async function finishQuestionnaire(chatId, data) {
+  clearUserState(chatId);
+  
+  // Сохраняем анкету в таблицу
+  await saveProfileToSheet(data);
+  
+  await tg('sendMessage', {
+    chat_id: chatId,
+    text: `🎉 *Спасибо, всё записали!*\n\n📅 Теперь открывай календарь всех главных iGaming конференций 2026:\n\n• Даты и локации\n• Визовые требования\n• Промокоды на билеты\n• Гид по ресторанам\n\n👇 Жми на кнопку:`,
+    parse_mode: 'Markdown',
+    reply_markup: {
+      inline_keyboard: [[
+        { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
+      ]]
+    }
+  });
+}
+
+// =====================================================
+// CALLBACK HANDLERS
+// =====================================================
 async function handleCallback(callback) {
   const chatId = callback.message.chat.id;
   const userId = callback.from.id;
-  const firstName = callback.from.first_name || '';
+  const user = callback.from;
+  const firstName = user.first_name || '';
   
+  // Проверка подписки
   if (callback.data === 'check_subscription') {
     const isSubscribed = await checkChannelSubscription(userId);
     
     if (isSubscribed) {
-      await tg('sendMessage', {
-        chat_id: chatId,
-        text: `🎉 *Отлично, ${firstName}!*\n\n✅ Подписка подтверждена!\n\n📅 Открывай календарь:`,
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [[
-            { text: '📅 Открыть календарь конференций', web_app: { url: CONFIG.CALENDAR_URL } }
-          ]]
-        }
-      });
-      
       await tg('answerCallbackQuery', {
         callback_query_id: callback.id,
         text: '✅ Подписка подтверждена!'
       });
+      
+      // Начинаем анкету
+      await tg('sendMessage', {
+        chat_id: chatId,
+        text: `🎉 *Отлично, ${firstName}!*\n\n✅ Подписка подтверждена!\n\nПрежде чем открыть календарь, расскажи немного о себе. Это займёт буквально минуту.\n\n*Как тебя зовут?*`,
+        parse_mode: 'Markdown'
+      });
+      setUserState(chatId, { step: 'waiting_name', data: { telegram_id: userId, tg_username: user.username || '' } });
     } else {
       await tg('answerCallbackQuery', {
         callback_query_id: callback.id,
         text: '⚠️ Подписка не найдена. Подпишись на канал и попробуй снова.'
       });
     }
+    return;
+  }
+  
+  // Ответ на вопрос "Открыт к предложениям о работе?"
+  if (callback.data === 'jobs_yes' || callback.data === 'jobs_no') {
+    const state = getUserState(chatId);
+    if (!state || state.step !== 'waiting_open_to_jobs') {
+      await tg('answerCallbackQuery', { callback_query_id: callback.id });
+      return;
+    }
+    
+    await tg('answerCallbackQuery', { callback_query_id: callback.id });
+    
+    const { data } = state;
+    data.open_to_jobs = callback.data === 'jobs_yes' ? 'Да' : 'Нет';
+    
+    if (callback.data === 'jobs_yes') {
+      // Задаём доп. вопросы
+      await tg('sendMessage', {
+        chat_id: chatId,
+        text: `*Какой у тебя опыт на рынке?*\n\nНапример: _5 лет в iGaming, affiliate marketing_`,
+        parse_mode: 'Markdown'
+      });
+      setUserState(chatId, { step: 'waiting_experience', data });
+    } else {
+      // Анкета завершена без доп. вопросов
+      data.experience = '';
+      data.age = '';
+      await finishQuestionnaire(chatId, data);
+    }
+    return;
   }
 }
 
@@ -432,6 +569,33 @@ async function saveToSheet(data) {
     console.log('GAS response status:', res.status, 'body:', text.substring(0, 200));
   } catch (err) {
     console.error('Sheet save error:', err.message);
+  }
+}
+
+// =====================================================
+// SAVE PROFILE (анкета) TO GOOGLE SHEETS
+// =====================================================
+async function saveProfileToSheet(data) {
+  try {
+    const params = new URLSearchParams({
+      type: 'profile',
+      telegram_id: data.telegram_id || '',
+      tg_username: data.tg_username || '',
+      name: data.name || '',
+      position: data.position || '',
+      open_to_jobs: data.open_to_jobs || '',
+      experience: data.experience || '',
+      age: data.age || '',
+      timestamp: new Date().toISOString()
+    });
+    
+    const url = CONFIG.GAS_URL + '?' + params.toString();
+    console.log('Saving profile to GAS:', url.substring(0, 80) + '...');
+    const res = await fetch(url, { redirect: 'follow' });
+    const text = await res.text();
+    console.log('GAS profile response:', res.status, text.substring(0, 200));
+  } catch (err) {
+    console.error('Profile save error:', err.message);
   }
 }
 
