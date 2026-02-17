@@ -1861,21 +1861,32 @@ function populateSideEventsTab(sideEvents) {
     return;
   }
 
+  const typeConfig = {
+    party:      { gradient: 'from-purple-900/80 via-pink-900/60 to-fuchsia-900/40', icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>', label: 'PARTY', accent: '#F6ADE5' },
+    awards:     { gradient: 'from-yellow-900/80 via-amber-900/60 to-orange-900/40', icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/>', label: 'AWARDS', accent: '#F5DA0F' },
+    meetup:     { gradient: 'from-blue-900/80 via-indigo-900/60 to-violet-900/40', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>', label: 'NETWORKING', accent: '#7B84FF' },
+    dinner:     { gradient: 'from-emerald-900/80 via-teal-900/60 to-cyan-900/40', icon: '<path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 000 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>', label: 'DINNER', accent: '#C8E712' },
+    networking: { gradient: 'from-blue-900/80 via-indigo-900/60 to-violet-900/40', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>', label: 'NETWORKING', accent: '#7B84FF' },
+  };
+  const defaultType = { gradient: 'from-gray-900/80 via-gray-800/60 to-gray-700/40', icon: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', label: 'EVENT', accent: '#F5DA0F' };
+
   let html = '';
   sideEvents.forEach(e => {
+    const cfg = typeConfig[e.type] || defaultType;
     html += `
-      <div class="side-event-card bg-gradient-to-br from-gray-900 to-black dark:from-darkbg dark:to-darksurface text-white p-6 rounded-2xl relative overflow-hidden shadow-lg group mb-4">
-        <div class="relative z-10 flex justify-between items-start">
-          <div>
-            <div class="flex gap-2 mb-3">
-              <span class="uni-tag uni-tag-accent">${e.badge || '🎉 EVENT'}</span>
-            </div>
-            <h3 class="text-2xl font-extrabold mb-2">${e.title}</h3>
-            <p class="text-sm text-gray-300 flex items-center gap-1">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              ${e.location || ''}
-            </p>
+      <div class="side-event-card side-event-${e.type || 'default'} bg-gradient-to-br ${cfg.gradient} text-white p-5 rounded-2xl relative overflow-hidden shadow-lg group mb-4">
+        <svg class="side-event-bg-icon" viewBox="0 0 24 24" fill="${cfg.accent}" xmlns="http://www.w3.org/2000/svg">${cfg.icon}</svg>
+        <div class="relative z-10">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="side-event-type-tag" style="color:${cfg.accent}; border-color:${cfg.accent}40; background:${cfg.accent}15">${cfg.label}</span>
+            ${e.date ? `<span class="text-[11px] text-white/50 font-medium">${e.date}</span>` : ''}
           </div>
+          <h3 class="text-lg font-extrabold mb-1.5 leading-tight">${e.title}</h3>
+          ${e.location && e.location !== 'TBA' ? `
+          <p class="text-xs text-white/60 flex items-center gap-1.5 mt-1">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            ${e.location}
+          </p>` : ''}
         </div>
       </div>
     `;

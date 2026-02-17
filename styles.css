@@ -666,29 +666,39 @@ body { background-color: #1B1B1B; color: #FBF2E8; }
 /* Side Events Cards */
 .side-event-card {
   transition: all 0.2s ease;
-  cursor: pointer;
+  cursor: default;
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
 .side-event-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(245, 218, 15, 0.2) !important;
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
-.side-event-card::before {
-  content: '';
+.side-event-bg-icon {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(245, 218, 15, 0.08), transparent);
-  opacity: 0;
+  right: -10px;
+  bottom: -10px;
+  width: 100px;
+  height: 100px;
+  opacity: 0.06;
+  z-index: 0;
+  pointer-events: none;
   transition: opacity 0.3s;
-  border-radius: inherit;
 }
 
-.side-event-card:hover::before {
-  opacity: 1;
+.side-event-card:hover .side-event-bg-icon {
+  opacity: 0.12;
+}
+
+.side-event-type-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid;
 }
 
 /* Modal Redesign */
