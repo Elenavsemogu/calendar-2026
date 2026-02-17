@@ -76,6 +76,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '365 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
     'ZA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
   },
   // ===================== Россия =====================
   'RU': {
@@ -100,6 +102,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '365 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'запрет', type: 'Закрыт', notes: 'Въезд запрещён' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Украина =====================
   'UA': {
@@ -124,6 +128,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '365 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: 'Своя страна' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Беларусь =====================
   'BY': {
@@ -148,6 +154,8 @@ const VISA_MATRIX = {
     'GE': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Казахстан =====================
   'KZ': {
@@ -172,6 +180,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '365 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '14 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Узбекистан =====================
   'UZ': {
@@ -196,6 +206,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Азербайджан =====================
   'AZ': {
@@ -220,6 +232,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Армения =====================
   'AM': {
@@ -244,6 +258,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '180 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Грузия =====================
   'GE': {
@@ -268,6 +284,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: 'Своя страна' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Молдова =====================
   'MD': {
@@ -292,6 +310,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '365 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Таджикистан =====================
   'TJ': {
@@ -316,6 +336,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Кыргызстан =====================
   'KG': {
@@ -340,6 +362,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
   // ===================== Турция =====================
   'TR': {
@@ -364,6 +388,8 @@ const VISA_MATRIX = {
     'GE': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
     'MO': { required: 'нет', type: 'Безвиз', notes: '30 дней' },
     'ZA': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
+    'UA': { required: 'нет', type: 'Безвиз', notes: '90 дней' },
+    'SN': { required: 'да', type: 'Виза', notes: 'Требуется виза' },
   },
 };
 
