@@ -655,11 +655,11 @@ const EVENTS = {
     heroImage: "images/heroes/igb_london.jpg",
     startISO: "2026-07-01T09:00:00Z", endISO: "2026-07-02T18:00:00Z",
     restaurants: [
-      { name: "Roka Canary Wharf", vibe: "посидеть", avgCheck: "$100-300", description: "Японский ресторан с robata грилем", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Boisdale Canary Wharf", vibe: "громко", avgCheck: "$100-300", description: "Шотландский ресторан с живым джазом", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Electric Shuffle", vibe: "потанцевать", avgCheck: "$50-100", description: "Бар с активной атмосферой и коктейлями", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
-      { name: "The Oiler Bar", vibe: "посидеть", avgCheck: "$60-120", description: "Коктейльный бар в Docklands", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Hawksmoor", vibe: "тихо", avgCheck: "$120-250", description: "Премиум стейкхаус", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" }
+      { name: "Roka Canary Wharf", vibe: "посидеть", avgCheck: "$100-300", description: "Японский ресторан с robata грилем", img: "images/restaurants/igb_live_roka_canary_wharf.jpg" },
+      { name: "Boisdale Canary Wharf", vibe: "громко", avgCheck: "$100-300", description: "Шотландский ресторан с живым джазом", img: "images/restaurants/igb_live_boisdale.jpg" },
+      { name: "Electric Shuffle", vibe: "потанцевать", avgCheck: "$50-100", description: "Бар с активной атмосферой и коктейлями", img: "images/restaurants/igb_live_electric_shuffle.jpg" },
+      { name: "The Oiler Bar", vibe: "посидеть", avgCheck: "$60-120", description: "Коктейльный бар в Docklands", img: "images/restaurants/igb_live_oiler_bar.jpg" },
+      { name: "Hawksmoor", vibe: "тихо", avgCheck: "$120-250", description: "Премиум стейкхаус", img: "images/restaurants/igb_live_hawksmoor.jpg" }
     ],
     brands: [
       { name: "CoolAffs", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=CA&background=F5DA0F&color=fff" },
@@ -688,11 +688,11 @@ const EVENTS = {
     heroImage: "images/heroes/sbc_rio.jpg",
     startISO: "2026-03-03T09:00:00Z", endISO: "2026-03-05T18:00:00Z",
     restaurants: [
-      { name: "Shiso", vibe: "тихо", avgCheck: "$80-200", description: "Японский ресторан высокого класса", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Zaza Bistro", vibe: "посидеть", avgCheck: "$60-150", description: "Bistro с органическими блюдами в Ipanema", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Giuseppe Grill", vibe: "громко", avgCheck: "$100-250", description: "Премиальный стейкхаус", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Braseiro da Gávea", vibe: "громко", avgCheck: "$40-80", description: "Традиционная бразильская кухня", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Confeitaria Colombo", vibe: "посидеть", avgCheck: "$30-60", description: "Историческое кафе 1894 года", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" }
+      { name: "Shiso", vibe: "тихо", avgCheck: "$80-200", description: "Японский ресторан высокого класса", img: "images/restaurants/sbc_rio_shiso.jpg" },
+      { name: "Zaza Bistro", vibe: "посидеть", avgCheck: "$60-150", description: "Bistro с органическими блюдами в Ipanema", img: "images/restaurants/sbc_rio_zaza_bistro.jpg" },
+      { name: "Giuseppe Grill", vibe: "громко", avgCheck: "$100-250", description: "Премиальный стейкхаус", img: "images/restaurants/sbc_rio_giuseppe_grill.jpg" },
+      { name: "Braseiro da Gávea", vibe: "громко", avgCheck: "$40-80", description: "Традиционная бразильская кухня", img: "images/restaurants/sbc_rio_braseiro_da_gavea.jpg" },
+      { name: "Confeitaria Colombo", vibe: "посидеть", avgCheck: "$30-60", description: "Историческое кафе 1894 года", img: "images/restaurants/sbc_rio_confeitaria_colombo.jpg" }
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://logo.clearbit.com/betsson.com" },
@@ -720,11 +720,11 @@ const EVENTS = {
     heroImage: "images/heroes/sbc_lisbon.jpg",
     startISO: "2026-09-29T09:00:00Z", endISO: "2026-10-01T18:00:00Z",
     restaurants: [
-      { name: "Monte Mar Lisboa", vibe: "посидеть", avgCheck: "$80-180", description: "Морепродукты с видом на Тежу", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "JNcQUOI Avenida", vibe: "громко", avgCheck: "$100-250", description: "Элитный ресторан португальской кухни", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Zambeze", vibe: "потанцевать", avgCheck: "$60-140", description: "Панорамный вид, терраса 300м²", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
-      { name: "Doca Peixe", vibe: "посидеть", avgCheck: "$50-120", description: "Лучший рыбный ресторан, вид на марину", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Belcanto", vibe: "тихо", avgCheck: "$180-400", description: "2 звезды Мишлен от José Avillez", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" }
+      { name: "Monte Mar Lisboa", vibe: "посидеть", avgCheck: "$80-180", description: "Морепродукты с видом на Тежу", img: "images/restaurants/sbc_lisbon_monte_mar.jpg" },
+      { name: "JNcQUOI Avenida", vibe: "громко", avgCheck: "$100-250", description: "Элитный ресторан португальской кухни", img: "images/restaurants/sbc_lisbon_jncquoi.jpg" },
+      { name: "Zambeze", vibe: "потанцевать", avgCheck: "$60-140", description: "Панорамный вид, терраса 300м²", img: "images/restaurants/sbc_lisbon_zambeze.jpg" },
+      { name: "Doca Peixe", vibe: "посидеть", avgCheck: "$50-120", description: "Лучший рыбный ресторан, вид на марину", img: "images/restaurants/sbc_lisbon_doca_peixe.jpg" },
+      { name: "Belcanto", vibe: "тихо", avgCheck: "$180-400", description: "2 звезды Мишлен от José Avillez", img: "images/restaurants/sbc_lisbon_belcanto.jpg" }
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://logo.clearbit.com/betsson.com" },
@@ -752,11 +752,11 @@ const EVENTS = {
     heroImage: "images/heroes/aw_dubai.jpg",
     startISO: "2026-03-04T09:00:00Z", endISO: "2026-03-05T18:00:00Z",
     restaurants: [
-      { name: "Zuma Dubai", vibe: "громко", avgCheck: "$150-350", description: "Японский ресторан мирового класса", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "La Petite Maison", vibe: "тихо", avgCheck: "$120-280", description: "Французская кухня Ривьеры", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Nobu Dubai", vibe: "тихо", avgCheck: "$150-400", description: "Японо-перуанский премиум", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Coya Dubai", vibe: "потанцевать", avgCheck: "$100-250", description: "Перуанская кухня, живая музыка", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
-      { name: "Tresind Studio", vibe: "тихо", avgCheck: "$200-400", description: "Индийская haute cuisine, 1 звезда Мишлен", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" }
+      { name: "Zuma Dubai", vibe: "громко", avgCheck: "$150-350", description: "Японский ресторан мирового класса", img: "images/restaurants/aw_dubai_zuma.jpg" },
+      { name: "La Petite Maison", vibe: "тихо", avgCheck: "$120-280", description: "Французская кухня Ривьеры", img: "images/restaurants/aw_dubai_la_petite_maison.jpg" },
+      { name: "Nobu Dubai", vibe: "тихо", avgCheck: "$150-400", description: "Японо-перуанский премиум", img: "images/restaurants/aw_dubai_nobu.jpg" },
+      { name: "Coya Dubai", vibe: "потанцевать", avgCheck: "$100-250", description: "Перуанская кухня, живая музыка", img: "images/restaurants/aw_dubai_coya.jpg" },
+      { name: "Tresind Studio", vibe: "тихо", avgCheck: "$200-400", description: "Индийская haute cuisine, 1 звезда Мишлен", img: "images/restaurants/aw_dubai_tresind_studio.jpg" }
     ],
     brands: [
       { name: "Clickbank", category: "Партнёрка", logo: "https://logo.clearbit.com/clickbank.com" },
@@ -784,11 +784,11 @@ const EVENTS = {
     heroImage: "images/heroes/mac_yerevan.jpg",
     startISO: "2026-05-25T09:00:00Z", endISO: "2026-05-27T18:00:00Z",
     restaurants: [
-      { name: "Dolmama", vibe: "посидеть", avgCheck: "$40-80", description: "Традиционная армянская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "The Club", vibe: "громко", avgCheck: "$60-120", description: "Живая музыка, популярен у экспатов", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Sherep", vibe: "посидеть", avgCheck: "$50-100", description: "Авторская армянская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Pandok Yerevan", vibe: "громко", avgCheck: "$30-70", description: "Традиционный ресторан с шоу", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Lavash", vibe: "посидеть", avgCheck: "$40-90", description: "Армянская кухня, вид на Арарат", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" }
+      { name: "Dolmama", vibe: "посидеть", avgCheck: "$40-80", description: "Традиционная армянская кухня", img: "images/restaurants/mac_yerevan_dolmama.jpg" },
+      { name: "The Club", vibe: "громко", avgCheck: "$60-120", description: "Живая музыка, популярен у экспатов", img: "images/restaurants/mac_yerevan_the_club.jpg" },
+      { name: "Sherep", vibe: "посидеть", avgCheck: "$50-100", description: "Авторская армянская кухня", img: "images/restaurants/mac_yerevan_sherep.jpg" },
+      { name: "Pandok Yerevan", vibe: "громко", avgCheck: "$30-70", description: "Традиционный ресторан с шоу", img: "images/restaurants/mac_yerevan_pandok.jpg" },
+      { name: "Lavash", vibe: "посидеть", avgCheck: "$40-90", description: "Армянская кухня, вид на Арарат", img: "images/restaurants/mac_yerevan_lavash.jpg" }
     ],
     brands: [
       { name: "Pin-Up Partners", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=PU&background=EF4444&color=fff" },
@@ -816,11 +816,11 @@ const EVENTS = {
     heroImage: "images/heroes/ggate_tbilisi.jpg",
     startISO: "2026-06-26T09:00:00Z", endISO: "2026-06-27T18:00:00Z",
     restaurants: [
-      { name: "Funicular Complex", vibe: "потанцевать", avgCheck: "$50-120", description: "Панорамный вид на город", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
-      { name: "Barbarestan", vibe: "тихо", avgCheck: "$60-140", description: "Исторические рецепты XIX века", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Café Stamba", vibe: "посидеть", avgCheck: "$40-90", description: "Модное место в дизайн-отеле", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Keto and Kote", vibe: "громко", avgCheck: "$30-70", description: "Современная грузинская кухня", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Shavi Lomi", vibe: "громко", avgCheck: "$40-90", description: "Инстаграмное место, авторская кухня", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
+      { name: "Funicular Complex", vibe: "потанцевать", avgCheck: "$50-120", description: "Панорамный вид на город", img: "images/restaurants/ggate_tbilisi_funicular.jpg" },
+      { name: "Barbarestan", vibe: "тихо", avgCheck: "$60-140", description: "Исторические рецепты XIX века", img: "images/restaurants/ggate_tbilisi_barbarestan.jpg" },
+      { name: "Café Stamba", vibe: "посидеть", avgCheck: "$40-90", description: "Модное место в дизайн-отеле", img: "images/restaurants/ggate_tbilisi_cafe_stamba.jpg" },
+      { name: "Keto and Kote", vibe: "громко", avgCheck: "$30-70", description: "Современная грузинская кухня", img: "images/restaurants/ggate_tbilisi_keto_and_kote.jpg" },
+      { name: "Shavi Lomi", vibe: "громко", avgCheck: "$40-90", description: "Инстаграмное место, авторская кухня", img: "images/restaurants/ggate_tbilisi_shavi_lomi.jpg" }
     ],
     brands: [
       { name: "Gambling.pro", category: "Медиа", logo: "https://ui-avatars.com/api/?name=GP&background=F5DA0F&color=fff" },
@@ -848,9 +848,9 @@ const EVENTS = {
     heroImage: "images/heroes/broconf_sochi.jpg",
     startISO: "2026-04-25T09:00:00Z", endISO: "2026-04-26T18:00:00Z",
     restaurants: [
-      { name: "Хмели & Сунели", vibe: "громко", avgCheck: "$40-100", description: "Грузинский ресторан", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Sanremo", vibe: "посидеть", avgCheck: "$80-200", description: "Итальянская кухня, вид на море", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "White Rabbit Sochi", vibe: "тихо", avgCheck: "$100-250", description: "Авторская русская кухня", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Хмели & Сунели", vibe: "громко", avgCheck: "$40-100", description: "Грузинский ресторан", img: "images/restaurants/broconf_sochi_hmeli_suneli.jpg" },
+      { name: "Sanremo", vibe: "посидеть", avgCheck: "$80-200", description: "Итальянская кухня, вид на море", img: "images/restaurants/broconf_sochi_sanremo.jpg" },
+      { name: "White Rabbit Sochi", vibe: "тихо", avgCheck: "$100-250", description: "Авторская русская кухня", img: "images/restaurants/broconf_sochi_white_rabbit.jpg" },
       { name: "Krasnaya Polyana", vibe: "посидеть", avgCheck: "$60-140", description: "Ресторан в горах", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
       { name: "Barashka", vibe: "громко", avgCheck: "$50-120", description: "Кавказская кухня, вид на море", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
     ],
@@ -880,11 +880,11 @@ const EVENTS = {
     heroImage: "images/heroes/g2e_vegas.jpg",
     startISO: "2026-09-28T09:00:00Z", endISO: "2026-10-01T18:00:00Z",
     restaurants: [
-      { name: "TAO Asian Bistro", vibe: "громко", avgCheck: "$80-200", description: "Легендарный азиатский в Venetian", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "CUT by Wolfgang Puck", vibe: "тихо", avgCheck: "$120-300", description: "Премиум стейкхаус", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Carnevino", vibe: "посидеть", avgCheck: "$100-250", description: "Итальянский стейкхаус в Palazzo", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "TAO Asian Bistro", vibe: "громко", avgCheck: "$80-200", description: "Легендарный азиатский в Venetian", img: "images/restaurants/g2e_vegas_tao.jpg" },
+      { name: "CUT by Wolfgang Puck", vibe: "тихо", avgCheck: "$120-300", description: "Премиум стейкхаус", img: "images/restaurants/g2e_vegas_cut.jpg" },
+      { name: "Carnevino", vibe: "посидеть", avgCheck: "$100-250", description: "Итальянский стейкхаус в Palazzo", img: "images/restaurants/g2e_vegas_carnevino.jpg" },
       { name: "Buddakan", vibe: "потанцевать", avgCheck: "$70-150", description: "Азиатский фьюжн, впечатляющий интерьер", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
-      { name: "Bazaar Meat", vibe: "громко", avgCheck: "$100-280", description: "Стейкхаус от José Andrés", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
+      { name: "Bazaar Meat", vibe: "громко", avgCheck: "$100-280", description: "Стейкхаус от José Andrés", img: "images/restaurants/g2e_vegas_bazaar_meat.jpg" }
     ],
     brands: [
       { name: "IGT", category: "Провайдер", logo: "https://logo.clearbit.com/igt.com" },
@@ -912,11 +912,11 @@ const EVENTS = {
     heroImage: "images/heroes/sbc_americas.jpg",
     startISO: "2026-06-09T09:00:00Z", endISO: "2026-06-11T18:00:00Z",
     restaurants: [
-      { name: "Steak 954", vibe: "тихо", avgCheck: "$100-250", description: "Премиум стейкхаус в W Hotel, вид на океан", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Timpano", vibe: "посидеть", avgCheck: "$70-150", description: "Итальянский с приватными комнатами", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Shooters Waterfront", vibe: "громко", avgCheck: "$50-100", description: "Ресторан на воде, живая музыка", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Louie Bossi's", vibe: "громко", avgCheck: "$60-140", description: "Итальянский с большой террасой", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Mastro's Ocean Club", vibe: "тихо", avgCheck: "$100-280", description: "Премиум стейки и морепродукты", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" }
+      { name: "Steak 954", vibe: "тихо", avgCheck: "$100-250", description: "Премиум стейкхаус в W Hotel, вид на океан", img: "images/restaurants/sbc_americas_steak_954.jpg" },
+      { name: "Timpano", vibe: "посидеть", avgCheck: "$70-150", description: "Итальянский с приватными комнатами", img: "images/restaurants/sbc_americas_timpano.jpg" },
+      { name: "Shooters Waterfront", vibe: "громко", avgCheck: "$50-100", description: "Ресторан на воде, живая музыка", img: "images/restaurants/sbc_americas_shooters.jpg" },
+      { name: "Louie Bossi's", vibe: "громко", avgCheck: "$60-140", description: "Итальянский с большой террасой", img: "images/restaurants/sbc_americas_louie_bossis.jpg" },
+      { name: "Mastro's Ocean Club", vibe: "тихо", avgCheck: "$100-280", description: "Премиум стейки и морепродукты", img: "images/restaurants/sbc_americas_mastros.jpg" }
     ],
     brands: [
       { name: "DraftKings", category: "Оператор", logo: "https://logo.clearbit.com/draftkings.com" },
@@ -941,11 +941,11 @@ const EVENTS = {
     heroImage: "images/heroes/conversion_warsaw.jpg",
     startISO: "2026-03-31T09:00:00Z", endISO: "2026-04-01T18:00:00Z",
     restaurants: [
-      { name: "Belvedere", vibe: "тихо", avgCheck: "$80-180", description: "В оранжерее парка Łazienki", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Warszawa Wschodnia", vibe: "громко", avgCheck: "$50-120", description: "Модный район Praga", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Stary Dom", vibe: "посидеть", avgCheck: "$40-90", description: "Традиционная польская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Belvedere", vibe: "тихо", avgCheck: "$80-180", description: "В оранжерее парка Łazienki", img: "images/restaurants/conversion_warsaw_belvedere.jpg" },
+      { name: "Warszawa Wschodnia", vibe: "громко", avgCheck: "$50-120", description: "Модный район Praga", img: "images/restaurants/conversion_warsaw_wschodnia.jpg" },
+      { name: "Stary Dom", vibe: "посидеть", avgCheck: "$40-90", description: "Традиционная польская кухня", img: "images/restaurants/conversion_warsaw_stary_dom.jpg" },
       { name: "Atelier Amaro", vibe: "тихо", avgCheck: "$150-350", description: "Первый Мишлен в Польше", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "U Kucharzy", vibe: "посидеть", avgCheck: "$60-140", description: "Открытая кухня, польская классика", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" }
+      { name: "U Kucharzy", vibe: "посидеть", avgCheck: "$60-140", description: "Открытая кухня, польская классика", img: "images/restaurants/conversion_warsaw_u_kucharzy.jpg" }
     ],
     brands: [
       { name: "PropellerAds", category: "Технологии", logo: "https://logo.clearbit.com/propellerads.com" },
@@ -972,11 +972,11 @@ const EVENTS = {
     heroImage: "images/heroes/conversion_cyprus.jpg",
     startISO: "2026-07-22T09:00:00Z", endISO: "2026-07-24T18:00:00Z",
     restaurants: [
-      { name: "Pier One", vibe: "потанцевать", avgCheck: "$60-140", description: "На пляже, закаты", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" },
-      { name: "Meze Taverna", vibe: "громко", avgCheck: "$40-80", description: "Традиционное мезе 20+ блюд", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Epsilon", vibe: "посидеть", avgCheck: "$50-120", description: "Современный европейский", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Kipriakon", vibe: "посидеть", avgCheck: "$40-90", description: "Кипрская таверна, мезе 25 блюд", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Sailor's Rest", vibe: "потанцевать", avgCheck: "$60-140", description: "Лаунж на пляже", img: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=200&q=80" }
+      { name: "Pier One", vibe: "потанцевать", avgCheck: "$60-140", description: "На пляже, закаты", img: "images/restaurants/conversion_cyprus_pier_one.jpg" },
+      { name: "Meze Taverna", vibe: "громко", avgCheck: "$40-80", description: "Традиционное мезе 20+ блюд", img: "images/restaurants/conversion_cyprus_meze_taverna.jpg" },
+      { name: "Epsilon", vibe: "посидеть", avgCheck: "$50-120", description: "Современный европейский", img: "images/restaurants/conversion_cyprus_epsilon.jpg" },
+      { name: "Kipriakon", vibe: "посидеть", avgCheck: "$40-90", description: "Кипрская таверна, мезе 25 блюд", img: "images/restaurants/conversion_cyprus_kipriakon.jpg" },
+      { name: "Sailor's Rest", vibe: "потанцевать", avgCheck: "$60-140", description: "Лаунж на пляже", img: "images/restaurants/conversion_cyprus_sailors_rest.jpg" }
     ],
     brands: [
       { name: "PropellerAds", category: "Технологии", logo: "https://logo.clearbit.com/propellerads.com" },
@@ -1001,11 +1001,11 @@ const EVENTS = {
     heroImage: "images/heroes/affpapa_madrid.jpg",
     startISO: "2026-05-18T09:00:00Z", endISO: "2026-05-20T18:00:00Z",
     restaurants: [
-      { name: "Sobrino de Botín", vibe: "посидеть", avgCheck: "$60-140", description: "Старейший ресторан мира (с 1725)", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Streetxo", vibe: "громко", avgCheck: "$50-100", description: "Азиатский стритфуд от DiverXO", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Lateral", vibe: "посидеть", avgCheck: "$40-90", description: "Современная испанская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Casa Lucio", vibe: "посидеть", avgCheck: "$50-120", description: "Легендарные huevos rotos", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Ramón Freixa Madrid", vibe: "тихо", avgCheck: "$150-350", description: "2 звезды Мишлен", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" }
+      { name: "Sobrino de Botín", vibe: "посидеть", avgCheck: "$60-140", description: "Старейший ресторан мира (с 1725)", img: "images/restaurants/affpapa_madrid_sobrino_de_botin.jpg" },
+      { name: "Streetxo", vibe: "громко", avgCheck: "$50-100", description: "Азиатский стритфуд от DiverXO", img: "images/restaurants/affpapa_madrid_streetxo.jpg" },
+      { name: "Lateral", vibe: "посидеть", avgCheck: "$40-90", description: "Современная испанская кухня", img: "images/restaurants/affpapa_madrid_lateral.jpg" },
+      { name: "Casa Lucio", vibe: "посидеть", avgCheck: "$50-120", description: "Легендарные huevos rotos", img: "images/restaurants/affpapa_madrid_casa_lucio.jpg" },
+      { name: "Ramón Freixa Madrid", vibe: "тихо", avgCheck: "$150-350", description: "2 звезды Мишлен", img: "images/restaurants/affpapa_madrid_ramon_freixa.jpg" }
     ],
     brands: [
       { name: "AffPapa", category: "Медиа", logo: "https://logo.clearbit.com/affpapa.com" },
@@ -1031,11 +1031,11 @@ const EVENTS = {
     heroImage: "images/heroes/affpapa_cancun.jpg",
     startISO: "2026-11-23T09:00:00Z", endISO: "2026-11-25T18:00:00Z",
     restaurants: [
-      { name: "Harry's Prime Steakhouse", vibe: "тихо", avgCheck: "$100-250", description: "Премиальный стейкхаус", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Puerto Madero", vibe: "посидеть", avgCheck: "$70-160", description: "Морепродукты с видом на лагуну", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Lorenzillo's", vibe: "громко", avgCheck: "$60-140", description: "Легендарные морепродукты", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "La Habichuela Sunset", vibe: "посидеть", avgCheck: "$80-180", description: "Мексиканская кухня, сад с пальмами", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Tacos Rigo", vibe: "громко", avgCheck: "$15-40", description: "Аутентичные тако, лучшая цена", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
+      { name: "Harry's Prime Steakhouse", vibe: "тихо", avgCheck: "$100-250", description: "Премиальный стейкхаус", img: "images/restaurants/affpapa_cancun_harrys.jpg" },
+      { name: "Puerto Madero", vibe: "посидеть", avgCheck: "$70-160", description: "Морепродукты с видом на лагуну", img: "images/restaurants/affpapa_cancun_puerto_madero.jpg" },
+      { name: "Lorenzillo's", vibe: "громко", avgCheck: "$60-140", description: "Легендарные морепродукты", img: "images/restaurants/affpapa_cancun_lorenzillos.jpg" },
+      { name: "La Habichuela Sunset", vibe: "посидеть", avgCheck: "$80-180", description: "Мексиканская кухня, сад с пальмами", img: "images/restaurants/affpapa_cancun_la_habichuela.jpg" },
+      { name: "Tacos Rigo", vibe: "громко", avgCheck: "$15-40", description: "Аутентичные тако, лучшая цена", img: "images/restaurants/affpapa_cancun_tacos_rigo.jpg" }
     ],
     brands: [
       { name: "AffPapa", category: "Медиа", logo: "https://logo.clearbit.com/affpapa.com" },
@@ -1061,11 +1061,11 @@ const EVENTS = {
     heroImage: "images/heroes/conversion_kyiv.jpg",
     startISO: "2026-06-01T09:00:00Z", endISO: "2026-06-02T18:00:00Z",
     restaurants: [
-      { name: "Kanapa", vibe: "посидеть", avgCheck: "$40-100", description: "Современная украинская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Beef", vibe: "тихо", avgCheck: "$50-120", description: "Стейкхаус премиум класса", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Kanapa", vibe: "посидеть", avgCheck: "$40-100", description: "Современная украинская кухня", img: "images/restaurants/conversion_kyiv_kanapa.jpg" },
+      { name: "Beef", vibe: "тихо", avgCheck: "$50-120", description: "Стейкхаус премиум класса", img: "images/restaurants/conversion_kyiv_beef.jpg" },
       { name: "Очень Хорошо", vibe: "громко", avgCheck: "$30-70", description: "Модный ресторан, коктейли", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "100 років тому вперед", vibe: "посидеть", avgCheck: "$35-80", description: "Ретро-атмосфера", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Ostannya Barykada", vibe: "громко", avgCheck: "$40-90", description: "Культовый бар на Майдане", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" }
+      { name: "100 років тому вперед", vibe: "посидеть", avgCheck: "$35-80", description: "Ретро-атмосфера", img: "images/restaurants/conversion_kyiv_100_rokiv.jpg" },
+      { name: "Ostannya Barykada", vibe: "громко", avgCheck: "$40-90", description: "Культовый бар на Майдане", img: "images/restaurants/conversion_kyiv_ostannya_barykada.jpg" }
     ],
     brands: [
       { name: "Conversion", category: "Медиа", logo: "https://logo.clearbit.com/conversion.im" },
@@ -1090,11 +1090,11 @@ const EVENTS = {
     heroImage: "images/heroes/aw_bangkok.jpg",
     startISO: "2026-12-09T00:00:00", endISO: "2026-12-10",
     restaurants: [
-      { name: "Nahm", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Bo.lan", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Sorn", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Rooftop Bar at Vertigo", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Jay Fai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Nahm", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_asia_nahm.jpg" },
+      { name: "Bo.lan", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_asia_bolan.jpg" },
+      { name: "Sorn", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_asia_sorn.jpg" },
+      { name: "Rooftop Bar at Vertigo", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_asia_vertigo.jpg" },
+      { name: "Jay Fai", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_asia_jay_fai.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1127,11 +1127,11 @@ const EVENTS = {
     heroImage: "images/heroes/aibc_dubai.jpg",
     startISO: "2026-02-09T00:00:00", endISO: "2026-02-11",
     restaurants: [
-      { name: "Zuma Dubai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Nobu Dubai", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "La Petite Maison", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Tresind Studio", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Coya Dubai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Zuma Dubai", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_dubai_zuma.jpg" },
+      { name: "Nobu Dubai", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_dubai_nobu.jpg" },
+      { name: "La Petite Maison", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_dubai_la_petite_maison.jpg" },
+      { name: "Tresind Studio", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_dubai_tresind_studio.jpg" },
+      { name: "Coya Dubai", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/aw_dubai_coya.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1164,11 +1164,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_sao_paulo.jpg",
     startISO: "2026-04-06T00:00:00", endISO: "2026-04-09",
     restaurants: [
-      { name: "D.O.M.", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Figueira Rubaiyat", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Fasano", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "A Casa do Porco", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Skye", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "D.O.M.", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/bis_sigma_sp_dom.jpg" },
+      { name: "Figueira Rubaiyat", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/bis_sigma_sp_figueira_rubaiyat.jpg" },
+      { name: "Fasano", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/bis_sigma_sp_fasano.jpg" },
+      { name: "A Casa do Porco", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/bis_sigma_sp_casa_do_porco.jpg" },
+      { name: "Skye", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/bis_sigma_sp_skye.jpg" },
     ],
     brands: [
       { name: "Betano", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1201,11 +1201,11 @@ const EVENTS = {
     heroImage: "images/heroes/igb_barcelona.jpg",
     startISO: "2026-01-19T00:00:00", endISO: "2026-01-20",
     restaurants: [
-      { name: "Cal Pep", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Quimet & Quimet", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Els Quatre Gats", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Disfrutar", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "La Mar Salada", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Cal Pep", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/igb_barcelona_cal_pep.jpg" },
+      { name: "Quimet & Quimet", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/igb_barcelona_quimet_quimet.jpg" },
+      { name: "Els Quatre Gats", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/igb_barcelona_els_quatre_gats.jpg" },
+      { name: "Disfrutar", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/igb_barcelona_disfrutar.jpg" },
+      { name: "La Mar Salada", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/igb_barcelona_la_mar_salada.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1238,11 +1238,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_africa.jpg",
     startISO: "2026-03-03T00:00:00", endISO: "2026-03-05",
     restaurants: [
-      { name: "La Colombe", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "The Test Kitchen", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Harbour House V&A", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Willoughby & Co", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Belthazar", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "La Colombe", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_africa_la_colombe.jpg" },
+      { name: "The Test Kitchen", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_africa_test_kitchen.jpg" },
+      { name: "Harbour House V&A", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_africa_harbour_house.jpg" },
+      { name: "Willoughby & Co", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_africa_willoughby.jpg" },
+      { name: "Belthazar", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_africa_belthazar.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1275,11 +1275,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_manila.jpg",
     startISO: "2026-06-01T00:00:00", endISO: "2026-06-03",
     restaurants: [
-      { name: "Gallery by Chele", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Toyo Eatery", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Blackbird", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Nobu Manila", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Wolfgang's Steakhouse", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Gallery by Chele", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_asia_gallery_by_chele.jpg" },
+      { name: "Toyo Eatery", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_asia_toyo_eatery.jpg" },
+      { name: "Blackbird", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_asia_blackbird.jpg" },
+      { name: "Nobu Manila", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_asia_nobu_manila.jpg" },
+      { name: "Wolfgang's Steakhouse", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_asia_wolfgangs.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1312,11 +1312,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_malta.jpg",
     startISO: "2026-05-03T00:00:00", endISO: "2026-05-05",
     restaurants: [
-      { name: "Noni", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Under Grain", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Tarragon", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Sciacca Grill", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Caviar & Bull", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Noni", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_malta_noni.jpg" },
+      { name: "Under Grain", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_malta_under_grain.jpg" },
+      { name: "Tarragon", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_malta_tarragon.jpg" },
+      { name: "Sciacca Grill", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_malta_sciacca_grill.jpg" },
+      { name: "Caviar & Bull", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_malta_caviar_and_bull.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1349,11 +1349,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_mexico.jpg",
     startISO: "2026-09-01T00:00:00", endISO: "2026-09-03",
     restaurants: [
-      { name: "Pujol", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Quintonil", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Contramar", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "El Cardenal", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Lardo", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Pujol", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_mexico_pujol.jpg" },
+      { name: "Quintonil", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_mexico_quintonil.jpg" },
+      { name: "Contramar", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_mexico_contramar.jpg" },
+      { name: "El Cardenal", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_mexico_el_cardenal.jpg" },
+      { name: "Lardo", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_mexico_lardo.jpg" },
     ],
     brands: [
       { name: "Betano", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1386,11 +1386,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_bangkok.jpg",
     startISO: "2026-11-30T00:00:00", endISO: "2026-12-02",
     restaurants: [
-      { name: "Gaggan Anand", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Le Du", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Sühring", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Thip Samai", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Sirocco", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Gaggan Anand", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_bangkok_gaggan.jpg" },
+      { name: "Le Du", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_bangkok_le_du.jpg" },
+      { name: "Sühring", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_bangkok_suhring.jpg" },
+      { name: "Thip Samai", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_bangkok_thip_samai.jpg" },
+      { name: "Sirocco", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_bangkok_sirocco.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1423,11 +1423,11 @@ const EVENTS = {
     heroImage: "images/heroes/sigma_rome.jpg",
     startISO: "2026-11-02T00:00:00", endISO: "2026-11-05",
     restaurants: [
-      { name: "La Pergola", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Roscioli", vibe: "громко", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Armando al Pantheon", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Pierluigi", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Il Pagliaccio", vibe: "тихо", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "La Pergola", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_rome_la_pergola.jpg" },
+      { name: "Roscioli", vibe: "громко", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_rome_roscioli.jpg" },
+      { name: "Armando al Pantheon", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_rome_armando_al_pantheon.jpg" },
+      { name: "Pierluigi", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_rome_pierluigi.jpg" },
+      { name: "Il Pagliaccio", vibe: "тихо", avgCheck: "$50-100", description: "", img: "images/restaurants/sigma_rome_il_pagliaccio.jpg" },
     ],
     brands: [
       { name: "Betsson Group", category: "Оператор", logo: "https://ui-avatars.com/api/?name=Be&background=F5DA0F&color=fff" },
@@ -1457,7 +1457,7 @@ const EVENTS = {
     city: "Cancun", country: "MX", countryName: "Мексика",
     dates: "7-8 сентября", attendees: "5,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/aw_americas_cancun.jpg",
     startISO: "2026-09-07", endISO: "2026-09-08",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1479,7 +1479,7 @@ const EVENTS = {
     city: "Budapest", country: "HU", countryName: "Венгрия",
     dates: "9-10 июля", attendees: "7,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/aw_europe_budapest.jpg",
     startISO: "2026-07-09", endISO: "2026-07-10",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1501,7 +1501,7 @@ const EVENTS = {
     city: "St. Julian's", country: "MT", countryName: "Мальта",
     dates: "28-30 апреля", attendees: "6,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/sbc_malta.jpg",
     startISO: "2026-04-28", endISO: "2026-04-30",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1523,7 +1523,7 @@ const EVENTS = {
     city: "Toronto", country: "CA", countryName: "Канада",
     dates: "19-21 мая", attendees: "3,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/sbc_canada_toronto.jpg",
     startISO: "2026-05-19", endISO: "2026-05-21",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1545,7 +1545,7 @@ const EVENTS = {
     city: "Rome", country: "IT", countryName: "Италия",
     dates: "2-5 ноября", attendees: "30,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/aibc_world_rome.jpg",
     startISO: "2026-11-02", endISO: "2026-11-05",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1567,7 +1567,7 @@ const EVENTS = {
     city: "Manila", country: "PH", countryName: "Филиппины",
     dates: "1-3 июня", attendees: "5,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/aibc_asia_manila.jpg",
     startISO: "2026-06-01", endISO: "2026-06-03",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1589,7 +1589,7 @@ const EVENTS = {
     city: "Macau", country: "MO", countryName: "Макао",
     dates: "12-14 мая", attendees: "16,000", promo: null,
     weather: { temp: "20-28°C", description: "Комфортная погода" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/g2e_asia_macau.jpg",
     startISO: "2026-05-12", endISO: "2026-05-14",
     restaurants: [
       { name: "Restaurant 1", vibe: "посидеть", avgCheck: "$50-100", description: "", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
@@ -1611,12 +1611,12 @@ const EVENTS = {
     city: "Dakar", country: "SN", countryName: "Сенегал",
     dates: "14–16 октября 2026", attendees: "1,000", promo: null,
     weather: { temp: "27-32°C", description: "Тёплая и сухая погода, конец сезона дождей" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/sbwa_dakar.jpg",
     startISO: "2026-10-14T09:00:00Z", endISO: "2026-10-16T18:00:00Z",
     restaurants: [
       { name: "La Calebasse", vibe: "тихо", avgCheck: "$30-60", description: "Сенегальская кухня с видом на океан", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Le Lagon 1", vibe: "посидеть", avgCheck: "$40-80", description: "Ресторан на воде, морепродукты", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Noflaye Beach", vibe: "громко", avgCheck: "$30-60", description: "Пляжный ресторан для нетворкинга", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Le Lagon 1", vibe: "посидеть", avgCheck: "$40-80", description: "Ресторан на воде, морепродукты", img: "images/restaurants/sbwa_dakar_le_lagon.jpg" },
+      { name: "Noflaye Beach", vibe: "громко", avgCheck: "$30-60", description: "Пляжный ресторан для нетворкинга", img: "images/restaurants/sbwa_dakar_noflaye_beach.jpg" },
     ],
     brands: [
       { name: "Qtech Games", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=Qt&background=F5DA0F&color=fff" },
@@ -1640,9 +1640,9 @@ const EVENTS = {
     heroImage: "images/heroes/placeholder.jpg",
     startISO: "2026-08-13T08:00:00Z", endISO: "2026-08-13T20:00:00Z",
     restaurants: [
-      { name: "Figueira Rubaiyat", vibe: "посидеть", avgCheck: "$60-120", description: "Знаменитый стейкхаус под деревом", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Maní", vibe: "тихо", avgCheck: "$50-100", description: "Современная бразильская кухня", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Bar do Luiz Fernandes", vibe: "громко", avgCheck: "$20-50", description: "Ботеко для нетворкинга", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "Figueira Rubaiyat", vibe: "посидеть", avgCheck: "$60-120", description: "Знаменитый стейкхаус под деревом", img: "images/restaurants/bis_sigma_sp_figueira_rubaiyat.jpg" },
+      { name: "Maní", vibe: "тихо", avgCheck: "$50-100", description: "Современная бразильская кухня", img: "images/restaurants/gm_brazil_mani.jpg" },
+      { name: "Bar do Luiz Fernandes", vibe: "громко", avgCheck: "$20-50", description: "Ботеко для нетворкинга", img: "images/restaurants/gm_brazil_bar_do_luiz.jpg" },
     ],
     brands: [
       { name: "Oracle", category: "Технологии", logo: "https://ui-avatars.com/api/?name=Or&background=F5DA0F&color=fff" },
@@ -1660,13 +1660,13 @@ const EVENTS = {
     city: "Bangkok", country: "TH", countryName: "Таиланд",
     dates: "12–14 августа 2026", attendees: "1,500", promo: null,
     weather: { temp: "26-33°C", description: "Жарко и влажно, сезон дождей" },
-    heroImage: "images/heroes/placeholder.jpg",
+    heroImage: "images/heroes/spice_sea_bangkok.jpg",
     startISO: "2026-08-12T09:00:00Z", endISO: "2026-08-14T18:00:00Z",
     restaurants: [
-      { name: "Gaggan Anand", vibe: "тихо", avgCheck: "$80-150", description: "Прогрессивная индийская кухня, мировой топ", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
-      { name: "Namsaah Bottling Trust", vibe: "посидеть", avgCheck: "$30-60", description: "Коктейль-бар с тайской кухней", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Tep Bar", vibe: "громко", avgCheck: "$20-40", description: "Живая музыка и тайские настойки", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "Sirocco at Lebua", vibe: "посидеть", avgCheck: "$80-150", description: "Ресторан на крыше с видом на город", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
+      { name: "Gaggan Anand", vibe: "тихо", avgCheck: "$80-150", description: "Прогрессивная индийская кухня, мировой топ", img: "images/restaurants/sigma_bangkok_gaggan.jpg" },
+      { name: "Namsaah Bottling Trust", vibe: "посидеть", avgCheck: "$30-60", description: "Коктейль-бар с тайской кухней", img: "images/restaurants/spice_sea_namsaah.jpg" },
+      { name: "Tep Bar", vibe: "громко", avgCheck: "$20-40", description: "Живая музыка и тайские настойки", img: "images/restaurants/spice_sea_tep_bar.jpg" },
+      { name: "Sirocco at Lebua", vibe: "посидеть", avgCheck: "$80-150", description: "Ресторан на крыше с видом на город", img: "images/restaurants/spice_sea_sirocco.jpg" },
     ],
     brands: [
       { name: "Booming Games", category: "Провайдер", logo: "https://ui-avatars.com/api/?name=BG&background=F5DA0F&color=fff" },
@@ -1689,11 +1689,11 @@ const EVENTS = {
     heroImage: "images/heroes/conversion_kyiv.jpg",
     startISO: "2026-08-01T10:00:00Z", endISO: "2026-08-01T20:00:00Z",
     restaurants: [
-      { name: "Kanapa", vibe: "посидеть", avgCheck: "$40-100", description: "Современная украинская кухня", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Beef", vibe: "тихо", avgCheck: "$50-120", description: "Стейкхаус премиум класса", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" },
+      { name: "Kanapa", vibe: "посидеть", avgCheck: "$40-100", description: "Современная украинская кухня", img: "images/restaurants/conversion_kyiv_kanapa.jpg" },
+      { name: "Beef", vibe: "тихо", avgCheck: "$50-120", description: "Стейкхаус премиум класса", img: "images/restaurants/conversion_kyiv_beef.jpg" },
       { name: "Очень Хорошо", vibe: "громко", avgCheck: "$30-70", description: "Модный ресторан, коктейли", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
-      { name: "100 років тому вперед", vibe: "посидеть", avgCheck: "$35-80", description: "Ретро-атмосфера", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" },
-      { name: "Ostannya Barykada", vibe: "громко", avgCheck: "$40-90", description: "Культовый бар на Майдане", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80" },
+      { name: "100 років тому вперед", vibe: "посидеть", avgCheck: "$35-80", description: "Ретро-атмосфера", img: "images/restaurants/conversion_kyiv_100_rokiv.jpg" },
+      { name: "Ostannya Barykada", vibe: "громко", avgCheck: "$40-90", description: "Культовый бар на Майдане", img: "images/restaurants/conversion_kyiv_ostannya_barykada.jpg" },
     ],
     brands: [
       { name: "Conversion Club", category: "Медиа", logo: "https://ui-avatars.com/api/?name=CC&background=C8E712&color=fff" },
