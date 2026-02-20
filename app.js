@@ -3268,77 +3268,94 @@ function initAccessModal() {
 // TELEGRAM AUTH SYSTEM
 // =====================================================
 
-// ⚠️ НАСТРОЙКА АВТОРИЗАЦИИ:
-// 1. Бот: calendarreg_bot
-// 2. Канал: @secreetroommedia
-// 3. Google Apps Script уже настроен ✅
-const AUTH_CONFIG = {
-  botUsername: 'calendarreg_bot', // ✅ Ваш бот
-  channelUsername: '@secreetroommedia',
-  scriptUrl: 'https://script.google.com/macros/s/AKfycby_yjYFYP6Yphc_s1mb0l4leKZUUmt4h1gfrPEM8Ab8E4lytggfKkjfQlUTxC5sHaHJ/exec', // ✅ Уже существующий скрипт
-  storageKey: 'sr_auth_token'
-};
+// =====================================================
+// AUTH: server-validated sessions
+// =====================================================
+const API_BASE = 'https://sr-calendar-bot.onrender.com';
+const SESSION_KEY = 'sr_session';
 
-// Check auth on page load
+function authAllow() {
+  document.body.classList.remove('auth-required');
+  hideAuthOverlay();
+  const tgReg = document.getElementById('tgRegOverlay');
+  if (tgReg) tgReg.style.display = 'none';
+}
+
 function checkAuth() {
-  // If running in Telegram Mini App, verify registration via backend
+  // --- Telegram Mini App ---
   if (isTelegramMiniApp) {
-    const tgUser = TelegramWebApp.initDataUnsafe?.user;
-    if (!tgUser) {
-      showTgRegOverlay();
+    const existingSession = localStorage.getItem(SESSION_KEY);
+    if (existingSession) {
+      // Validate existing session with backend
+      fetch(API_BASE + '/api/check-session?session=' + existingSession)
+        .then(r => r.json())
+        .then(data => { data.ok ? authAllow() : miniAppFullAuth(); })
+        .catch(() => miniAppFullAuth());
       return;
     }
-    
-    // If user already has a local token from a previous successful session, allow
-    if (localStorage.getItem('sr_tg_registered_' + tgUser.id)) {
-      document.body.classList.remove('auth-required');
-      hideAuthOverlay();
-      return;
-    }
-    
-    // Check registration via backend API
-    fetch('https://sr-calendar-bot.onrender.com/api/check-reg?tg_id=' + tgUser.id)
-      .then(r => r.json())
-      .then(data => {
-        if (data.registered) {
-          localStorage.setItem('sr_tg_registered_' + tgUser.id, '1');
-          localStorage.setItem(AUTH_CONFIG.storageKey, 'tg_' + tgUser.id);
-          document.body.classList.remove('auth-required');
-          hideAuthOverlay();
-        } else {
-          showTgRegOverlay();
-        }
-      })
-      .catch(() => {
-        // Network error — allow access to not block legitimate users
-        document.body.classList.remove('auth-required');
-        hideAuthOverlay();
-      });
+    miniAppFullAuth();
     return;
   }
-  
-  // Check for token in URL (from Telegram bot)
+
+  // --- Browser with one-time token from bot ---
   const urlParams = new URLSearchParams(window.location.search);
   const urlToken = urlParams.get('auth');
-  
+
   if (urlToken) {
-    // Save token from URL
-    localStorage.setItem(AUTH_CONFIG.storageKey, urlToken);
-    // Clean URL
     window.history.replaceState({}, document.title, window.location.pathname);
+    fetch(API_BASE + '/api/validate-token?token=' + urlToken)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          localStorage.setItem(SESSION_KEY, data.session);
+          authAllow();
+        } else {
+          showAuthOverlay();
+        }
+      })
+      .catch(() => showAuthOverlay());
+    return;
   }
-  
-  const token = localStorage.getItem(AUTH_CONFIG.storageKey);
-  
-  if (token) {
-    // User is authorized
-    document.body.classList.remove('auth-required');
-    hideAuthOverlay();
-  } else {
-    // User needs to auth
-    document.body.classList.add('auth-required');
-    showAuthOverlay();
+
+  // --- Browser returning visitor ---
+  const session = localStorage.getItem(SESSION_KEY);
+  if (session) {
+    fetch(API_BASE + '/api/check-session?session=' + session)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          authAllow();
+        } else {
+          localStorage.removeItem(SESSION_KEY);
+          showAuthOverlay();
+        }
+      })
+      .catch(() => showAuthOverlay());
+    return;
   }
+
+  showAuthOverlay();
+}
+
+function miniAppFullAuth() {
+  const initData = TelegramWebApp.initData;
+  if (!initData) { showTgRegOverlay(); return; }
+
+  fetch(API_BASE + '/api/validate-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ initData })
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (data.ok) {
+        localStorage.setItem(SESSION_KEY, data.session);
+        authAllow();
+      } else {
+        showTgRegOverlay();
+      }
+    })
+    .catch(() => showTgRegOverlay());
 }
 
 function showTgRegOverlay() {
@@ -3367,6 +3384,7 @@ function showTgRegOverlay() {
 }
 
 function showAuthOverlay() {
+  document.body.classList.add('auth-required');
   const overlay = document.getElementById('authOverlay');
   if (overlay) {
     overlay.style.display = 'flex';
@@ -3381,13 +3399,6 @@ function hideAuthOverlay() {
   }
 }
 
-// No longer needed - bot handles auth now
-// function initTelegramWidget() { ... }
-
-// No longer needed - bot handles auth now
-// window.onTelegramAuth = async function(user) { ... }
-
-// Simple init - just check auth on load
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
 });

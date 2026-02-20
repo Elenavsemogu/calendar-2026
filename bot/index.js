@@ -28,6 +28,85 @@ const CONFIG = {
 };
 
 const TG = `https://api.telegram.org/bot${CONFIG.BOT_TOKEN}`;
+const crypto = require('crypto');
+
+// =====================================================
+// AUTH: initData validation, one-time tokens, sessions
+// =====================================================
+
+// Validate Telegram Mini App initData per https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+function validateInitData(initDataRaw) {
+  try {
+    const params = new URLSearchParams(initDataRaw);
+    const hash = params.get('hash');
+    if (!hash) return null;
+
+    params.delete('hash');
+    const dataCheckString = [...params.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([k, v]) => `${k}=${v}`)
+      .join('\n');
+
+    const secretKey = crypto.createHmac('sha256', 'WebAppData').update(CONFIG.BOT_TOKEN).digest();
+    const computedHash = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex');
+
+    if (computedHash !== hash) return null;
+
+    const authDate = parseInt(params.get('auth_date') || '0', 10);
+    if (Date.now() / 1000 - authDate > 86400) return null;
+
+    const userJson = params.get('user');
+    return userJson ? JSON.parse(userJson) : null;
+  } catch (e) {
+    console.error('initData validation error:', e.message);
+    return null;
+  }
+}
+
+// One-time browser tokens: token -> { tgId, createdAt }
+const oneTimeTokens = new Map();
+const TOKEN_TTL = 5 * 60 * 1000; // 5 minutes
+
+function createOneTimeToken(tgId) {
+  const token = crypto.randomBytes(32).toString('hex');
+  oneTimeTokens.set(token, { tgId: String(tgId), createdAt: Date.now() });
+  return token;
+}
+
+function consumeOneTimeToken(token) {
+  const entry = oneTimeTokens.get(token);
+  if (!entry) return null;
+  oneTimeTokens.delete(token);
+  if (Date.now() - entry.createdAt > TOKEN_TTL) return null;
+  return entry.tgId;
+}
+
+// Server sessions: sessionId -> { tgId, createdAt }
+const sessions = new Map();
+const SESSION_TTL = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+function createSession(tgId) {
+  const sessionId = crypto.randomBytes(32).toString('hex');
+  sessions.set(sessionId, { tgId: String(tgId), createdAt: Date.now() });
+  return sessionId;
+}
+
+function validateSession(sessionId) {
+  const entry = sessions.get(sessionId);
+  if (!entry) return null;
+  if (Date.now() - entry.createdAt > SESSION_TTL) {
+    sessions.delete(sessionId);
+    return null;
+  }
+  return entry.tgId;
+}
+
+// Periodic cleanup of expired tokens/sessions (every hour)
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of oneTimeTokens) { if (now - v.createdAt > TOKEN_TTL) oneTimeTokens.delete(k); }
+  for (const [k, v] of sessions) { if (now - v.createdAt > SESSION_TTL) sessions.delete(k); }
+}, 60 * 60 * 1000);
 
 // =====================================================
 // TELEGRAM API HELPER
@@ -72,11 +151,41 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', bot: 'Secret Room Calendar Bot' });
 });
 
-// Registration check for Mini App
-app.get('/api/check-reg', (req, res) => {
-  const tgId = req.query.tg_id;
-  if (!tgId) return res.json({ registered: false });
-  res.json({ registered: registeredUsers.has(String(tgId)) });
+// Mini App: validate initData + check registration -> session
+app.post('/api/validate-session', (req, res) => {
+  const { initData } = req.body;
+  if (!initData) return res.status(400).json({ ok: false, error: 'initData required' });
+
+  const user = validateInitData(initData);
+  if (!user) return res.status(403).json({ ok: false, error: 'invalid_signature' });
+
+  if (!registeredUsers.has(String(user.id))) {
+    return res.json({ ok: false, error: 'not_registered' });
+  }
+
+  const session = createSession(user.id);
+  res.json({ ok: true, session, tgId: String(user.id) });
+});
+
+// Browser: exchange one-time token for session
+app.get('/api/validate-token', (req, res) => {
+  const token = req.query.token;
+  if (!token) return res.status(400).json({ ok: false, error: 'token required' });
+
+  const tgId = consumeOneTimeToken(token);
+  if (!tgId) return res.status(403).json({ ok: false, error: 'invalid_or_expired' });
+
+  const session = createSession(tgId);
+  res.json({ ok: true, session, tgId });
+});
+
+// Returning visitors: check existing session
+app.get('/api/check-session', (req, res) => {
+  const session = req.query.session;
+  if (!session) return res.json({ ok: false });
+
+  const tgId = validateSession(session);
+  res.json({ ok: !!tgId, tgId: tgId || undefined });
 });
 
 // =====================================================
@@ -366,7 +475,7 @@ async function handleStart(message) {
   
   // If user already registered, skip questionnaire
   if (registeredUsers.has(String(userId))) {
-    const authToken = 'tg_' + userId + '_' + Date.now();
+    const authToken = createOneTimeToken(userId);
     const browserUrl = CONFIG.CALENDAR_URL + '?auth=' + authToken;
     await tg('sendMessage', {
       chat_id: chatId,
@@ -473,7 +582,7 @@ async function finishQuestionnaire(chatId, data) {
   if (isSubscribed) {
     // Подписан → отдаём календарь с выбором
     clearUserState(chatId);
-    const authToken = 'tg_' + data.telegram_id + '_' + Date.now();
+    const authToken = createOneTimeToken(data.telegram_id);
     const browserUrl = CONFIG.CALENDAR_URL + '?auth=' + authToken;
     await tg('sendMessage', {
       chat_id: chatId,
@@ -536,7 +645,7 @@ async function handleCallback(callback) {
       });
       
       // Анкета уже пройдена → календарь с выбором
-      const authToken = 'tg_' + userId + '_' + Date.now();
+      const authToken = createOneTimeToken(userId);
       const browserUrl = CONFIG.CALENDAR_URL + '?auth=' + authToken;
       await tg('sendMessage', {
         chat_id: chatId,
@@ -674,20 +783,6 @@ app.get('/test-save', async (req, res) => {
   });
   res.json({ done: true });
 });
-
-// =====================================================
-// TOKEN GENERATION
-// =====================================================
-const crypto = require('crypto');
-
-function generateToken(telegramId) {
-  const timestamp = Date.now();
-  const hash = crypto.createHash('sha256')
-    .update(`${telegramId}:${timestamp}:secretroom`)
-    .digest('base64')
-    .substring(0, 32);
-  return hash;
-}
 
 // =====================================================
 // SETUP WEBHOOK (called on startup)
