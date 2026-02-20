@@ -23,14 +23,18 @@ if (isTelegramMiniApp) {
   TelegramWebApp.ready();
   TelegramWebApp.expand();
   
+  // На десктопе — раскрываем на весь экран
+  const tgPlatform = TelegramWebApp.platform || '';
+  if (['tdesktop', 'macos', 'web', 'weba'].includes(tgPlatform)) {
+    if (typeof TelegramWebApp.requestFullscreen === 'function') {
+      try { TelegramWebApp.requestFullscreen(); } catch(e) { console.log('Fullscreen not supported'); }
+    }
+  }
+  
   // Получаем данные пользователя из Telegram
   const tgUser = TelegramWebApp.initDataUnsafe?.user;
   if (tgUser) {
     console.log('Telegram user:', tgUser.id, tgUser.first_name, tgUser.username);
-    
-    // Автоматически авторизуем пользователя
-    const token = 'tg_' + tgUser.id + '_' + Date.now();
-    localStorage.setItem('sr_auth_token', token);
   }
   
   // Адаптируем цвета под тему Telegram
@@ -3277,10 +3281,39 @@ const AUTH_CONFIG = {
 
 // Check auth on page load
 function checkAuth() {
-  // If running in Telegram Mini App, auto-authorize
+  // If running in Telegram Mini App, verify registration via backend
   if (isTelegramMiniApp) {
-    document.body.classList.remove('auth-required');
-    hideAuthOverlay();
+    const tgUser = TelegramWebApp.initDataUnsafe?.user;
+    if (!tgUser) {
+      showTgRegOverlay();
+      return;
+    }
+    
+    // If user already has a local token from a previous successful session, allow
+    if (localStorage.getItem('sr_tg_registered_' + tgUser.id)) {
+      document.body.classList.remove('auth-required');
+      hideAuthOverlay();
+      return;
+    }
+    
+    // Check registration via backend API
+    fetch('https://sr-calendar-bot.onrender.com/api/check-reg?tg_id=' + tgUser.id)
+      .then(r => r.json())
+      .then(data => {
+        if (data.registered) {
+          localStorage.setItem('sr_tg_registered_' + tgUser.id, '1');
+          localStorage.setItem(AUTH_CONFIG.storageKey, 'tg_' + tgUser.id);
+          document.body.classList.remove('auth-required');
+          hideAuthOverlay();
+        } else {
+          showTgRegOverlay();
+        }
+      })
+      .catch(() => {
+        // Network error — allow access to not block legitimate users
+        document.body.classList.remove('auth-required');
+        hideAuthOverlay();
+      });
     return;
   }
   
@@ -3306,6 +3339,31 @@ function checkAuth() {
     document.body.classList.add('auth-required');
     showAuthOverlay();
   }
+}
+
+function showTgRegOverlay() {
+  document.body.classList.add('auth-required');
+  hideAuthOverlay();
+  let overlay = document.getElementById('tgRegOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'tgRegOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#0D0D0D;padding:24px;';
+    overlay.innerHTML = `
+      <div style="text-align:center;max-width:340px;">
+        <div style="font-size:48px;margin-bottom:16px;">🔐</div>
+        <h2 style="color:#FBF2E8;font-size:20px;font-weight:700;margin-bottom:12px;">Нужна регистрация</h2>
+        <p style="color:#999;font-size:14px;line-height:1.5;margin-bottom:24px;">
+          Чтобы получить доступ к календарю, ответь на пару вопросов в чате с ботом — это займёт меньше минуты.
+        </p>
+        <button onclick="TelegramWebApp.close()" style="background:linear-gradient(135deg,#C8E712,#a5c00f);color:#0D0D0D;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;">
+          ← Вернуться в чат
+        </button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  overlay.style.display = 'flex';
 }
 
 function showAuthOverlay() {

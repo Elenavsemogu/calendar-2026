@@ -72,6 +72,13 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', bot: 'Secret Room Calendar Bot' });
 });
 
+// Registration check for Mini App
+app.get('/api/check-reg', (req, res) => {
+  const tgId = req.query.tg_id;
+  if (!tgId) return res.json({ registered: false });
+  res.json({ registered: registeredUsers.has(String(tgId)) });
+});
+
 // =====================================================
 // SEND-ICS: бот отправляет .ics файл в чат пользователю
 // Пользователь нажимает на файл → iOS Calendar открывается
@@ -299,6 +306,7 @@ app.get('/ics', (req, res) => {
 // Шаги: waiting_name → waiting_position → waiting_open_to_jobs →
 //        (если Да) waiting_experience → waiting_age → done
 const userStates = new Map();
+const registeredUsers = new Set();
 
 function getUserState(chatId) {
   return userStates.get(chatId) || null;
@@ -355,6 +363,24 @@ async function handleStart(message) {
     is_premium: user.is_premium ? 'Да' : 'Нет',
     utm_source: utmParam || 'Прямой переход'
   });
+  
+  // If user already registered, skip questionnaire
+  if (registeredUsers.has(String(userId))) {
+    const authToken = 'tg_' + userId + '_' + Date.now();
+    const browserUrl = CONFIG.CALENDAR_URL + '?auth=' + authToken;
+    await tg('sendMessage', {
+      chat_id: chatId,
+      text: `С возвращением, ${user.first_name}! 👋\n\nКалендарь тебя уже ждёт 👇\n\n_А если захочешь вернуться позже — он всегда доступен по кнопке 📅 внизу чата._`,
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '📅 Открыть в Telegram', web_app: { url: CONFIG.CALENDAR_URL } }],
+          [{ text: '🌐 Открыть в браузере', url: browserUrl }]
+        ]
+      }
+    });
+    return;
+  }
   
   // Приветствие + сразу первый вопрос (для всех одинаково)
   await tg('sendMessage', {
@@ -428,6 +454,19 @@ async function finishQuestionnaire(chatId, data) {
   // Сохраняем анкету в таблицу
   await saveProfileToSheet(data);
   
+  // Отмечаем пользователя как зарегистрированного
+  registeredUsers.add(String(data.telegram_id));
+  
+  // Устанавливаем персональную кнопку меню с мини-аппом
+  await tg('setChatMenuButton', {
+    chat_id: chatId,
+    menu_button: {
+      type: 'web_app',
+      text: '📅 Календарь',
+      web_app: { url: CONFIG.CALENDAR_URL }
+    }
+  });
+  
   // Проверяем подписку на канал
   const isSubscribed = await checkChannelSubscription(data.telegram_id);
   
@@ -479,6 +518,17 @@ async function handleCallback(callback) {
     
     if (isSubscribed) {
       clearUserState(chatId);
+      registeredUsers.add(String(userId));
+      
+      // Устанавливаем персональную кнопку меню
+      await tg('setChatMenuButton', {
+        chat_id: chatId,
+        menu_button: {
+          type: 'web_app',
+          text: '📅 Календарь',
+          web_app: { url: CONFIG.CALENDAR_URL }
+        }
+      });
       
       await tg('answerCallbackQuery', {
         callback_query_id: callback.id,
@@ -659,15 +709,11 @@ async function setupWebhook() {
   console.log(`Webhook set to: ${webhookUrl}`);
   console.log('Result:', result);
   
-  // Настраиваем Menu Button (кнопка внизу чата)
+  // Global menu button: default (per-user web_app set only after registration)
   const menuResult = await tg('setChatMenuButton', {
-    menu_button: {
-      type: 'web_app',
-      text: '📅 Календарь конференций',
-      web_app: { url: CONFIG.CALENDAR_URL }
-    }
+    menu_button: { type: 'default' }
   });
-  console.log('Menu button set:', menuResult.ok ? 'OK' : menuResult.description);
+  console.log('Default menu button set:', menuResult.ok ? 'OK' : menuResult.description);
 }
 
 // =====================================================
