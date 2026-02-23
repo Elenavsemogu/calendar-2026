@@ -960,8 +960,7 @@ const EVENTS = {
       { name: "Zeydoo", category: "Партнёрка", logo: "https://logo.clearbit.com/zeydoo.com" },
       { name: "Mobidea", category: "Партнёрка", logo: "https://logo.clearbit.com/mobidea.com" },
       { name: "Clickadu", category: "Технологии", logo: "https://logo.clearbit.com/clickadu.com" },
-      { name: "TrafficStars", category: "Технологии", logo: "https://logo.clearbit.com/trafficstars.com" },
-      { name: "JEWIN", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=JW&background=C8E712&color=fff" }
+      { name: "TrafficStars", category: "Технологии", logo: "https://logo.clearbit.com/trafficstars.com" }
     ],
     sideEvents: [
       { title: "Pre-Party", date: "31 марта", location: "TBA", type: "party" }
@@ -1077,7 +1076,6 @@ const EVENTS = {
       { name: "Clickdealer", category: "Партнёрка", logo: "https://logo.clearbit.com/clickdealer.com" },
       { name: "AdCombo", category: "Партнёрка", logo: "https://logo.clearbit.com/adcombo.com" },
       { name: "Yellana", category: "Партнёрка", logo: "https://logo.clearbit.com/yellana.com" },
-      { name: "JEWIN", category: "Партнёрка", logo: "https://ui-avatars.com/api/?name=JW&background=C8E712&color=fff" },
       { name: "CPAMafia", category: "Партнёрка", logo: "images/brands/cpamafia.png" },
       { name: "Golden Goose", category: "Партнёрка", logo: "https://logo.clearbit.com/goldengoose.com" }
     ],
